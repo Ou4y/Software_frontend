@@ -10,8 +10,8 @@
 
 <nav class="Navbar">
     <div class="Navbar-left">
-        <a href="index.html">Home</a>
-        <a href="Browse.html">Browse</a>
+        <a href="../public/index.php">Home</a>
+        <a href="../public/Browse.php">Browse</a>
         <a href="SizeChart.html">Size Chart</a>
     </div>
     <h1>X</h1>
