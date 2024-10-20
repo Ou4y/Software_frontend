@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../Assets/css/LoginSignup.css">
-    <title>Login Page - Majystic Vault</title>
+    <title>LoginPage</title>
     
 </head>
 <body>
@@ -16,11 +16,8 @@
 
 
 
-<div class ="image"id="img">
-    <img id="backsign" src="../Assets/images/Background.png"alt="background">
-</div>
 
-
+<div class="fieldlogsign">
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form id="signUpForm" method="POST" action="/signup">
@@ -68,6 +65,7 @@
                 </div>
             </div>
         </div>
+</div>
     </div>
     <script>
         const container = document.getElementById('container');

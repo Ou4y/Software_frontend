@@ -3,28 +3,27 @@
 html, body {
     margin: 0;
     padding: 0;
-    height:100%;
+
 }
 
-.header, .footer {
-    width: 100%;
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: relative; /* Ensure they stay on top of the background */
+
+
+.fieldlogsign *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
 }
 
-#backsign{
-    position: absolute; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            margin: auto; 
-            min-width: 50%;
-            min-height: 50%;
+
+.fieldlogsign{
+    
+    padding-top:90px ;
+
 }
+
+
+
 
 .image {
     position: fixed; 
@@ -35,22 +34,6 @@ html, body {
 
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-}
-
-body{
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #ffe8c9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
-}
 
 .container{
     background-color: rgba(255, 255, 255, 0.9);
