@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../Assets/css/checkout.css">
+    <link rel="stylesheet" href="../Assets/css/checkout.css?v=<?php echo time(); ?>">
     <title>checkout</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -13,14 +13,14 @@
 <?php include('../includes/header.php'); ?>
 
 
-
+<div class="container">
     <div class="item">
     <img id="itemimg" src="../Assets/images/Product1.png"alt="product">
     <h1>special jersey royal black star</h1>
         <h3>size:M</h3>
         <h3>quantity:1</h3>
         <h2>450 LE</h2>
-        <i class="fa-solid fa-trash-can"></i>
+        <i class="fa-solid fa-trash-can fa-2x"></i>
 </div>
 
 
@@ -33,8 +33,10 @@
 
 
  <div class="payment">
- <h3>Payment Method</h3>
-
+    <div class="text">
+ <h3>shipment and info</h3>
+ </div>
+<div class="radio">
 <label>
     <input type="radio" name="payment" value="visa" onclick="toggleVisaInfo(true)" >
     Visa
@@ -46,7 +48,6 @@
     Cash on Delivery
 </label>
 </div>
-
 
 
 <div id="visa-info" class="form-block visa-info">
@@ -63,21 +64,18 @@
 <label for="cvv">CVV:</label>
 <input type="text" id="cvv" name="cvv" placeholder="CVV" >
 </div>
+<button class="button" type="submit">Confirm Order</button>
 
-<div class="button-group">
-<button type="button" onclick="  window.history.back()">Back</button>
-<button type="submit">Confirm Order</button>
-</div>
 </div>
 
 
 
 <div class="total">
-<h3>shipping=50</h3>
- <h3>tshirt=450</h3>
+<h4>shipping=50</h4>
+ <h4>tshirt=450</h4>
  <h2>total=500</h2>
 </div>
-
+</div>
 </div>
 
 <script>

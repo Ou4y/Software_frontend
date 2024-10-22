@@ -1,0 +1,143 @@
+body{
+    margin:0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.item {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #b8b8b8;
+    width: 60%;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height:5%;
+
+}
+
+#itemimg{
+    border-radius: 10px;
+}
+.item h3 {
+    flex: 1;
+    text-align: left;
+    margin-top: 240px;
+    color:#4a4949;
+
+}
+.item h1 {
+    flex: 2;
+    text-align: left;
+    padding-left: 20px;
+}
+.item i {
+    color: #555;
+    cursor: pointer;
+    margin-top: 210px;
+}
+.item h2{
+    margin-bottom:250px;
+    color: rgb(2, 130, 2);
+
+}
+.container {
+    display: flex; 
+    justify-content: flex-start; 
+    padding: 20px; 
+    gap: 20px;
+}
+.confirm {
+    background-color: #b8b8b8;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #ccc;
+}
+.account{
+    border:2px solid rgb(51, 51, 51);
+    width: 200px;
+    align-items: center;
+    margin-left: 150px;
+    height:30px;
+
+}
+.account label{
+    font-size: 27px;
+}
+.account input[type="checkbox"] {
+    transform: scale(1.5); 
+   margin-left: 15px;
+}
+.text{
+
+ border: 2px solid rgb(227, 227, 227);
+margin-top:10px;
+width: 200px;
+margin-left: 150px;
+
+}
+.radio{
+    display:flex;
+    flex-direction: column;
+}
+.radio label {
+    display: flex;         
+    align-items: center;    
+margin-left: 150px;  
+margin-top: 10px;  
+cursor: pointer;        
+    font-size: 20px;       
+}
+.button{
+    background-color: black; 
+    color: white;
+    margin-top: 20px;
+    width:25%;
+padding-top:10px;
+padding-bottom: 10px;
+border:black;
+border-radius: 20px;
+
+}
+.total{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding:10px;
+}
+.total h4 {
+    margin: 5px 0; 
+}
+
+.total h2 {
+    margin-top: 15px; 
+}
+
+
+
+
+label {
+    display: block;      
+    margin-bottom: 5px; 
+    font-weight: bold; 
+}
+
+input[type="text"] {
+    width: 100%;         
+    padding: 10px;       
+    border: 1px solid #ccc; 
+    border-radius: 4px;  
+    background-color: white; 
+    box-sizing: border-box;
+    border-radius: 20px;
+}
+
