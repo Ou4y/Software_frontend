@@ -24,7 +24,13 @@
       <li>
         <a href="#">
           <i class='bx bxs-user-plus' style='color:#ffffff'></i>
-          <span class="text">Add User</span>
+          <span class="text">Manage Users</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+        <i class='bx bxs-group'></i>
+          <span class="text">Create Admin</span>
         </a>
       </li>
       <li>
@@ -41,9 +47,9 @@
   </ul>  
   </section>
   <section id="content">
-    <nav class="navbar">
-      <i class='bx bx-menu' style='color:#ffffff'></i>
-    </nav>
+  <nav class="navbar">
+    <i class='bx bx-menu' style='color:#ffffff'></i>
+</nav>
     <main>
       <div class="head-title">
         <div class="left">
