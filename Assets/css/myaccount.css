@@ -1,0 +1,104 @@
+body{
+    margin:0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    
+    }
+    .buttons{
+        display:flex;
+        flex-direction: column;
+        gap:10px;
+        max-width: 300px;
+        margin: 20px auto;
+        margin-left: 10px;
+    }
+    .myaccount, .history, .logout {
+        display: flex;
+        align-items: center;
+        border: 1px solid #171717;
+        gap: 10px;
+        padding: 10px;
+        font-size: 16px;
+        justify-content: space-between; 
+        border-radius: 5px; 
+       
+    }
+    
+    .myaccount {
+        background-color: #fff;
+    }
+    
+    .history {
+        background-color: #f5f5f5;
+    }
+    
+    .logout {
+        background-color: #000;
+        color: #fff;
+    }
+    .buttons button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        flex: 1;
+        text-align: left;
+    }
+    
+    .logout button {
+        color: #fff;
+    }
+    
+    #accountForm {
+        display: none;
+    }
+    .accountForm{
+        border:5px solid rgb(164, 163, 163);
+        border-radius: 15px;
+        justify-content: space-between;
+        background-color: rgb(164, 163, 163);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin-left:500px;
+        max-height:1000px;
+
+
+    }
+    #itemimg{
+        height: 200px; 
+    width: 200px;
+    border-radius: 50%; 
+    object-fit: cover; 
+    margin-bottom: 20px; 
+
+    }
+    .accinfo label {
+    display: inline-block; 
+    text-align: left;
+    width: 80%;
+    margin-bottom: 0px; 
+    padding-bottom: 2px; 
+    font-weight: bold;
+    }
+   .accinfo input {
+        width: 80%;
+        height: 40px;
+        padding: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+        background-color: #000;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 30px;
+    }
+    
