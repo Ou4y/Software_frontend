@@ -10,11 +10,14 @@
 
 <?php include('../includes/header.php'); ?>
 
+
+
 <div class="image-links">
-        <a href="../public/products.php"><img src="../Assets/images/men.png" alt="Product 1"></a>
-        <a href="#"><img src="../Assets/images/men.png" alt="Product 2"></a>
-        <a href="#"><img src="../Assets/images/men.png" alt="Product 3"></a>
-        <a href="#"><img src="../Assets/images/men.png" alt="Product 4"></a>
+        <a href="../public/products.php" class="unique-hover-card"><h1>Men</h1></a>
+        <a href="../public/products.php" class="unique-hover-card"><h1>Women</h1></a>
+        <a href="../public/products.php" class="unique-hover-card"><h1>Sports Wear</h1></a>
+        <a href="../public/products.php" class="unique-hover-card"><h1>New Release</h1></a>
+
     </div>
 
     <hr>

@@ -16,7 +16,7 @@
     </div>
     <h1>X</h1>
     <div class="Navbar-right">
-        <a href="Cart.html">🛒</a>
+        <a href="../public/checkout.php">🛒</a>
         <a href="../public/LoginSignup.php">Login</a>
     </div>
 </nav>
