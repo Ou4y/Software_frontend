@@ -5,12 +5,13 @@ html, body {
 }
 
 .Navbar {
-    display: flex;
+    position: relative;
     justify-content: space-between;
     align-items: center;
     color: white;
     background-color: black;
     padding: 30px 50px;
+    
   
 }
 

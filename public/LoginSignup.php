@@ -32,6 +32,7 @@
                 <input type="text" id="signUpUsername" placeholder="Username" name="username" required>
                 <input type="email" id="signUpEmail" placeholder="Email" name="email" required>
                 <input type="password" id="signUpPassword" placeholder="Password" name="password" required>
+                <input type="password" id="PhoneNumber" placeholder="Phone Number" name="Number" required>
                 <button type="submit">Sign Up</button>
             </form>
         </div>
