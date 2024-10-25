@@ -295,18 +295,20 @@ body {
 	flex-basis: 500px;
 }
 #content main .table-data .order table {
-	width: 100%;
-	border-collapse: collapse;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 16px; 
 }
 #content main .table-data .order table th {
-	padding-bottom: 12px;
-	font-size: 13px;
-	text-align: left;
-	border-bottom: 1px solid var(--grey);
+    padding-bottom: 12px;
+    font-size: 13px;
+    text-align: left;
+    border-bottom: 1px solid var(--grey);
 }
 #content main .table-data .order table td {
-	padding: 16px 0;
+    padding: 16px 24px;
 }
+
 #content main .table-data .order table tr td:first-child {
 	display: flex;
 	align-items: center;
@@ -371,6 +373,64 @@ body {
 #content main .table-data .todo .todo-list li:last-child {
 	margin-bottom: 0;
 }
+button {
+	cursor: pointer;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	padding: 6px 10px;
+	font-size: 14px;
+	display: inline-flex;
+	align-items: center;
+	background-color: transparent;
+	transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .add-btn {
+	color: #28a745;
+	border-color: #28a745;
+  }
+  
+  .add-btn:hover {
+	background-color: rgba(40, 167, 69, 0.1);
+  }
+  .edit-btn {
+	color: #007bff;
+	border-color: #007bff;
+  }
+  
+  .edit-btn:hover {
+	background-color: rgba(0, 123, 255, 0.1);
+  }
+  .delete-btn {
+	color: #dc3545;
+	border-color: #dc3545;
+  }
+  
+  .delete-btn:hover {
+	background-color: rgba(220, 53, 69, 0.1);
+  }
+  button i {
+	margin-right: 4px;
+  }
+  .table-data {
+	width: 100%;
+  }
+  
+  table {
+	border-collapse: separate;
+	border-spacing: 0 10px;
+	width: 100%;
+  }
+  
+  th, td {
+	padding: 12px;
+	text-align: center;
+	vertical-align: middle;
+  }
+  
+  td {
+	position: relative;
+  }
+  
 
 @media screen and (max-width: 768px) {
 	#sidebar {

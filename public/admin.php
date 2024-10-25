@@ -16,31 +16,11 @@
       <span class="icon">Admin Dashboard</span>
     </a>
     <ul class="side-menu top">
-      <li>
-          <a href="#">
-              <i class='bx bxs-dashboard' style='color:#ffffff'></i>
-              <span class="text">Menu</span>
-          </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class='bx bxs-user-plus' style='color:#ffffff'></i>
-          <span class="text">Manage Users</span>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-        <i class='bx bxs-group'></i>
-          <span class="text">Create Admin</span>
-        </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class='bx bxs-shopping-bags'style='color:#ffffff'></i>
-          <span class="text">Manage Products</span>
-        </a>
-      </li>
-  </ul>  
+      <li><a href="admin.php"><i class='bx bxs-dashboard' style='color:#ffffff'></i><span class="text">Menu</span></a></li>
+      <li><a href="ManageUsers.php"><i class='bx bxs-user-plus' style='color:#ffffff'></i><span class="text">Manage Users</span></a></li>
+      <li><a href="createAdmin.php"><i class='bx bxs-group'></i><span class="text">Create Admin</span></a></li>
+      <li><a href="ManageProducts.php"><i class='bx bxs-shopping-bags' style='color:#ffffff'></i><span class="text">Manage Products</span></a></li>
+    </ul>
   </section>
   <section id="content">
   <nav>
