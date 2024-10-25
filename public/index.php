@@ -19,9 +19,10 @@
 
 
 
-
 <div class="section1">
-    <img id="back1" src="../Assets/images/Background.png" alt="Background">
+    <video autoplay muted loop id="back1">
+        <source src="../Assets/images/videoplayback.mp4" type="video/mp4">
+    </video>
     <div class="overlay">
         <h1>New Winter Collection</h1>
         <button class="browse-btn">Browse Now</button>
@@ -44,7 +45,7 @@
             <div class="Item-Data">
                 <h2 id="xx">EGP 700</h2>
                 <h2>EGP 400</h2>
-                <a id="ButtonBrowseHome" href="/Products.php">Browse Now</a>
+                <a id="ButtonBrowseHome" href="../public/Product.php">Browse Now</a>
             </div>
         </div>
     </div>
@@ -67,7 +68,7 @@
 
 <div class="review">
    <div class="head-review">
-      <img id="revimage" src="https://images.unsplash.com/photo-1488161628813-04466f872be2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80" width="250px">
+      <img id="revimage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtuphMb4mq-EcVWhMVT8FCkv5dqZGgvn_QiA&s" width="250px">
    </div>
    <div class="body-review">
       <div class="name-review">Nathan D.</div>
@@ -84,7 +85,7 @@
 </div>
 <div class="review">
    <div class="head-review">
-      <img id="revimage" src="https://images.unsplash.com/photo-1479936343636-73cdc5aae0c3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80" width="250px">
+      <img id="revimage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNJryFTSQUV8Zuu_EGw2iUCpMbIIKWHBl2eQ&s" width="250px">
    </div>
    <div class="body-review">
       <div class="name-review">Mary Will</div>
@@ -101,7 +102,7 @@
 </div>
 <div class="review">
    <div class="head-review">
-      <img id="revimage" src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" width="250px">
+      <img id="revimage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtuphMb4mq-EcVWhMVT8FCkv5dqZGgvn_QiA&s" width="250px">
    </div>
    <div class="body-review">
       <div class="name-review">Kevin Tuck</div>

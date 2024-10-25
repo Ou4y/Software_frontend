@@ -12,7 +12,7 @@
     <div class="Navbar-left">
         <a href="../public/index.php">Home</a>
         <a href="../public/Browse.php">Browse</a>
-        <a href="SizeChart.html">Size Chart</a>
+        <a href="../public/Size.php">Size Chart</a>
     </div>
     <h1>X</h1>
     <div class="Navbar-right">

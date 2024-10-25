@@ -56,7 +56,7 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
     </div>
 
@@ -67,7 +67,7 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
     </div>
 
@@ -77,29 +77,7 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
-        </div>
-    </div>
-
-
-
-    <div class="box">
-        <img src="../Assets/images/Product1.png" alt="Product 1">
-        <div id="Data">
-        <h1>Special Jersey “Royal black Star”</h1>
-        <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
-        </div>
-    </div>
-
-
-
-    <div class="box">
-        <img src="../Assets/images/Product1.png" alt="Product 1">
-        <div id="Data">
-        <h1>Special Jersey “Royal black Star”</h1>
-        <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
     </div>
 
@@ -109,11 +87,9 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
     </div>
-
-
 
 
     <div class="box">
@@ -121,7 +97,16 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
+        </div>
+    </div>
+
+    <div class="box">
+        <img src="../Assets/images/Product1.png" alt="Product 1">
+        <div id="Data">
+        <h1>Special Jersey “Royal black Star”</h1>
+        <h2>450 EGP</h2>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
     </div>
 
@@ -132,7 +117,7 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
     </div>
 
@@ -142,8 +127,18 @@
         <div id="Data">
         <h1>Special Jersey “Royal black Star”</h1>
         <h2>450 EGP</h2>
-        <a id="Productbutton">Browse Now</a>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
         </div>
+    </div>
+
+    <div class="box">
+        <img src="../Assets/images/Product1.png" alt="Product 1">
+        <div id="Data">
+        <h1>Special Jersey “Royal black Star”</h1>
+        <h2>450 EGP</h2>
+        <a id="Productbutton"  href="../public/Product.php" >Browse Now</a>
+        </div>
+    </div>
     </div>
 
 
