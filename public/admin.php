@@ -6,7 +6,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../Assets/css/adminstyle.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <title>Admin Panel</title>
+    <link rel="stylesheet" href="../Assets/css/navbar.css">
+    <title>Admin Panel</title>
 </head>
 <body>
   <section id="sidebar">
@@ -39,17 +40,14 @@
           <span class="text">Manage Products</span>
         </a>
       </li>
-      <li>  <a href="#">
-        <i class='bx bx-log-out' style='color:#ffffff'></i>
-        <span class="text">Log out</span>
-      </a>
-    </li>
   </ul>  
   </section>
   <section id="content">
-  <nav class="navbar">
-    <i class='bx bx-menu' style='color:#ffffff'></i>
+  <nav>
+  <i class='bx bx-menu menu-icon'></i>
+  <button class="logout-btn"><i class='bx bx-log-out'></i>Logout</button>
 </nav>
+
     <main>
       <div class="head-title">
         <div class="left">
