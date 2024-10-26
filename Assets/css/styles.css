@@ -37,11 +37,13 @@ html, body {
   transform: translate(-50%, -50%);
   text-align: center;
   color: white;
+  
 }
 
 .overlay h1 {
   font-size: 9rem;
   margin: 0;
+ 
 }
 
 .browse-btn {
