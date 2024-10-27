@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../Assets/css/LoginSignup.css">
-    <title>LoginPage</title>
+    <title> Login Page </title>
     
 </head>
 <body>
@@ -33,7 +33,7 @@
                 <input type="email" id="signUpEmail" placeholder="Email" name="email" required>
                 <input type="password" id="signUpPassword" placeholder="Password" name="password" required>
                 <input type="password" id="PhoneNumber" placeholder="Phone Number" name="Number" required>
-                <button type="submit">Sign Up</button>
+                <button type="submit">Sign Up</button> 
             </form>
         </div>
         <div class="form-container sign-in">
@@ -50,6 +50,8 @@
                 <input type="password" id="signInPassword" placeholder="Password" name="password" required>
                 <a href="#">Forget Your Password?</a>
                 <button type="submit">Sign In</button>
+                <br>
+                Admin: <input type="checkbox" name="type">
             </form>
         </div>
         <div class="toggle-container">
