@@ -21,21 +21,30 @@
         <h3>quantity:1</h3>
         <h2>450 LE</h2>
         <i class="fa-solid fa-trash-can fa-2x"></i>
+
 </div>
 
 
-<div class="confirm">
-    <div class="account">
-    <label for="checkbox1">Account</label>
-    <input type="checkbox" id="checkbox1">   
- </div>
+<div class="payment">
+<div class="dropdown" >
+    <button class="dropdown-btn" onclick="toggleDropdown()">Shipment and Info</button>
+    <div id="shipment-info" class="dropdown-content">
+        <label for="full-name">Full Name:</label>
+        <input type="text" id="full-name" name="full-name" placeholder="Enter full name">
+        
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" placeholder="Enter address">
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter phone number">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter email">
+    </div>
+
+    <hr class="custom-line">
 
 
-
- <div class="payment">
-    <div class="text">
- <h3>shipment and info</h3>
- </div>
 <div class="radio">
 <label>
     <input type="radio" name="payment" value="visa" onclick="toggleVisaInfo(true)" >
@@ -48,6 +57,8 @@
     Cash on Delivery
 </label>
 </div>
+
+<hr class="custom-line">
 
 
 <div id="visa-info" class="form-block visa-info">
@@ -77,12 +88,18 @@
 </div>
 </div>
 </div>
+</div>
 
 <script>
 function toggleVisaInfo(show) {
 const visaInfo = document.getElementById('visa-info');
 visaInfo.style.display = show ? 'block' : 'none';
 }
+function toggleDropdown() {
+    const dropdownContent = document.getElementById('shipment-info');
+    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+}
+
 </script>
 
 
