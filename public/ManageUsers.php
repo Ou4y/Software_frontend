@@ -1,3 +1,10 @@
+<?php 
+include_once '../includes/db_connection.php';
+
+$sql = "SELECT ID,Username, Email, Phone FROM customer"; 
+$result = mysqli_query($conn, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +12,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="../Assets/css/adminstyle.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../Assets/css/navbar.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="../Assets/css/navbar.css">
   <title>Admin Panel</title>
+  <style>
+    #orderList tr {
+      color: white; 
+    }
+
+    table thead th {
+      color: white; 
+      background-color: #444; 
+    }
+
+
+    table tbody tr:hover {
+      background-color: #555;
+    }
+
+
+  </style>
 </head>
 <body>
   <section id="sidebar">
@@ -22,6 +46,7 @@
       <li><a href="ManageProducts.php"><i class='bx bxs-shopping-bags' style='color:#ffffff'></i><span class="text">Manage Products</span></a></li>
     </ul>  
   </section>
+  
   <section id="content">
     <nav>
       <i class='bx bx-menu menu-icon'></i>
@@ -38,77 +63,44 @@
                 <h3>Users</h3>
                 <button class="add-btn" onclick="window.location.href='adduser.php'">
                     <i class='bx bxs-plus-circle'></i> Add User
-                  </button>
+                </button>
                 <box-icon name='search'></box-icon>
               </div>
               <table>
                 <thead>
                   <tr>
+                    <th>ID</th>
                     <th>Username</th>
                     <th>E-mail</th>
                     <th>Phone Number</th>
-                    <th>Date of birth</th>
                     <th>Options</th>
                   </tr>
                 </thead>
                 <tbody id="orderList">
-                    <tr>
-                      <td>John Doe</td>
-                      <td>johndoe@example.com</td>
-                      <td>123-456-7890</td>
-                      <td>1987-04-12</td>
-                      <td>
-                        <button class="edit-btn" onclick="window.location.href='editUser.php'">
-                          <i class='bx bxs-pencil'></i> Edit
-                        </button>
-                        <button class="delete-btn">
-                          <i class='bx bxs-trash'></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Jane Smith</td>
-                      <td>janesmith@example.com</td>
-                      <td>987-654-3210</td>
-                      <td>1995-08-22</td>
-                      <td>
-                        <button class="edit-btn" onclick="window.location.href='editUser.php'">
-                          <i class='bx bxs-pencil'></i> Edit
-                        </button>
-                        <button class="delete-btn">
-                          <i class='bx bxs-trash'></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Alice John</td>
-                      <td>alicejohn@example.com</td>
-                      <td>555-1212</td>
-                      <td>2001-11-30</td>
-                      <td>
-                        <button class="edit-btn" onclick="window.location.href='editUser.php'">
-                          <i class='bx bxs-pencil'></i> Edit
-                        </button>
-                        <button class="delete-btn">
-                          <i class='bx bxs-trash'></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Bob Brown</td>
-                      <td>bobbrown@example.com</td>
-                      <td>444-5555</td>
-                      <td>1990-02-05</td>
-                      <td>
-                        <button class="edit-btn" onclick="window.location.href='editUser.php'">
-                          <i class='bx bxs-pencil'></i> Edit
-                        </button>
-                        <button class="delete-btn">
-                          <i class='bx bxs-trash'></i> Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>                  
+                  <?php
+                  
+                  if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                      echo "<tr>";
+                      echo "<td>" . htmlspecialchars($row['ID']) . "</td>";
+                      echo "<td>" . htmlspecialchars($row['Username']) . "</td>";
+                      echo "<td>" . htmlspecialchars($row['Email']) . "</td>";
+                      echo "<td>" . htmlspecialchars($row['Phone']) . "</td>";
+                      echo "<td>
+                              <button class='edit-btn' onclick=\"window.location.href='editUser.php?ID=" . htmlspecialchars($row['ID']) . "'\">
+                                <i class='bx bxs-pencil'></i> Edit
+                              </button>
+                              <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($row['ID']) . "')\">
+                                <i class='bx bxs-trash'></i> Delete
+                              </button>
+                            </td>";
+                      echo "</tr>";
+                    }
+                  } else {
+                    echo "<tr><td colspan='5'>No users found.</td></tr>";
+                  }
+                  ?>
+                </tbody>                  
               </table>
             </div>
           </div>
@@ -116,5 +108,28 @@
       </main>
   </section>
   <script src="../Assets/js/admin.js"></script>
+  <script>
+    function confirmDelete(userId) {
+      if (confirm("Are you sure you want to delete this user?")) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "deleteUser.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              const row = document.querySelector(`tr[data-id='${userId}']`);
+              if (row) {
+                row.remove();
+              }
+            } else {
+              alert("Error deleting user. Please try again.");
+            }
+          }
+        };
+        xhr.send("ID=" + encodeURIComponent(userId));
+      }
+      location.reload();
+    }
+  </script>
 </body>
 </html>
