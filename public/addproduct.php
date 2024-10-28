@@ -53,17 +53,34 @@
     <input type="number" id="price" name="price" placeholder="Enter product price" required>
 
     <label for="category">Category:</label>
-    <select id="category" name="category" required>
-      <option value="" disabled selected>Select category</option>
-      <option value="T-shirts">T-shirts</option>
-      <option value="Jeans">Jeans</option>
-      <option value="Dresses">Dresses</option>
-      <option value="Accessories">Accessories</option>
-    </select>
-    <button type="submit">Add Product</button>
-  </form>
-</main>
+    <div class="custom-multi-select" onclick="toggleDropdown()">
+        <span id="selected-categories">Select category</span>
+        <div id="dropdown-options" class="dropdown-options">
+            <label><input type="checkbox" value="T-shirts" name="category[]"> T-shirts</label>
+            <label><input type="checkbox" value="Jeans" name="category[]"> Jeans</label>
+            <label><input type="checkbox" value="Dresses" name="category[]"> Dresses</label>
+            <label><input type="checkbox" value="Hoodie" name="category[]"> Hoodie</label>
+            <label><input type="checkbox" value="Jacket" name="category[]"> Jacket</label>
+            <label><input type="checkbox" value="Sportswear" name="category[]"> Sportswear</label>
+            <label><input type="checkbox" value="Cargo pants" name="category[]"> Cargo pants</label>
+            <label><input type="checkbox" value="Sweatpants" name="category[]"> Sweatpants</label>
+        </div>
+    </div>
 
+    <label for="photo">Upload Photo:</label>
+    <div class="custom-file-upload">
+        <input type="file" id="photo" name="photo" accept="image/*" required>
+        <span id="file-chosen">No file chosen</span>
+    </div>
+
+    <div class="button-container">
+        <button type="submit">Add Product</button>
+    </div>
+</form>
+
+</main>
 <script src="../Assets/js/admin.js"></script>
+<script src="../Assets/js/choosefile.js"></script>
+<script src="../Assets/js/dropdown.js"></script>
 </body>
 </html>
