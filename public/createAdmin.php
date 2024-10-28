@@ -1,3 +1,8 @@
+<?php 
+include_once '../includes/db_connection.php';
+$sql = "SELECT ID, Username, Email, Phone FROM admin"; 
+$result = mysqli_query($conn, $sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +15,7 @@
   <link rel="stylesheet" href="../Assets/css/navbar.css">
   <title>Add Admin</title>
   <style>
+   <style>
 .table-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -190,6 +196,7 @@ td {
 
 
     </style>
+  </style>
 </head>
 <body>
 <section id="sidebar">
@@ -218,114 +225,98 @@ td {
   </div>
   <div class="main-container">
     <div class="form-container">
-      <form id="addUserForm" enctype="multipart/form-data">
+      <form id="addUserForm" action="" method="post">
         <label for="name">Username:</label>
-        <input type="text" id="name" name="name" placeholder="Enter username" required>
+        <input type="text" id="name" name="Username" placeholder="Enter username" required>
 
         <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" placeholder="Enter e-mail" required>
-
-        <label for="dob">Date of Birth:</label>
-        <div class="dob-container">
-          <select id="dob-day" name="dob-day" class="dob-select" required>
-            <option value="" disabled selected>Day</option>
-            <script>
-              for (let day = 1; day <= 31; day++) {
-                document.write(`<option value="${day}">${day}</option>`);
-              }
-            </script>
-          </select>
-
-          <select id="dob-month" name="dob-month" class="dob-select" required>
-            <option value="" disabled selected>Month</option>
-            <script>
-              for (let month = 1; month <= 12; month++) {
-                document.write(`<option value="${month}">${month}</option>`);
-              }
-            </script>
-          </select>
-
-          <select id="dob-year" name="dob-year" class="dob-select" required>
-            <option value="" disabled selected>Year</option>
-            <script>
-              const currentYear = new Date().getFullYear();
-              for (let year = 1920; year <= currentYear; year++) {
-                document.write(`<option value="${year}">${year}</option>`);
-              }
-            </script>
-          </select>
-        </div>
+        <input type="email" id="email" name="Email" placeholder="Enter e-mail" required>
 
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter password" required>
+        <input type="password" id="password" name="Password" placeholder="Enter password" required>
 
-        <label for="confirm-password">Confirm password:</label>
-        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
-
-        <button type="submit">Add Admin</button>
+        <label for="phone">Phone Number:</label>
+        <input type="number" id="phone" name="Phone" placeholder="Enter Phone Number" required>      
+        <button type="submit" name="Submit">Add Admin</button>
       </form>
     </div>
     
     <div class="table-container">
-  <div class="admin-table">
-    <div class="table-header">
-      <h3>Admin List</h3>
+      <div class="admin-table">
+        <div class="table-header">
+          <h3>Admin List</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>E-mail</th>
+              <th>Phone</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody id="orderList">
+            <?php 
+            if ($result && mysqli_num_rows($result) > 0) {
+              while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr data-id='" . htmlspecialchars($row['ID']) . "'>";
+                echo "<td>" . htmlspecialchars($row['Username']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['Email']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['Phone']) . "</td>";
+                echo "<td>
+                        <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($row['ID']) . "')\">
+                          <i class='bx bxs-trash'></i> Delete
+                        </button>
+                      </td>";
+                echo "</tr>";
+              }
+            } else {
+              echo "<tr><td colspan='4'>No users found.</td></tr>";
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Username</th>
-          <th>E-mail</th>
-          <th>Date of Birth</th>
-          <th>Options</th>
-        </tr>
-      </thead>
-      <tbody id="orderList">
-        <tr>
-          <td>John Doe</td>
-          <td>johndoe@example.com</td>
-          <td>1987-04-12</td>
-          <td>
-            <button class="delete-btn">
-              <i class='bx bxs-trash'></i> Delete
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Jane Smith</td>
-          <td>janesmith@example.com</td>
-          <td>1995-08-22</td>
-          <td>
-            <button class="delete-btn">
-              <i class='bx bxs-trash'></i> Delete
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Alice John</td>
-          <td>alicejohn@example.com</td>
-          <td>2001-11-30</td>
-          <td>
-            <button class="delete-btn">
-              <i class='bx bxs-trash'></i> Delete
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>Bob Brown</td>
-          <td>bobbrown@example.com</td>
-          <td>1990-02-05</td>
-          <td>
-            <button class="delete-btn">
-              <i class='bx bxs-trash'></i> Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>                  
-    </table>
   </div>
-</div>
 </main>
+
+<script>
+  function confirmDelete(adminID) {
+    if (confirm("Are you sure you want to delete this user?")) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "deleteAdmin.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            const row = document.querySelector(`tr[data-id='${adminID}']`);
+            if (row) {
+              row.remove();
+            }
+          } else {
+            alert("Error deleting user. Please try again.");
+          }
+        }
+      };
+      xhr.send("ID=" + encodeURIComponent(adminID));
+    }
+  }
+</script>
 <script src="../Assets/js/admin.js"></script>
 </body>
 </html>
+
+<?php
+if($_SERVER["REQUEST_METHOD"]=="POST"){ 
+	$Username = htmlspecialchars($_POST["Username"]);
+	$Email = htmlspecialchars($_POST["Email"]);
+	$Password = htmlspecialchars($_POST["Password"]);
+	$Phone = htmlspecialchars($_POST["Phone"]);
+   
+  $sql = "INSERT INTO admin (Username, Email, Password, Phone) VALUES ('$Username', '$Email', '$Password', '$Phone')";
+	$result = mysqli_query($conn, $sql);
+	if($result) {
+	}
+} 
+?>
