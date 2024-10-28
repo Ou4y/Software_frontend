@@ -313,8 +313,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 	$Email = htmlspecialchars($_POST["Email"]);
 	$Password = htmlspecialchars($_POST["Password"]);
 	$Phone = htmlspecialchars($_POST["Phone"]);
+
+  $hashedPassword2=password_hash($Password,PASSWORD_DEFAULT);
    
-  $sql = "INSERT INTO admin (Username, Email, Password, Phone) VALUES ('$Username', '$Email', '$Password', '$Phone')";
+  $sql = "INSERT INTO admin (Username, Email, Password, Phone) VALUES ('$Username', '$Email', '$hashedPassword2', '$Phone')";
 	$result = mysqli_query($conn, $sql);
 	if($result) {
 	}

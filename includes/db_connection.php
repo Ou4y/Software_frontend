@@ -1,33 +1,27 @@
 <?php
-// Enable error reporting for debugging
+
 session_start();
 
-/*
-starting a connection on $conn variabl
-----------------------------------------
-using mysqli_connect()    with parameters:
-1- localhost =>name of the server which serve the db 
-2-username
-3- password
-4- name of the database
-*/
+
 $conn=mysqli_connect("localhost","root","","X");
 
 
         if(!$conn){
             die("connection failed ". mysqli_connect_error());
         }
-        else
-        echo "conneced...";
+
 
 
 
         error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Check if the form was submitted
+
+
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form type to differentiate forms
+
     $formType = isset($_POST['form_type']) ? htmlspecialchars($_POST['form_type']) : '';
 
     if ($formType === 'sign_up') {
@@ -81,6 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if (password_verify($password, $user['Password'])) {
                 echo "<h2 style='color: green;'>Login successful!</h2>";
+
+                if($isAdmin==='Yes'){
+                    header("Location: ../public/admin.php"); // Change 'account.php' to your actual account page URL
+                exit(); // Always call exit after a header redirect
+                }
                 
                 // User found and password verified, redirect to account page
                 header("Location: ../public/myaccount.php"); // Change 'account.php' to your actual account page URL
@@ -107,14 +106,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Close the statement
         $stmt->close();
     } else {
-        echo "<h2 style='color: red;'>No valid form data submitted.</h2>";
+       
     }
 } else {
-    echo "<h2 style='color: red;'>No data submitted.</h2>";
+   
 }
 
-// Close the database connection
-$conn->close();
+
 
 
 
