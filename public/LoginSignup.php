@@ -14,13 +14,23 @@
 
 <?php include('../includes/header.php'); ?>
 
+<?php
 
+session_start(); // Start the session to access session variables
+
+// Check for error messages
+if (isset($_SESSION['error_message'])) {
+    echo "<script>alert('" . $_SESSION['error_message'] . "');</script>";
+    unset($_SESSION['error_message']); // Clear the message after displaying it
+}
+?>
 
 
 <div class="fieldlogsign">
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form id="signUpForm" method="POST" action="/signup">
+            <form id="signUpForm" method="POST" action="../includes/db_connection.php">
+            <input type="hidden" name="form_type" value="sign_up">
                 <h1>Create Account</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -37,7 +47,8 @@
             </form>
         </div>
         <div class="form-container sign-in">
-            <form id="signInForm" method="POST" action="/login">
+            <form id="signInForm" method="POST" action="../includes/db_connection.php">
+            <input type="hidden" name="form_type" value="sign_in">
                 <h1>Sign In</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -49,10 +60,16 @@
                 <input type="email" id="signInEmail" placeholder="Email" name="email" required>
                 <input type="password" id="signInPassword" placeholder="Password" name="password" required>
                 <a href="#">Forget Your Password?</a>
+                <br><br>
+                Admin: <input type="checkbox" name="type" value="yes">
                 <button type="submit">Sign In</button>
                 <br>
-                Admin: <input type="checkbox" name="type">
+                
             </form>
+            
+              
+
+
         </div>
         <div class="toggle-container">
             <div class="toggle">
