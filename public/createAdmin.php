@@ -1,3 +1,6 @@
+<?php 
+include_once '../includes/db_connection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +11,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../Assets/css/addedit.css">
   <link rel="stylesheet" href="../Assets/css/navbar.css">
-  <title>Add User</title>
+  <title>Add Admin</title>
 </head>
 <body>
 <section id="sidebar">
@@ -36,54 +39,44 @@
         </div>
       </div>
       <main>
-        <form id="addUserForm" enctype="multipart/form-data">
+      <form id="addUserForm" action="" method="post">
           <label for="name">Username:</label>
-          <input type="text" id="name" name="name" placeholder="Enter username" required>
+          <input type="text" id="name" name="Username" placeholder="Enter username" required>
       
           <label for="email">E-mail:</label>
-          <input type="email" id="email" name="email" placeholder="Enter e-mail" required>
-      
-          <label for="dob">Date of Birth:</label>
-          <div class="dob-container">
-              <select id="dob-day" name="dob-day" class="dob-select" required>
-                  <option value="" disabled selected>Day</option>
-                  <script>
-                      for (let day = 1; day <= 31; day++) {
-                          document.write(`<option value="${day}">${day}</option>`);
-                      }
-                  </script>
-              </select>
-      
-              <select id="dob-month" name="dob-month" class="dob-select" required>
-                  <option value="" disabled selected>Month</option>
-                  <script>
-                      for (let month = 1; month <= 12; month++) {
-                          document.write(`<option value="${month}">${month}</option>`);
-                      }
-                  </script>
-              </select>
-      
-              <select id="dob-year" name="dob-year" class="dob-select" required>
-                  <option value="" disabled selected>Year</option>
-                  <script>
-                      const currentYear = new Date().getFullYear();
-                      for (let year = 1920; year <= currentYear; year++) {
-                          document.write(`<option value="${year}">${year}</option>`);
-                      }
-                  </script>
-              </select>
-          </div>
+          <input type="email" id="email" name="Email" placeholder="Enter e-mail" required>
+          
+        
       
           <label for="password">Password:</label>
-          <input type="password" id="password" name="password" placeholder="Enter password" required>
+          <input type="password" id="password" name="Password" placeholder="Enter password" required>
       
-          <label for="confirm-password">Confirm password:</label>
-          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
-      
-          <button type="submit">Add User</button>
+          <label for="confirm-password">Phone Number:</label>
+          <input type="number" placeholder="Enter Phone Numbe" name="Phone" required>      
+          <button type="submit" value="Submit" name="Submit">Add Admin</button>
       </form>
+
       
     </main>
     <script src="../Assets/js/admin.js"></script>
 </body>
 </html>
+
+<?php
+
+
+  if($_SERVER["REQUEST_METHOD"]=="POST"){ 
+	$Username=htmlspecialchars($_POST["Username"]);
+	$Email=htmlspecialchars($_POST["Email"]);
+	$Password=htmlspecialchars($_POST["Password"]);
+	$Phone=htmlspecialchars($_POST["Phone"]);
+
+   
+  $sql = "INSERT INTO admin (Username, Email, Password, Phone) VALUES ('$Username', '$Email', '$Password', '$Phone')";
+
+	$result=mysqli_query($conn,$sql);
+
+	if($result)	{
+    header("Location: createAdmin.php");
+	}
+}

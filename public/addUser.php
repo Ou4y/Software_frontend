@@ -81,7 +81,7 @@ include_once '../includes/db_connection.php';
           <input type="password" id="password" name="Password" placeholder="Enter password" required>
       
           <label for="confirm-password">Phone Number:</label>
-          <input type="number" name="Phone" required>      
+          <input type="number" placeholder="Enter Phone Numbe" name="Phone" required>      
           <button type="submit" value="Submit" name="Submit">Add User</button>
       </form>
       

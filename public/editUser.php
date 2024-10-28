@@ -35,52 +35,23 @@
         </div>
       </div>
       <main>
-        <form id="editUserForm" action="/users/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-          <label for="name">New username:</label>
-          <input type="text" id="name" name="name" placeholder="Enter new username" required>
+
       
-          <label for="email">New e-mail:</label>
-          <input type="email" id="email" name="email" placeholder="Enter new e-mail" required>
+      <form id="editUserForm" action="" method="post">
+          <label for="name">Username:</label>
+          <input type="text" id="name" name="Username" placeholder="Enter username" required>
       
-          <label for="dob">New date of birth:</label>
-          <div class="dob-container">
-              <select id="dob-day" name="dob-day" class="dob-select" required>
-                  <option value="" disabled selected>Day</option>
-                  <script>
-                      for (let day = 1; day <= 31; day++) {
-                          document.write(`<option value="${day}">${day}</option>`);
-                      }
-                  </script>
-              </select>
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" name="Email" placeholder="Enter e-mail" required>
+          
+        
       
-              <select id="dob-month" name="dob-month" class="dob-select" required>
-                  <option value="" disabled selected>Month</option>
-                  <script>
-                      for (let month = 1; month <= 12; month++) {
-                          document.write(`<option value="${month}">${month}</option>`);
-                      }
-                  </script>
-              </select>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="Password" placeholder="Enter password" required>
       
-              <select id="dob-year" name="dob-year" class="dob-select" required>
-                  <option value="" disabled selected>Year</option>
-                  <script>
-                      const currentYear = new Date().getFullYear();
-                      for (let year = 1920; year <= currentYear; year++) {
-                          document.write(`<option value="${year}">${year}</option>`);
-                      }
-                  </script>
-              </select>
-          </div>
-      
-          <div>
-              <label for="password">New password</label>
-              <input type="password" id="password" name="password" placeholder="Enter new password">
-              <label for="password">Confirm password</label>
-              <input type="password" id="password" name="password" placeholder="Confirm new password">
-          </div>
-      
-          <button type="submit">Update User</button>
+          <label for="confirm-password">Phone Number:</label>
+          <input type="number" placeholder="Enter Phone Numbe" name="Phone" required>      
+          <button type="submit" value="Submit" name="Submit">Add Admin</button>
       </form>
       
       </main>
