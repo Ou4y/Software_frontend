@@ -111,7 +111,6 @@ $result = mysqli_query($conn, $sql);
   <script>
     function confirmDelete(userId) {
       if (confirm("Are you sure you want to delete this user?")) {
-        // AJAX request to delete the user
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "deleteUser.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
