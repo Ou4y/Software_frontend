@@ -11,15 +11,14 @@
 
 <?php 
 require_once('../../Controllers/AuthController.php');
-require_once('../../Models/Database.php');
-session_start();
+
 include('../includes/header.php'); 
 ?>
 <div class="fieldlogsign">
     <div class="container" id="container">
         <!-- Sign Up Form -->
         <div class="form-container sign-up">
-            <form id="signUpForm" method="POST" action="../../Controllers/AuthController.php">
+            <form id="signUpForm" method="POST" >
                 <input type="hidden" name="form_type" value="signUpForm">
                 <h1>Create Account</h1>
                 <div class="social-icons">
@@ -28,17 +27,17 @@ include('../includes/header.php');
                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
-                <input type="text" id="signUpUsername" placeholder="Username" name="username" required>
-                <input type="email" id="signUpEmail" placeholder="Email" name="email" required>
-                <input type="password" id="signUpPassword" placeholder="Password" name="password" required>
-                <input type="text" id="PhoneNumber" placeholder="Phone Number" name="phone_number" required>
+                <input type="text" id="username" placeholder="Username" name="username" required>
+                <input type="email" id="email" placeholder="Email" name="email" required>
+                <input type="password" id="password" placeholder="Password" name="password" required>
+                <input type="text" id="phone_number" placeholder="Phone Number" name="phone_number" required>
                 <button type="submit">Sign Up</button> 
             </form>
         </div>
 
         <!-- Sign In Form -->
         <div class="form-container sign-in">
-            <form id="signInForm" method="POST" action="../../Controllers/AuthController.php">
+            <form id="signInForm" method="POST">
                 <input type="hidden" name="form_type" value="signInForm">
                 <h1>Sign In</h1>
                 <div class="social-icons">

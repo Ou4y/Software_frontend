@@ -1,4 +1,6 @@
 <?php
+require_once(__DIR__ . '/../DataBase.php');
+
 class User
 {
     private $conn;
@@ -12,7 +14,7 @@ class User
     {
         try {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->conn->prepare("INSERT INTO users (Username, email, password, Phone_Number) VALUES (?, ?, ?, ?)");
+            $stmt = $this->conn->prepare("INSERT INTO users (Username, email, password, Phone_Number,user_type) VALUES (?, ?, ?, ?, 'user')");
             $stmt->execute([$username, $email, $hashedPassword, $phoneNumber]);
             return true;
         } catch (PDOException $e) {

@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../Models/User.php');
-require_once(__DIR__ . '/../Models/Database.php');
+require_once(__DIR__ . '/../DataBase.php');
 
 class AuthController
 {
@@ -8,8 +8,10 @@ class AuthController
 
     public function __construct()
     {
-        // Use Database Singleton to get the connection
-        $dbConnection = Database::getInstance()->getConnection();
+        // Create a database connection
+        $dbConnection = (new Database())->getConnection();
+
+        // Now pass the connection to the User class constructor
         $this->userModel = new User($dbConnection);
     }
 
@@ -53,14 +55,22 @@ class AuthController
         $user = $this->userModel->signIn($email, $password);
         if ($user) {
             $_SESSION['user'] = $user;
-            $redirectPage = $isAdmin === 'Yes' ? '../public/admin.php' : '../public/myaccount.php';
-            header("Location: $redirectPage");
+            // Redirect to the appropriate dashboard based on user type
+            if ($isAdmin === 'Yes') {
+                header("Location: ../admin/dashboard.php");
+            } else {
+                header("Location: ../user/dashboard.php");
+            }
             exit(); // Always include an exit after header redirection
         } else {
-            $_SESSION['error_message'] = $isAdmin === 'Yes' ? "Admin not found!" : "Customer not found!";
+            $_SESSION['error_message'] = "Invalid email or password.";
             header("Location: ../public/LoginSignup.php");
             exit(); // Always include an exit after header redirection
         }
     }
 }
+
+// Call the handleRequest method to process form submissions
+$authController = new AuthController();
+$authController->handleRequest();
 ?>
