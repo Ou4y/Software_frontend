@@ -1,31 +1,37 @@
 <?php
-class Database {
+class Database
+{
     private static $instance = null;
     private $connection;
 
-    
-    private function __construct() {
-        $this->connection = new PDO('mysql:host=localhost;dbname=X', '', '');
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    private function __construct()
+    {
+        try {
+            $this->connection = new PDO('mysql:host=localhost;dbname=X', 'root', '');
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
+        }
     }
 
-    // Get the instance of the database connection (Singleton)
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new Database();
         }
         return self::$instance;
     }
 
-    // Get the database connection
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
 
-    // Prevent cloning of the instance
     private function __clone() {}
 
-    // Prevent unserialization of the instance
-    private function __wakeup() {}
+    public function __wakeup()
+    {
+        throw new Exception("Cannot unserialize a singleton.");
+    }
 }
 ?>
