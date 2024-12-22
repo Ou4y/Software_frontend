@@ -1,10 +1,8 @@
-<?php 
-include_once '../includes/db_connection.php';
+<?php
+require_once('../../Controllers/usercontroller.php');
 
-$sql = "SELECT ID,Username, Email, Phone FROM customer"; 
-$result = mysqli_query($conn, $sql);
+$users = $manageuser->getAllUsers();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,29 +75,28 @@ $result = mysqli_query($conn, $sql);
                   </tr>
                 </thead>
                 <tbody id="orderList">
-                  <?php
-                  
-                  if ($result && mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                      echo "<tr>";
-                      echo "<td>" . htmlspecialchars($row['ID']) . "</td>";
-                      echo "<td>" . htmlspecialchars($row['Username']) . "</td>";
-                      echo "<td>" . htmlspecialchars($row['Email']) . "</td>";
-                      echo "<td>" . htmlspecialchars($row['Phone']) . "</td>";
-                      echo "<td>
-                              <button class='edit-btn' onclick=\"window.location.href='editUser.php?ID=" . htmlspecialchars($row['ID']) . "'\">
+                <?php
+            if (!empty($users)) {
+                foreach ($users as $user) {
+                    echo "<tr data-id='" . htmlspecialchars($user['id']) . "'>";
+                    echo "<td>" . htmlspecialchars($user['id']) . "</td>";
+                    echo "<td>" . htmlspecialchars($user['username']) . "</td>";
+                    echo "<td>" . htmlspecialchars($user['email']) . "</td>";
+                    echo "<td>" . htmlspecialchars($user['phone_number']) . "</td>";
+                    echo "<td>
+                            <button class='edit-btn' onclick=\"window.location.href='editUser.php?ID=" . htmlspecialchars($user['id']) . "'\">
                                 <i class='bx bxs-pencil'></i> Edit
-                              </button>
-                              <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($row['ID']) . "')\">
+                            </button>
+                            <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
                                 <i class='bx bxs-trash'></i> Delete
-                              </button>
-                            </td>";
-                      echo "</tr>";
-                    }
-                  } else {
-                    echo "<tr><td colspan='5'>No users found.</td></tr>";
-                  }
-                  ?>
+                            </button>
+                          </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='5'>No users found.</td></tr>";
+            }
+            ?>
                 </tbody>                  
               </table>
             </div>
@@ -110,26 +107,37 @@ $result = mysqli_query($conn, $sql);
   <script src="../Assets/js/admin.js"></script>
   <script>
     function confirmDelete(userId) {
-      if (confirm("Are you sure you want to delete this user?")) {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "deleteUser.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-              const row = document.querySelector(`tr[data-id='${userId}']`);
-              if (row) {
-                row.remove();
-              }
-            } else {
-              alert("Error deleting user. Please try again.");
-            }
-          }
-        };
-        xhr.send("ID=" + encodeURIComponent(userId));
+  if (confirm("Are you sure you want to delete this user?")) {
+    fetch('../Controllers/AuthController.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        form_type: 'deleteUser',
+        ID: userId
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-      location.reload();
-    }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        // ... (rest of the code)
+      } else {
+        alert(data.message || "Error deleting user.");
+      }
+    })
+    .catch(error => {
+      alert("Error deleting user: " + error.message); 
+      console.error('Error:', error);
+    });
+  }
+}
+
   </script>
 </body>
 </html>

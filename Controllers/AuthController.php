@@ -25,6 +25,7 @@ class AuthController
             } elseif ($formType === 'signInForm') {
                 $this->handleSignIn();
             }
+           
         }
     }
 
@@ -68,9 +69,11 @@ class AuthController
             exit(); // Always include an exit after header redirection
         }
     }
+
 }
 
 // Call the handleRequest method to process form submissions
 $authController = new AuthController();
 $authController->handleRequest();
+
 ?>

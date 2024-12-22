@@ -37,5 +37,29 @@ class User
             return null;
         }
     }
+    public function deleteUser($userId)
+{
+    if (!isset($userId) || !is_numeric($userId)) {
+        throw new Exception("Invalid user ID provided."); 
+    }
+
+    try {
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = :userId");
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return true; 
+    } catch (PDOException $e) {
+        throw new Exception("Database error: " . $e->getMessage()); 
+    }
 }
+
+    public function getAllUsers() {
+        $sql = "SELECT id, username, email, phone_number FROM users";
+        $result = $this->conn->query($sql);
+        $users = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
+    }
+}
+
+
 ?>
