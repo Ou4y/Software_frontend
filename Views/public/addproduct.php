@@ -1,3 +1,10 @@
+<?php 
+require_once('../../Controllers/ProductController.php');
+// session_start();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,19 +65,11 @@
     <input type="number" id="price" name="price" placeholder="Enter product price" required>
 
     <label for="category">Category:</label>
-    <div class="custom-multi-select" onclick="toggleDropdown()">
+
         <span id="selected-categories">Select category</span>
-        <div id="dropdown-options" class="dropdown-options">
-            <label><input type="checkbox" value="T-shirts" name="category[]"> T-shirts</label>
-            <label><input type="checkbox" value="Jeans" name="category[]"> Jeans</label>
-            <label><input type="checkbox" value="Dresses" name="category[]"> Dresses</label>
-            <label><input type="checkbox" value="Hoodie" name="category[]"> Hoodie</label>
-            <label><input type="checkbox" value="Jacket" name="category[]"> Jacket</label>
-            <label><input type="checkbox" value="Sportswear" name="category[]"> Sportswear</label>
-            <label><input type="checkbox" value="Cargo pants" name="category[]"> Cargo pants</label>
-            <label><input type="checkbox" value="Sweatpants" name="category[]"> Sweatpants</label>
+        <input type="text" id="category" name="category" placeholder="Enter product category" required>
         </div>
-    </div>
+
 
     <div id="gender-toggle">
         <label for="gender">Product For:</label>

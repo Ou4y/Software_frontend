@@ -1,3 +1,9 @@
+<?php 
+require_once('../../Controllers/ProductController.php');
+// session_start();
+$products = $controller->getAllProducts();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,71 +60,31 @@
                   </tr>
                 </thead>
                 <tbody id="orderList">
-                  <tr>
-                    <td>Product 1</td>
-                    <td>A great product that does great things.</td>
-                    <td>Red</td>
-                    <td>S, M, L</td>
-                    <td>$19.99</td>
-                    <td>T-shirt</td>
-                    <td>
-                      <button class="edit-btn" onclick="window.location.href='editProduct.php'">
-                        <i class='bx bxs-pencil'></i> Edit
-                      </button>
-                      <button class="delete-btn">
-                        <i class='bx bxs-trash'></i> Delete
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Product 2</td>
-                    <td>Stylish and modern design.</td>
-                    <td>Blue</td>
-                    <td>M, L, XL</td>
-                    <td>$29.99</td>
-                    <td>hoodie</td>
-                    <td>
-                      <button class="edit-btn" onclick="window.location.href='editProduct.php'">
-                        <i class='bx bxs-pencil'></i> Edit
-                      </button>
-                      <button class="delete-btn">
-                        <i class='bx bxs-trash'></i> Delete
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Product 3</td>
-                    <td>Eco-friendly and sustainable materials.</td>
-                    <td>Green</td>
-                    <td>S, M</td>
-                    <td>$15.99</td>
-                    <td>jeans</td>
-                    <td>
-                      <button class="edit-btn" onclick="window.location.href='editProduct.php'">
-                        <i class='bx bxs-pencil'></i> Edit
-                      </button>
-                      <button class="delete-btn">
-                        <i class='bx bxs-trash'></i> Delete
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Product 4</td>
-                    <td>High performance for all your needs.</td>
-                    <td>Black</td>
-                    <td>L, XL</td>
-                    <td>$39.99</td>
-                    <td>sportswear</td>
-                    <td>
-                      <button class="edit-btn" onclick="window.location.href='editProduct.php'">
-                        <i class='bx bxs-pencil'></i> Edit
-                      </button>
-                      <button class="delete-btn">
-                        <i class='bx bxs-trash'></i> Delete
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>                  
+                <?php if (!empty($products)): ?>
+    <?php foreach ($products as $product): ?>
+        <tr>
+            <td><?= htmlspecialchars($product['title']) ?></td>
+            <td><?= htmlspecialchars($product['description']) ?></td>
+            <td><?= htmlspecialchars($product['available_colors']) ?></td>
+            <td><?= htmlspecialchars($product['available_Sizes']) ?></td>
+            <td><?= htmlspecialchars($product['price']) ?></td>
+            <td><?= htmlspecialchars($product['category']) ?></td>
+            <td>
+                <button class="edit-btn" onclick="window.location.href='editProduct.php?id=<?= $product['id'] ?>'">
+                    <i class='bx bxs-pencil'></i> Edit
+                </button>
+                <button class="delete-btn" onclick="deleteProduct(<?= $product['id'] ?>)">
+                    <i class='bx bxs-trash'></i> Delete
+                </button>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+<?php else: ?>
+    <tr>
+        <td colspan="7">No products found.</td>
+    </tr>
+<?php endif; ?>
+</tbody>
               </table>
             </div>
           </div>

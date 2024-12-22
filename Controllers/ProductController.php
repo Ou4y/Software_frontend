@@ -70,9 +70,32 @@ class ProductController
         }
         return implode(',', $uploadedFiles);
     }
+
+    
+    public function getAllProducts() {
+        // Fetch products from the model
+        $products = $this->productModel->getProducts();
+        return $products;
+        // Check if products were fetched successfully
+        if ($products === false) {
+            die("Failed to fetch products.");
+        }
+    }
+
 }
+
+
 
 // Call the handleRequest method to process form submissions
 $productController = new ProductController();
 $productController->handleRequest();
+
+
+
+
+$controller = new ProductController();
+$controller->getAllProducts();
+
+
+
 ?>
