@@ -57,9 +57,9 @@ class AuthController
             $_SESSION['user'] = $user;
             // Redirect to the appropriate dashboard based on user type
             if ($isAdmin === 'Yes') {
-                header("Location: ../admin/dashboard.php");
+                header("Location: ../public/admin.php");
             } else {
-                header("Location: ../user/dashboard.php");
+                header("Location: ../public/Browse.php");
             }
             exit(); // Always include an exit after header redirection
         } else {

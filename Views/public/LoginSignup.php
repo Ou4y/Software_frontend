@@ -50,7 +50,6 @@ include('../includes/header.php');
                 <input type="password" id="signInPassword" placeholder="Password" name="password" required>
                 <a href="#">Forget Your Password?</a>
                 <br><br>
-                Admin: <input type="checkbox" name="type" value="yes">
                 <button type="submit">Sign In</button>
             </form>
         </div>
