@@ -50,13 +50,13 @@ class AuthController
     {
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
-        $isAdmin = isset($_POST['type']) ? 'Yes' : 'No';
+        //$isAdmin = isset($_POST['type']) ? 'Yes' : 'No';
 
         $user = $this->userModel->signIn($email, $password);
         if ($user) {
             $_SESSION['user'] = $user;
             // Redirect to the appropriate dashboard based on user type
-            if ($isAdmin === 'Yes') {
+            if ($user['user_type'] === 'admin') {
                 header("Location: ../public/admin.php");
             } else {
                 header("Location: ../public/Browse.php");
