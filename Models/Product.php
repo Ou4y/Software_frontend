@@ -62,5 +62,24 @@ class Product {
             return false;
         }
     }
+
+    
+
+    public function deleteproduct($productid)
+{
+    if (!isset($productid) || !is_numeric($productid)) {
+        throw new Exception("Invalid product ID provided."); 
+    }
+
+    try {
+        $stmt = $this->conn->prepare("DELETE FROM products WHERE id = :productid");
+        $stmt->bindParam(':productid', $productid, PDO::PARAM_INT);
+        $stmt->execute();
+        return true; 
+    } catch (PDOException $e) {
+        throw new Exception("Database error: " . $e->getMessage()); 
+    }
+}
+
 }
 ?>

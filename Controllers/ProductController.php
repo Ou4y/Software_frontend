@@ -82,7 +82,48 @@ class ProductController
         }
     }
 
+
+    public function deleteproduct()
+{
+    header('Content-Type: application/json'); // Ensure JSON response
+    try {
+        // Check if the request is POST and an ID is provided
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            $productid = htmlspecialchars($_POST['id']); // Sanitize the input
+            
+            // Call the model to delete the product
+            if ($this->productModel->deleteproduct($productid)) {
+                echo json_encode(['success' => true, 'message' => 'Product deleted successfully.']);
+            } else {
+                // Send failure message if deletion fails
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Failed to delete product.']);
+            }
+        } else {
+            // Send a 400 Bad Request error if no ID is provided
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+        }
+    } catch (Exception $e) {
+        // Log any exceptions and return a 500 error
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
 }
+
+}
+
+
+
+
+
+// Check if the deleteProduct flag is set
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteProduct']) && isset($_POST['id'])) {
+    $productController = new ProductController();
+    $productController->deleteproduct();
+    exit;
+}
+
 
 
 
