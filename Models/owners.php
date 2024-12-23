@@ -7,22 +7,12 @@ class owners extends User
 
     public function __construct($dbConnection)
     {
-        $this->conn = $dbConnection;
+        parent::__construct($dbConnection);
+    
     }
     public function deleteUser($userId)
 {
-    if (!isset($userId) || !is_numeric($userId)) {
-        throw new Exception("Invalid user ID provided."); 
-    }
-
-    try {
-        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = :userId");
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        return true; 
-    } catch (PDOException $e) {
-        throw new Exception("Database error: " . $e->getMessage()); 
-    }
+   
     return parent::deleteUser($userId);
 }
 
