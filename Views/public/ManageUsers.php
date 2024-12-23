@@ -121,14 +121,15 @@ $users = $manageuser->getAllUsers();
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Network response was not ok. Status: ${response.status}`);
+                return response.text().then(text => {
+                    throw new Error(`Error: ${response.status} - ${text}`);
+                });
             }
-            return response.json(); // Parse the JSON response
+            return response.json();
         })
         .then(data => {
             if (data.success) {
                 alert("User deleted successfully.");
-                // Remove the user's row from the table
                 const userRow = document.querySelector(`tr[data-id='${userId}']`);
                 if (userRow) userRow.remove();
             } else {
@@ -141,6 +142,9 @@ $users = $manageuser->getAllUsers();
         });
     }
 }
+
+
+
 
 
   </script>
