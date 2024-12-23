@@ -54,7 +54,7 @@ class User
 }
 
     public function getAllUsers() {
-        $sql = "SELECT id, username, email, phone_number FROM users";
+        $sql = "SELECT id, username, email, phone_number FROM users where user_type='user'";
         $result = $this->conn->query($sql);
         $users = $result->fetchAll(PDO::FETCH_ASSOC);
         return $users;

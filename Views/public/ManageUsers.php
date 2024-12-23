@@ -1,5 +1,6 @@
 <?php
 require_once('../../Controllers/usercontroller.php');
+$manageuser = new manageuser();
 
 $users = $manageuser->getAllUsers();
 ?>
@@ -107,36 +108,40 @@ $users = $manageuser->getAllUsers();
   <script src="../Assets/js/admin.js"></script>
   <script>
     function confirmDelete(userId) {
-  if (confirm("Are you sure you want to delete this user?")) {
-    fetch('../Controllers/AuthController.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        form_type: 'deleteUser',
-        ID: userId
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.success) {
-        // ... (rest of the code)
-      } else {
-        alert(data.message || "Error deleting user.");
-      }
-    })
-    .catch(error => {
-      alert("Error deleting user: " + error.message); 
-      console.error('Error:', error);
-    });
-  }
+    if (!userId) {
+        alert("Invalid user ID.");
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete this user?")) {
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id=${encodeURIComponent(userId)}`
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok. Status: ${response.status}`);
+            }
+            return response.json(); // Parse the JSON response
+        })
+        .then(data => {
+            if (data.success) {
+                alert("User deleted successfully.");
+                // Remove the user's row from the table
+                const userRow = document.querySelector(`tr[data-id='${userId}']`);
+                if (userRow) userRow.remove();
+            } else {
+                alert(data.message || "Failed to delete user.");
+            }
+        })
+        .catch(error => {
+            alert("An error occurred: " + error.message);
+            console.error("Error:", error);
+        });
+    }
 }
+
 
   </script>
 </body>
