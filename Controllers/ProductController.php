@@ -27,49 +27,86 @@ class ProductController
     }
 
     private function addProduct()
-    {
-        // Sanitize input data
-        $title = htmlspecialchars(trim($_POST['title']));
-        $description = htmlspecialchars(trim($_POST['description']));
-        $color = htmlspecialchars(trim($_POST['color']));
-        $sizes = htmlspecialchars(trim($_POST['sizes']));
-        $quantity = htmlspecialchars(trim($_POST['quantity']));
-        $price = htmlspecialchars(trim($_POST['price']));
-        $category = htmlspecialchars(trim($_POST['category']));
-        $gender = htmlspecialchars(trim($_POST['gender']));
-        $discount = htmlspecialchars(trim($_POST['discount']));
-        $images = $this->uploadFiles();
+{
+    // Sanitize input data
+    $title = htmlspecialchars(trim($_POST['title']));
+    $description = htmlspecialchars(trim($_POST['description']));
+    $color = htmlspecialchars(trim($_POST['color']));
+    $size_s = htmlspecialchars(trim($_POST['size_s']));
+    $size_m = htmlspecialchars(trim($_POST['size_m']));
+    $size_l = htmlspecialchars(trim($_POST['size_l']));
+    $price = htmlspecialchars(trim($_POST['price']));
+    $category = htmlspecialchars(trim($_POST['category']));
+    $gender = htmlspecialchars(trim($_POST['gender']));
+    $discount = htmlspecialchars(trim($_POST['disnumber'])); // Correct key name
+    $images = $this->uploadFiles();
 
-        // Pass the data to the model to add the product
-        if ($this->productModel->addProduct($title, $description, $color, $sizes, $quantity, $price, $category, $gender, $discount, $images)) {
-            $_SESSION['success_message'] = "Product added successfully!";
-            header('Location: ../public/admin.php');
-            exit();
-        } else {
-            $_SESSION['error_message'] = "Error: Unable to add product.";
-            header('Location: ../public/admin.php');
-            exit();
-        }
+    // Extract individual images
+    $picture1 = $images[0];
+    $picture2 = $images[1];
+    $picture3 = $images[2];
+
+    // Pass the data to the model to add the product
+    if ($this->productModel->addProduct(
+        $title,
+        $description,
+        $color,
+        $size_s,
+        $size_m,
+        $size_l,
+        $price,
+        $category,
+        $gender,
+        $discount,
+        $picture1,
+        $picture2,
+        $picture3
+    )) {
+        $_SESSION['success_message'] = "Product added successfully!";
+        header('Location: ../public/admin.php');
+        exit();
+    } else {
+        $_SESSION['error_message'] = "Error: Unable to add product.";
+        header('Location: ../public/admin.php');
+        exit();
     }
+}
 
-    private function uploadFiles()
-    {
-        $uploadedFiles = [];
-        if (!empty($_FILES['photo']['tmp_name'])) {
-            foreach ($_FILES['photo']['tmp_name'] as $index => $tmpName) {
-                if (!empty($tmpName)) {
-                    $fileName = htmlspecialchars(basename($_FILES['photo']['name'][$index]));
-                    $targetPath = __DIR__ . '/../Assets/uploads/' . $fileName;
-                    if (move_uploaded_file($tmpName, $targetPath)) {
-                        $uploadedFiles[] = $fileName;
-                    } else {
-                        error_log("File upload failed for $fileName");
-                    }
+    
+private function uploadFiles()
+{
+    $uploadedFiles = [];
+    $maxFiles = 3; // Limit to three pictures
+
+    if (!empty($_FILES['photo']['tmp_name'])) {
+        foreach ($_FILES['photo']['tmp_name'] as $index => $tmpName) {
+            if (!empty($tmpName) && count($uploadedFiles) < $maxFiles) {
+                $fileName = htmlspecialchars(basename($_FILES['photo']['name'][$index]));
+                $targetPath = __DIR__ . '/../Assets/uploads/' . $fileName;
+
+                // Ensure the uploads directory exists
+                if (!is_dir(__DIR__ . '/../Assets/uploads/')) {
+                    mkdir(__DIR__ . '/../Assets/uploads/', 0777, true);
+                }
+
+                if (move_uploaded_file($tmpName, $targetPath)) {
+                    $uploadedFiles[] = $fileName;
+                } else {
+                    error_log("File upload failed for $fileName");
                 }
             }
         }
-        return implode(',', $uploadedFiles);
     }
+
+    // Pad the array to ensure exactly three elements (use NULL for empty slots)
+    while (count($uploadedFiles) < $maxFiles) {
+        $uploadedFiles[] = null;
+    }
+
+    return $uploadedFiles;
+}
+
+    
 
     
     public function getAllProducts() {

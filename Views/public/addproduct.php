@@ -55,33 +55,35 @@ require_once('../../Controllers/ProductController.php');
     <label for="color">Color:</label>
     <input type="text" id="color" name="color" placeholder="Enter product color" required>
 
-    <label for="sizes">Sizes:</label>
-    <input type="text" id="sizes" name="sizes" placeholder="Enter available sizes (e.g., S, M, L)" required>
-
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" placeholder="Enter available quantity" required>
-
+    <label for="sizes">Available Sizes:</label>
+<div id="sizes">
+    <label for="size-s">S:</label>
+    <input type="number" id="size-s" name="size_s" placeholder="Enter quantity for S" min="0" required>
+    
+    <label for="size-m">M:</label>
+    <input type="number" id="size-m" name="size_m" placeholder="Enter quantity for M" min="0" required>
+    
+    <label for="size-l">L:</label>
+    <input type="number" id="size-l" name="size_l" placeholder="Enter quantity for L" min="0" required>
+</div>
     <label for="price">Price:</label>
     <input type="number" id="price" name="price" placeholder="Enter product price" required>
 
     <label for="category">Category:</label>
+<select id="category" name="category" required>
+    <option value="" disabled selected>Select category</option>
+    <option value="Shirts">Shirts</option>
+    <option value="Pants">Pants</option>
+    <option value="Jackets">Jackets</option>
+</select>
 
-        <span id="selected-categories">Select category</span>
-        <input type="text" id="category" name="category" placeholder="Enter product category" required>
-        </div>
-
-
-    <div id="gender-toggle">
-        <label for="gender">Product For:</label>
-        <div>
-            <input type="radio" id="men" name="gender" value="Men" required>
-            <label for="men">Men</label>
-            <input type="radio" id="women" name="gender" value="Women">
-            <label for="women">Women</label>
-            <input type="radio" id="both" name="gender" value="Both">
-            <label for="both">Both</label>
-        </div>
-    </div>
+<label for="gender">Product For:</label>
+<select id="gender" name="gender" required>
+    <option value="" disabled selected>Select target audience</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Unisex">Unisex</option>
+</select>
 
     <label for="disnumber">Discount:</label>
     <input type="number" id="disnumber" name="disnumber" placeholder="Enter discount percentage" required>

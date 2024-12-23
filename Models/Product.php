@@ -11,28 +11,44 @@ class Product {
     }
 
     // Modified addProduct to accept individual parameters
-    public function addProduct($title, $description, $color, $sizes, $quantity, $price, $category, $gender, $discount, $images)
-    {
+    public function addProduct(
+        $title,
+        $description,
+        $color,
+        $size_s,
+        $size_m,
+        $size_l,
+        $price,
+        $category,
+        $gender,
+        $discount,
+        $picture1,
+        $picture2,
+        $picture3
+    ) {
         try {
             // Prepare SQL statement with placeholders
             $stmt = $this->conn->prepare("INSERT INTO products 
-                (title, description, available_colors, available_sizes, available_quantity, price, category, type, discount, picture1) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
+                (title, description, available_colors, Quantity_S, Quantity_M, Quantity_L, price, category, type, discount, picture1, picture2, picture3) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
             // Bind the data passed individually as parameters
             $stmt->execute([
                 $title,
                 $description,
                 $color,
-                $sizes,
-                $quantity,
+                $size_s,
+                $size_m,
+                $size_l,
                 $price,
                 $category,
                 $gender,
                 $discount,
-                $images
+                $picture1,
+                $picture2,
+                $picture3
             ]);
-
+    
             return true; // Return true if successful
         } catch (PDOException $e) {
             // Log error and return false if exception is caught
@@ -40,6 +56,7 @@ class Product {
             return false;
         }
     }
+    
 
 
 
