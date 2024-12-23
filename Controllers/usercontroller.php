@@ -45,5 +45,6 @@ class manageuser
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $manageUser = new ManageUser();
     $manageUser->deleteUser();
+    exit; 
 }
     ?>
