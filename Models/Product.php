@@ -10,93 +10,102 @@ class Product {
         $this->conn = $dbConnection;
     }
 
-    // Modified addProduct to accept individual parameters
+    // Add a new product with attributes
     public function addProduct(
         $title,
-        $description,
-        $color,
-        $size_s,
-        $size_m,
-        $size_l,
         $price,
-        $category,
-        $gender,
-        $discount,
-        $picture1,
-        $picture2,
-        $picture3
+        $attributes = []
     ) {
         try {
-            // Prepare SQL statement with placeholders
-            $stmt = $this->conn->prepare("INSERT INTO products 
-                (title, description, available_colors, Quantity_S, Quantity_M, Quantity_L, price, category, type, discount, picture1, picture2, picture3) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    
-            // Bind the data passed individually as parameters
-            $stmt->execute([
-                $title,
-                $description,
-                $color,
-                $size_s,
-                $size_m,
-                $size_l,
-                $price,
-                $category,
-                $gender,
-                $discount,
-                $picture1,
-                $picture2,
-                $picture3
-            ]);
-    
-            return true; // Return true if successful
+            $this->conn->beginTransaction();
+
+            // Insert basic product details into the `products` table
+            $stmt = $this->conn->prepare("INSERT INTO products (title, price) VALUES (?, ?)");
+            $stmt->execute([$title, $price]);
+
+            // Get the newly inserted product ID
+            $productId = $this->conn->lastInsertId();
+
+            // Insert attributes into the `product_attributes` table
+            $attributeStmt = $this->conn->prepare("INSERT INTO product_attributes (product_id, attribute_name, attribute_value) VALUES (?, ?, ?)");
+            foreach ($attributes as $name => $value) {
+                $attributeStmt->execute([$productId, $name, $value]);
+            }
+
+            $this->conn->commit();
+            return $productId; // Return the ID of the newly created product
         } catch (PDOException $e) {
-            // Log error and return false if exception is caught
+            $this->conn->rollBack();
             error_log("Error in addProduct: " . $e->getMessage());
             return false;
         }
     }
-    
 
-
-
+    // Fetch all products with their attributes
     public function getProducts()
     {
         try {
-            $stmt = $this->conn->prepare("SELECT * FROM products");
+            // Query to fetch products and their attributes
+            $stmt = $this->conn->prepare("
+                SELECT p.id AS product_id, p.title, p.price, pa.attribute_name, pa.attribute_value
+                FROM products p
+                LEFT JOIN product_attributes pa ON p.id = pa.product_id
+                ORDER BY p.id, pa.attribute_name
+            ");
             $stmt->execute();
 
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
- // Debugging output
-        if (empty($products)) {
-            error_log("No products found in the database.");
-        } else {
-            error_log("Products fetched successfully: " . print_r($products, true));
-        }
-            return $products; // Return the products
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Organize results into structured products
+            $products = [];
+            foreach ($results as $row) {
+                $productId = $row['product_id'];
+                if (!isset($products[$productId])) {
+                    $products[$productId] = [
+                        'id' => $productId,
+                        'title' => $row['title'],
+                        'price' => $row['price'],
+                        'attributes' => [],
+                    ];
+                }
+                if (!empty($row['attribute_name'])) {
+                    $products[$productId]['attributes'][$row['attribute_name']] = $row['attribute_value'];
+                }
+            }
+
+            return array_values($products);
         } catch (PDOException $e) {
             error_log("Error in getProducts: " . $e->getMessage());
             return false;
         }
     }
 
-    
+    // Delete a product and its attributes
+    public function deleteProduct($productId)
+    {
+        if (!isset($productId) || !is_numeric($productId)) {
+            throw new Exception("Invalid product ID provided.");
+        }
 
-    public function deleteproduct($productid)
-{
-    if (!isset($productid) || !is_numeric($productid)) {
-        throw new Exception("Invalid product ID provided."); 
+        try {
+            $this->conn->beginTransaction();
+
+            // Delete attributes
+            $stmt = $this->conn->prepare("DELETE FROM product_attributes WHERE product_id = :product_id");
+            $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Delete product
+            $stmt = $this->conn->prepare("DELETE FROM products WHERE id = :product_id");
+            $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            throw new Exception("Database error: " . $e->getMessage());
+        }
     }
-
-    try {
-        $stmt = $this->conn->prepare("DELETE FROM products WHERE id = :productid");
-        $stmt->bindParam(':productid', $productid, PDO::PARAM_INT);
-        $stmt->execute();
-        return true; 
-    } catch (PDOException $e) {
-        throw new Exception("Database error: " . $e->getMessage()); 
-    }
-}
-
 }
 ?>
