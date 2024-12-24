@@ -17,16 +17,22 @@ class owners extends User
         parent::__construct($dbConnection);
     
     }
-    public function deleteUser($userId){
-
-    return parent::deleteUser($userId);
-}
+    public function deleteUser($userId) {
+        try {
+            error_log("deleteUser called in owners with ID: $userId"); // Debug log
+            return parent::deleteUser($userId); // Call parent class
+        } catch (Exception $e) {
+            error_log("Error in owners deleteUser: " . $e->getMessage());
+            throw $e;
+        }
+    }
+    
 
 public function addadmin($username, $email, $password, $phoneNumber)
 {
     try {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->conn->prepare("INSERT INTO users (Username, email, password, Phone_Number,user_type) VALUES (?, ?, ?, ?, 'user')");
+        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, phone_number,user_type) VALUES (?, ?, ?, ?, 'admin')");
         $stmt->execute([$username, $email, $hashedPassword, $phoneNumber]);
         return true;
     } catch (PDOException $e) {

@@ -104,7 +104,7 @@ $users = $manageuser->getadmin();
 	font-weight: 700;
 }
 .table-container .admin-table table tr td .status.completed {
-	background: var(--blue);
+	background: var(--blue);  
 }
 .table-container .admin-table table tr td .status.process {
 	background: var(--yellow);
@@ -243,6 +243,7 @@ td {
   <div class="main-container">
     <div class="form-container">
       <form id="addUserForm"  method="POST">
+      <input type="hidden" name="action" value="addAdmin"><!-- Action Parameter -->
       <label for="name">Username:</label>
     <input type="text" id="username" name="username" placeholder="Enter username" required>
 
@@ -281,8 +282,8 @@ td {
                 echo "<td>" . htmlspecialchars($user['email']) . "</td>";
                 echo "<td>" . htmlspecialchars($user['phone_number']) . "</td>";
                 echo "<td>
-                        <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
-                          <i class='bx bxs-trash'></i> Delete
+                        <button class='delete-btn' data-action='deleteUser' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
+                          <i class='bx bxs-trash'  ></i> Delete
                         </button>
                       </td>";
                 echo "</tr>";
@@ -312,7 +313,7 @@ function confirmAddAdmin() {
 
 
  
-  function confirmDelete(userId) {
+function confirmDelete(userId) {
     if (!userId) {
         alert("Invalid user ID.");
         return;
@@ -322,7 +323,7 @@ function confirmAddAdmin() {
         fetch(window.location.href, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id=${encodeURIComponent(userId)}`
+            body: `action=deleteUser&id=${encodeURIComponent(userId)}`
         })
         .then(response => {
             if (!response.ok) {
@@ -334,7 +335,7 @@ function confirmAddAdmin() {
         })
         .then(data => {
             if (data.success) {
-                alert("admin deleted successfully.");
+                alert("Admin deleted successfully.");
                 const userRow = document.querySelector(`tr[data-id='${userId}']`);
                 if (userRow) userRow.remove();
             } else {
@@ -346,7 +347,8 @@ function confirmAddAdmin() {
             console.error("Error:", error);
         });
     }
-  }
+}
+
 </script>
 <script src="../Assets/js/admin.js"></script>
 </body>

@@ -20,12 +20,15 @@ class manageuser
     }
     public function deleteUser()
     {
+        error_log("deleteUser called."); // Log entry for debugging
         header('Content-Type: application/json'); // Ensure JSON response
         try {
             // Check if the request is POST and an ID is provided
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
                 $userId = htmlspecialchars($_POST['id']); // Sanitize the input
-                if ($this->owner->deleteuser($userId)) {
+                error_log("deleteUser called with ID: $userId"); // Log for debugging
+
+                if ($this->owner->deleteUser($userId)) {
                     echo json_encode(['success' => true, 'message' => 'User deleted successfully.']);
                 } else {
                     http_response_code(500);
@@ -48,7 +51,12 @@ class manageuser
 
 
             public function addadmin()
+
             {
+                error_log("addAdmin called."); // Log entry for debugging
+                header('Content-Type: application/json'); // Ensure JSON response
+                try {
+                    // Check if the request is POST and an ID is provided     
                 $username = htmlspecialchars($_POST['username']);
                 $email = htmlspecialchars($_POST['email']);
                 $password = htmlspecialchars($_POST['password']);
@@ -64,9 +72,14 @@ class manageuser
                     exit(); // Always include an exit after header redirection
                 }
 
+                }
+                catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                }
+
             }
 
-            
 
             
    
@@ -84,18 +97,55 @@ class manageuser
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $manageUser = new ManageUser();
-    $manageUser->deleteUser();
-    exit; 
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
-    isset($_POST['name']) &&
-    isset($_POST['email']) &&
-    isset($_POST['password']) &&
-    isset($_POST['phone_number'])) {
-    $manageUser = new ManageUser();
-    $manageUser->addAdmin();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        header('Content-Type: application/json');
+    
+        $action = $_POST['action'] ?? null;
+        $id = $_POST['id'] ?? null;
+    
+        if ($action === 'deleteUser' && $id) {
+            try {
+                $manageuser = new manageuser();
+                $result = $manageuser->deleteUser($id);
+    
+                if ($result) {
+                    echo json_encode(['success' => true, 'message' => 'Admin deleted successfully.']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to delete admin.']);
+                }
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+        }
+        exit;
+    }
+    
+     elseif ($action === 'addAdmin' &&
+        isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone_number'])) {
+        // Debugging: Log addAdmin request
+        error_log("Routing to addAdmin for username: " . $_POST['username']);
+        try {
+            $manageUser->addAdmin();
+        } catch (Exception $e) {
+            error_log("Error in addAdmin: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+    } else {
+        // Invalid request
+        http_response_code(400);
+        $errorMessage = 'Invalid request. ';
+        $errorMessage .= $action === null ? 'Missing action parameter. ' : '';
+        $errorMessage .= !isset($_POST['id']) && $action === 'deleteUser' ? 'Missing ID for deleteUser. ' : '';
+        echo json_encode(['success' => false, 'message' => $errorMessage]);
+        error_log("Invalid request: " . $errorMessage);
+    }
     exit;
 }
+
+
+
 
     ?>

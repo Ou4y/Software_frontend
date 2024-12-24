@@ -3,6 +3,10 @@ require_once('../../Controllers/usercontroller.php');
 $manageuser = new manageuser();
 
 $users = $manageuser->getAllUsers();
+if (isset($_POST['deleteUser'])) {
+  $users->deleteUser($_POST['id']); // Delete a user
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +92,7 @@ $users = $manageuser->getAllUsers();
                             <button class='edit-btn' onclick=\"window.location.href='editUser.php?ID=" . htmlspecialchars($user['id']) . "'\">
                                 <i class='bx bxs-pencil'></i> Edit
                             </button>
-                            <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
+                            <button class='delete-btn' name='deleteUser' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
                                 <i class='bx bxs-trash'></i> Delete
                             </button>
                           </td>";
@@ -107,17 +111,17 @@ $users = $manageuser->getAllUsers();
   </section>
   <script src="../Assets/js/admin.js"></script>
   <script>
-    function confirmDelete(userId) {
+   function confirmDelete(userId) {
     if (!userId) {
         alert("Invalid user ID.");
         return;
     }
 
-    if (confirm("Are you sure you want to delete this user?")) {
+    if (confirm("Are you sure you want to delete this admin?")) {
         fetch(window.location.href, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id=${encodeURIComponent(userId)}`
+            body: `action=deleteUser&id=${encodeURIComponent(userId)}`
         })
         .then(response => {
             if (!response.ok) {
@@ -129,11 +133,11 @@ $users = $manageuser->getAllUsers();
         })
         .then(data => {
             if (data.success) {
-                alert("User deleted successfully.");
+                alert("user deleted successfully.");
                 const userRow = document.querySelector(`tr[data-id='${userId}']`);
                 if (userRow) userRow.remove();
             } else {
-                alert(data.message || "Failed to delete user.");
+                alert(data.message || "Failed to delete admin.");
             }
         })
         .catch(error => {
@@ -142,6 +146,9 @@ $users = $manageuser->getAllUsers();
         });
     }
 }
+
+
+
 
 
 
