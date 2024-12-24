@@ -1,13 +1,19 @@
+<?php
+require_once('../../Controllers/AdminController.php');
+
+$controller = new AdminController();
+$data = $controller->getDashboardData(); // Get the dashboard data (total users and total products)
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="../Assets/css/adminstyle.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../Assets/css/navbar.css">
-    <title>Admin Panel</title>
+  <link rel="stylesheet" href="../Assets/css/adminstyle.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="../Assets/css/navbar.css">
+  <title>Admin Panel</title>
 </head>
 <body>
   <section id="sidebar">
@@ -22,50 +28,50 @@
       <li><a href="ManageProducts.php"><i class='bx bxs-shopping-bags' style='color:#ffffff'></i><span class="text">Manage Products</span></a></li>
     </ul>
   </section>
+
   <section id="content">
-  <nav>
-  <i class='bx bx-menu menu-icon'></i>
-  <button class="logout-btn"><i class='bx bx-log-out'></i>Logout</button>
-</nav>
+    <nav>
+      <i class='bx bx-menu menu-icon'></i>
+      <button class="logout-btn"><i class='bx bx-log-out'></i>Logout</button>
+    </nav>
 
     <main>
       <div class="head-title">
         <div class="left">
           <h1>Dashboard</h1>
-          <ul class="breadcrumb">
-            
-          </ul>
+          <ul class="breadcrumb"></ul>
         </div>
       </div>
+
       <ul class="box-info">
         <li>
           <i class='bx bx-user' style='color:#ffffff'></i>
           <span class="text">
-            <h3>150</h3>
+            <h3><?php echo $data['totalUsers']; ?></h3>
             <p>Users</p>
           </span>
         </li>
         <li>
           <i class='bx bx-shopping-bag'></i>
           <span class="text">
-            <h3>10000</h3>
+            <h3><?php echo $data['totalProducts']; ?></h3>
             <p>Products</p>
           </span>
         </li>
         <li>
-          <i class='bx bx-dollar' ></i>
+          <i class='bx bx-dollar'></i>
           <span class="text">
             <h3>200000</h3>
             <p>Total profit</p>
           </span>
         </li>
       </ul>
+
       <div class="table-data">
         <div class="order">
           <div class="head">
             <h3>Ongoing Orders </h3>
             <box-icon name='search'></box-icon>
-            
           </div>
           <table>
             <thead>
@@ -73,41 +79,35 @@
                 <th>Username</th>
                 <th>E-mail</th>
                 <th>Phone Number</th>
-                <th>Delivery date</th>
+                <th>Delivery Date</th>
               </tr>
             </thead>
             <tbody id="orderList">
-              <tr>
-                <td>John Doe</td>
-                <td>johndoe@example.com</td>
-                <td>123-456-7890</td>
-                <td>2023-12-25</td>
-              </tr>
-              <tr>
-                <td>Jane Smith</td>
-                <td>janesmith@example.com</td>
-                <td>987-654-3210</td>
-                <td>2024-01-10</td>
-              </tr>
-              <tr>
-                <td>Alice Johnson</td>
-                <td>alicejohnson@example.com</td>
-                <td>555-1212</td>
-                <td>2024-02-15</td>
-              </tr>
-              <tr>
-                <td>Bob Brown</td>
-                <td>bobbrown@example.com</td>
-                <td>444-5555</td>
-                <td>2024-03-20</td>
-              </tr>
+
+            <!-- should be replaced with the actual data from the database -->
+
+            
+              <!-- Example dynamic data
+              <?php
+              // Fetch ongoing orders from the database if applicable
+              // Example of fetching data dynamically (make sure you implement this part)
+              $orders = []; // Replace this with actual orders from the database
+              foreach ($orders as $order) {
+                  echo "<tr>
+                        <td>{$order['username']}</td>
+                        <td>{$order['email']}</td>
+                        <td>{$order['phone']}</td>
+                        <td>{$order['delivery_date']}</td>
+                    </tr>";
+              }
+              ?> -->
             </tbody>
           </table>
         </div>
-        
       </div>
     </main>
   </section>
+
   <script src="../Assets/js/admin.js"></script>
 </body>
 </html>
