@@ -12,95 +12,187 @@
 
 <?php include('../includes/header.php'); ?>
 
-
-<div class="container">
-    <div class="item">
-    <img id="itemimg" src="../Assets/images/Product1.png"alt="product">
-    <h1>special jersey royal black star</h1>
-        <h3>size:M</h3>
-        <h3>quantity:1</h3>
-        <h2>450 LE</h2>
-        <i class="fa-solid fa-trash-can fa-2x"></i>
-
-</div>
-
-
-<div class="payment">
-<div class="dropdown" >
-    <button class="dropdown-btn" onclick="toggleDropdown()">Shipment and Info</button>
-    <div id="shipment-info" class="dropdown-content">
-        <label for="full-name">Full Name:</label>
-        <input type="text" id="full-name" name="full-name" placeholder="Enter full name">
+    <div class="container">
+        <h1 class="page-title">Shopping Cart & Checkout</h1>
         
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" placeholder="Enter address">
+        <div class="cart-checkout-grid">
+            <div class="cart-section">
+                <div class="cart-items">
+                    <div class="cart-item">
+                        <img src="../Assets/images/Product1.png?height=400&width=400" alt="Winter Jacket" class="item-image">
+                        <div class="item-details">
+                            <h3>Premium Winter Jacket</h3>
+                            <p class="item-meta">Size: M | Color: Black</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn">-</button>
+                            <input type="number" value="1" min="1" class="quantity-input">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                        <span class="item-price">$299</span>
+                        <button class="remove-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
 
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" placeholder="Enter phone number">
+                    <div class="cart-item">
+                        <img src="../Assets/images/Product1.png?height=400&width=80" alt="Casual Sneakers" class="item-image">
+                        <div class="item-details">
+                            <h3>Casual Sneakers</h3>
+                            <p class="item-meta">Size: 42 | Color: White</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn">-</button>
+                            <input type="number" value="1" min="1" class="quantity-input">
+                            <button class="quantity-btn">+</button>
+                        </div>
+                        <span class="item-price">$159</span>
+                        <button class="remove-item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter email">
+            <div class="checkout-section">
+                <form id="checkout-form">
+                    <div class="form-section">
+                        <h2>Shipping Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipCode">ZIP Code</label>
+                                <input type="text" id="zipCode" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Payment Method</h2>
+                        <div class="payment-methods">
+                            <div class="payment-method selected">
+                                <i class="fas fa-credit-card"></i>
+                                Credit Card
+                            </div>
+                            <div class="payment-method">
+                                <i class="fab fa-paypal"></i>
+                                PayPal
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>$458.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax</span>
+                            <span>$45.80</span>
+                        </div>
+                        <div class="summary-row summary-total">
+                            <span>Total</span>
+                            <span>$503.80</span>
+                        </div>
+                        <button type="submit" class="checkout-btn">Place Order</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <hr class="custom-line">
+    <script>
+        // Quantity Controls
+        document.querySelectorAll('.quantity-controls').forEach(control => {
+            const input = control.querySelector('.quantity-input');
+            const [decreaseBtn, increaseBtn] = control.querySelectorAll('.quantity-btn');
 
+            decreaseBtn.addEventListener('click', () => {
+                const currentValue = parseInt(input.value);
+                if (currentValue > 1) {
+                    input.value = currentValue - 1;
+                    updateTotals();
+                }
+            });
 
-<div class="radio">
-<label>
-    <input type="radio" name="payment" value="visa" onclick="toggleVisaInfo(true)" >
-    Visa
-</label>
-<br>
+            increaseBtn.addEventListener('click', () => {
+                input.value = parseInt(input.value) + 1;
+                updateTotals();
+            });
 
-<label>
-    <input type="radio" name="payment" value="cash_on_delivery" onclick="toggleVisaInfo(false)" >
-    Cash on Delivery
-</label>
-</div>
+            input.addEventListener('change', updateTotals);
+        });
 
-<hr class="custom-line">
+        // Remove Item
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', () => {
+                const cartItem = button.closest('.cart-item');
+                cartItem.remove();
+                updateTotals();
+            });
+        });
 
+        // Payment Method Selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                document.querySelectorAll('.payment-method').forEach(m => {
+                    m.classList.remove('selected');
+                });
+                method.classList.add('selected');
+            });
+        });
 
-<div id="visa-info" class="form-block visa-info">
-<h3>Visa Information</h3>
+        // Form Submission
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add your order processing logic here
+            alert('Order placed successfully!');
+        });
 
-<label for="card-number">Card Number:</label>
-<input type="text" id="card-number" name="card-number" placeholder="Card Number" >
-<br>
+        // Update Totals
+        function updateTotals() {
+            let subtotal = 0;
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const price = parseFloat(item.querySelector('.item-price').textContent.replace('$', ''));
+                const quantity = parseInt(item.querySelector('.quantity-input').value);
+                subtotal += price * quantity;
+            });
 
-<label for="expiry-date">Expiry Date:</label>
-<input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" >
-<br>
+            const tax = subtotal * 0.1; // 10% tax
+            const total = subtotal + tax;
 
-<label for="cvv">CVV:</label>
-<input type="text" id="cvv" name="cvv" placeholder="CVV" >
-</div>
-<button class="button" type="submit">Confirm Order</button>
-
-</div>
-
-
-
-<div class="total">
-<h4>shipping=50</h4>
- <h4>tshirt=450</h4>
- <h2>total=500</h2>
-</div>
-</div>
-</div>
-</div>
-
-<script>
-function toggleVisaInfo(show) {
-const visaInfo = document.getElementById('visa-info');
-visaInfo.style.display = show ? 'block' : 'none';
-}
-function toggleDropdown() {
-    const dropdownContent = document.getElementById('shipment-info');
-    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
-}
-
-</script>
+            // Update summary
+            const summaryRows = document.querySelectorAll('.summary-row');
+            summaryRows[0].querySelector('span:last-child').textContent = `$${subtotal.toFixed(2)}`;
+            summaryRows[2].querySelector('span:last-child').textContent = `$${tax.toFixed(2)}`;
+            document.querySelector('.summary-total span:last-child').textContent = `$${total.toFixed(2)}`;
+        }
+    </script>
 
 
 <?php include('../includes/Footer.php'); ?>

@@ -53,9 +53,10 @@ $products = $controller->getAllProducts();
                     <th>Title</th>
                     <th>Description</th>
                     <th>Color</th>
-                    <th>Sizes</th>
+                    <th>Total Quantity</th>
                     <th>Price</th>
                     <th>Category</th>
+                    <th>Type</th>
                     <th>Options</th>
                   </tr>
                 </thead>
@@ -66,9 +67,10 @@ $products = $controller->getAllProducts();
                         <td><?= htmlspecialchars($product['title']) ?></td>
                         <td><?= htmlspecialchars($product['description']) ?></td>
                         <td><?= htmlspecialchars($product['available_colors']) ?></td>
-                        <td><?= htmlspecialchars($product['available_Sizes']) ?></td>
+                        <td><?= htmlspecialchars($product['Quantity_S'] + $product['Quantity_M'] + $product['Quantity_L']) ?></td>
                         <td><?= htmlspecialchars($product['price']) ?></td>
                         <td><?= htmlspecialchars($product['category']) ?></td>
+                        <td><?= htmlspecialchars($product['type']) ?></td>
                         <td>
                           <button class="edit-btn" onclick="window.location.href='editProduct.php?id=<?= $product['id'] ?>'">
                             <i class='bx bxs-pencil'></i> Edit
