@@ -1,5 +1,20 @@
 <?php 
-include_once '../includes/db_connection.php';
+require_once('../../Controllers/usercontroller.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['Submit'])) {
+      $manageuser = new manageuser();
+      
+      $result = $manageuser->addNormalUser(); 
+
+      if ($result) {
+          echo json_encode(['success' => true, 'message' => 'user added successfully.']);
+      } else {
+          echo json_encode(['success' => false, 'message' => 'Failed to add admin.']);
+      }
+      exit; 
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,76 +54,24 @@ include_once '../includes/db_connection.php';
         </div>
       </div>
       <main>
-        <form id="addUserForm" action="" method="post">
+        <form id="addUserForm"  method="post">
+        <input type="hidden" name="action" value="addNormalUser">
           <label for="name">Username:</label>
-          <input type="text" id="name" name="Username" placeholder="Enter username" required>
+          <input type="text" id="username" name="username" placeholder="Enter username" required>
       
           <label for="email">E-mail:</label>
-          <input type="email" id="email" name="Email" placeholder="Enter e-mail" required>
-      
-          <!-- <label for="dob">Date of Birth:</label>
-          <div class="dob-container">
-              <select id="dob-day" name="dob-day" class="dob-select" required>
-                  <option value="" disabled selected>Day</option>
-                  <script>
-                      for (let day = 1; day <= 31; day++) {
-                          document.write(`<option value="${day}">${day}</option>`);
-                      }
-                  </script>
-              </select>
-      
-              <select id="dob-month" name="dob-month" class="dob-select" required>
-                  <option value="" disabled selected>Month</option>
-                  <script>
-                      for (let month = 1; month <= 12; month++) {
-                          document.write(`<option value="${month}">${month}</option>`);
-                      }
-                  </script>
-              </select>
-      
-              <select id="dob-year" name="dob-year" class="dob-select" required>
-                  <option value="" disabled selected>Year</option>
-                  <script>
-                      const currentYear = new Date().getFullYear();
-                      for (let year = 1920; year <= currentYear; year++) {
-                          document.write(`<option value="${year}">${year}</option>`);
-                      }
-                  </script>
-              </select>
-          </div> -->
-      
+          <input type="email" id="email" name="email" placeholder="Enter e-mail" required>
+       
           <label for="password">Password:</label>
-          <input type="password" id="password" name="Password" placeholder="Enter password" required>
+          <input type="password" id="password" name="password" placeholder="Enter password" required>
       
           <label for="confirm-password">Phone Number:</label>
-          <input type="number" placeholder="Enter Phone Numbe" name="Phone" required>      
-          <button type="submit" value="Submit" name="Submit">Add User</button>
-      </form>
+          <input type="number" id="phone_number" name="phone_number" placeholder="Enter Phone Number" required>     
+          <button type="submit" >Add User</button>
+          </form>
       
     </main>
     <script src="../Assets/js/admin.js"></script>
 </body>
 </html>
 
-
-
-<?php
-
-
-  if($_SERVER["REQUEST_METHOD"]=="POST"){ 
-	$Username=htmlspecialchars($_POST["Username"]);
-	$Email=htmlspecialchars($_POST["Email"]);
-	$Password=htmlspecialchars($_POST["Password"]);
-	$Phone=htmlspecialchars($_POST["Phone"]);
-
-   
-  $sql = "INSERT INTO customer (Username, Email, Password, Phone) VALUES ('$Username', '$Email', '$Password', '$Phone')";
-
-	$result=mysqli_query($conn,$sql);
-
-	if($result)	{
-		header("Location:admin.php");
-	}
-}
-
-?>

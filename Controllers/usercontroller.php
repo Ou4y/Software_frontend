@@ -15,7 +15,7 @@ class manageuser
 
         // Now pass the connection to the User class constructor
         $this->owner = new Owners($dbConnection);
-        $this->user = new User($dbConnection); // Add this
+        $this->user = new User($dbConnection); 
     }
 
     public function deleteUser()
@@ -79,6 +79,40 @@ class manageuser
 }
 
 
+public function addNormalUser()
+{
+    error_log("addNormalUser called."); // Log entry for debugging
+
+    try {
+        // Check if the request is POST and all required data is provided
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone_number'])) {
+            $username = htmlspecialchars($_POST['username']);
+            $email = htmlspecialchars($_POST['email']);
+            $password = htmlspecialchars($_POST['password']);
+            $phoneNumber = htmlspecialchars($_POST['phone_number']);
+
+            // Add the normal user via the Owners model
+            if ($this->owner->addNormalUser($username, $email, $password, $phoneNumber)) {
+                // Redirect with success message
+                $_SESSION['success_message'] = "User added successfully.";
+                header("Location: ../public/addUser.php"); // Correct redirect path for adding normal users
+                exit;
+            } else {
+                throw new Exception("Failed to add user.");
+            }
+        } else {
+            throw new Exception("Invalid input data.");
+        }
+    } catch (Exception $e) {
+        // Redirect with error message
+        $_SESSION['error_message'] = $e->getMessage();
+        header("Location: ../public/errorPage.php"); // Replace with a proper error handling page
+        exit;
+    }
+}
+
+
+
 
 
 
@@ -118,6 +152,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
+    } elseif ($action === 'addNormalUser' &&
+        isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone_number'])) {
+        try {
+            error_log("Routing to addNormalUser for username: " . $_POST['username']);
+            $manageuser->addNormalUser();
+        } catch (Exception $e) {
+            error_log("Error in addNormalUser: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
     } else {
         http_response_code(400);
         $errorMessage = 'Invalid request. ';
@@ -128,4 +172,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     exit;
 }
+
 ?>
