@@ -72,17 +72,7 @@ class User
         return $users;
     }
     
-    public function adduser($username, $email, $password, $phone_number)
-    {
-        try {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, phone_number, user_type) VALUES (?, ?, ?, ?, 'admin')");
-            $stmt->execute([$username, $email, $hashedPassword, $phone_number]);
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
+    
 
 
 
