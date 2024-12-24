@@ -16,9 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-$manageuser = new manageuser();
 
+$manageuser = new manageuser();
 $users = $manageuser->getadmin();
+if (isset($_POST['deleteUser'])) {
+  $users->deleteUser($_POST['id']); // Delete a user
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -278,11 +281,12 @@ td {
             if (!empty($users)) {
               foreach ($users as $user) {
                 echo "<tr data-id='" . htmlspecialchars($user['id']) . "'>";
+                echo "<td>" . htmlspecialchars($user['id']) . "</td>";
                 echo "<td>" . htmlspecialchars($user['username']) . "</td>";
                 echo "<td>" . htmlspecialchars($user['email']) . "</td>";
                 echo "<td>" . htmlspecialchars($user['phone_number']) . "</td>";
                 echo "<td>
-                        <button class='delete-btn' data-action='deleteUser' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
+                        <button class='delete-btn' name='deleteUser' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
                           <i class='bx bxs-trash'  ></i> Delete
                         </button>
                       </td>";
