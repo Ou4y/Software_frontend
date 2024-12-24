@@ -12,72 +12,94 @@
 
 <?php include('../includes/header.php'); ?>
 
+    <div class="container">
+        <div class="product-container">
+            <div class="product-grid">
+                <div class="image-gallery">
+                    <div class="main-image">
+                        <img src="../Assets/images/Product1.png?height=400&width=400" alt="Premium Winter Jacket - Main View" id="mainImage">
+                    </div>
+                    <div class="thumbnail-grid">
+                        <div class="thumbnail active">
+                            <img src="../Assets/images/Product1.png?height=400&width=400" alt="Product View 1" onclick="changeImage(this.src)">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="../Assets/images/Product1.png?height=400&width=400" alt="Product View 2" onclick="changeImage(this.src)">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="../Assets/images/profilePic.png?height=400&width=400" alt="Product View 3" onclick="changeImage(this.src)">
+                        </div>
+                    </div>
+                </div>
 
+                <div class="product-info">
+                    <span class="category-badge">Men's Collection</span>
+                    
+                    <h1 class="product-title">Premium Winter Jacket</h1>
+                    
+                    <span class="product-price">$299.00</span>
+                    
+                    <p class="product-description">
+                        Luxurious winter jacket crafted from premium materials. Features a warm inner lining,
+                        water-resistant outer shell, and multiple pockets for functionality. Perfect for cold
+                        weather and designed with both style and comfort in mind.
+                    </p>
 
-<main class="container">
- 
+                    <div>
+                        <h3 class="section-title">Available Colors</h3>
+                        <div class="color-options">
+                            <div class="color-option active" style="background-color: #000000;" title="Black"></div>
+                            <div class="color-option" style="background-color: #1e40af;" title="Navy Blue"></div>
+                            <div class="color-option" style="background-color: #7f1d1d;" title="Burgundy"></div>
+                        </div>
+                    </div>
 
- <div class="left-column">
-   <img data-image="black" src="../Assets/images/Product1.png" alt="">
-   <img data-image="blue" src="../Assets/images/Product1.png" alt="">
-   <img data-image="red" class="active" src="../Assets/images/Product1.png" alt="">
- </div>
+                    <div>
+                        <h3 class="section-title">Select Size</h3>
+                        <div class="size-options">
+                            <div class="size-option">S</div>
+                            <div class="size-option active">M</div>
+                            <div class="size-option">L</div>
+                        </div>
+                    </div>
 
+                    <div class="availability">
+                        <i class="fas fa-check-circle"></i>
+                        In Stock
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
- <div class="right-column">
+    <script>
+        // Image Gallery
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+                if (thumb.querySelector('img').src === src) {
+                    thumb.classList.add('active');
+                }
+            });
+        }
 
-   <div class="product-description">
-     <span>MEN</span>
-     <h1>Special Jersey “Royal black Star”</h1>
-     <p>Special Jersey “Royal black Star”Special Jersey “Royal black Star”</p>
-   </div>
+        // Color Selection
+        document.querySelectorAll('.color-option').forEach(color => {
+            color.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
+                color.classList.add('active');
+            });
+        });
 
-   <div class="product-configuration">
-
-
-     <div class="product-color">
-       <span>Color</span>
-
-       <div class="color-choose">
-         <div>
-           <input data-image="red" type="radio" id="red" name="color" value="red" checked>
-           <label for="red"><span></span></label>
-         </div>
-         <div>
-           <input data-image="blue" type="radio" id="blue" name="color" value="blue">
-           <label for="blue"><span></span></label>
-         </div>
-         <div>
-           <input data-image="black" type="radio" id="black" name="color" value="black">
-           <label for="black"><span></span></label>
-         </div>
-       </div>
-
-     </div>
-
-
-     <div class="cable-config">
-       <span>Cable configuration</span>
-
-       <div class="cable-choose">
-         <button>X-Large</button>
-         <button>Large</button>
-         <button>Small</button>
-       </div>
-
-     </div>
-   </div>
-
-
-   <div class="product-price">
-     <span>700 EGP</span>
-     <a href="#" class="cart-btn">Add to cart</a>
-   </div>
- </div>
-
-
-
-</main>
+        // Size Selection
+        document.querySelectorAll('.size-option').forEach(size => {
+            size.addEventListener('click', () => {
+                document.querySelectorAll('.size-option').forEach(s => s.classList.remove('active'));
+                size.classList.add('active');
+            });
+        });
+    </script>
 
 
 <?php include('../includes/Footer.php'); ?>

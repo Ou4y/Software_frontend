@@ -79,10 +79,11 @@ require_once('../../Controllers/ProductController.php');
 
 <label for="gender">Product For:</label>
 <select id="gender" name="gender" required>
-    <option value="" disabled selected>Select target audience</option>
+    <option value="" disabled selected>Select Type</option>
     <option value="Male">Male</option>
     <option value="Female">Female</option>
     <option value="Unisex">Unisex</option>
+    <option value="SportsWear">SportsWear</option>
 </select>
 
     <label for="disnumber">Discount:</label>

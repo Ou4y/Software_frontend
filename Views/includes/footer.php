@@ -3,45 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fashion Store</title>
     <link rel="stylesheet" type="text/css" href="../Assets/css/Footer.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    
 
-<footer id="footer">
-  <div class="footer-col footer-col1">
-    <h3>X</h3>
-    <p>Made with <span style="color: #BA6573;">❤</span> 
-    <div class="footer-social">
-      
-      </a>
-      <a href="https://twitter.com/juxtopposed" target="_blank" class="link">
-        <img src="https://assets.codepen.io/9051928/x.png" alt="Twitter" />
-      </a>
-      <a href="https://youtube.com/@juxtopposed" target="_blank" class="link">
-        <img src="https://assets.codepen.io/9051928/youtube_1.png" alt="YouTube" />
-      </a>
-    </div>
-    <p>2024 © All Rights Reserved</p>
-  </div>
-  <div class="footer-col footer-col2">
-    <p>About</p>
-    <p>Our mission</p>
-    <p>Privacy Policy</p>
-    <p>Terms of service</p>
-  </div>
-  <div class="footer-col footer-col3">
-    <p>Services</p>
-    <p>Products</p>
-    <p>Join our team</p>
-    <p>Partner with us</p>
-  </div>
-  <div class="footer-backdrop"></div>
-</footer>
-
-
-
+<footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Discover the latest fashion trends and elevate your style with our curated collection.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Men</a></li>
+                        <li><a href="#" class="footer-link">Women</a></li>
+                        <li><a href="#" class="footer-link">New Arrivals</a></li>
+                        <li><a href="#" class="footer-link">Sale</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">FAQ</a></li>
+                        <li><a href="#" class="footer-link">Shipping</a></li>
+                        <li><a href="#" class="footer-link">Returns</a></li>
+                        <li><a href="#" class="footer-link">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Email Us</a></li>
+                        <li><a href="#" class="footer-link">Live Chat</a></li>
+                        <li><a href="#" class="footer-link">Phone</a></li>
+                        <li><a href="#" class="footer-link">Store Locator</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Fashion Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
