@@ -56,6 +56,9 @@ class User
     }
 }
 
+
+
+
     public function getAllUsers() {
         $sql = "SELECT id, username, email, phone_number FROM users where user_type='user'";
         $result = $this->conn->query($sql);
@@ -68,6 +71,7 @@ class User
         $users = $result->fetchAll(PDO::FETCH_ASSOC);
         return $users;
     }
+    
     public function adduser($username, $email, $password, $phone_number)
     {
         try {
@@ -79,6 +83,10 @@ class User
             return false;
         }
     }
+
+
+
+    
 }
 
 
