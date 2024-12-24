@@ -28,28 +28,18 @@ class owners extends User
     }
     
 
-public function addadmin($username, $email, $password, $phoneNumber)
-{
-    try {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, phone_number,user_type) VALUES (?, ?, ?, ?, 'admin')");
-        $stmt->execute([$username, $email, $hashedPassword, $phoneNumber]);
-        return true;
-    } catch (PDOException $e) {
-        return false;
-    }
-}
-    public function adduser($username, $email, $password, $phone_number)
+
+
+    public function addAdmin($username, $email, $password, $phoneNumber)
     {
-        try {
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, phone_number, user_type) VALUES (?, ?, ?, ?, 'user')");
-            $stmt->execute([$username, $email, $hashedPassword, $phone_number]);
-            return true;
-        } catch (PDOException $e) {
-            return false;
-        }
+        return parent::addUser($username, $email, $password, $phoneNumber, 'admin');
     }
+    
+    public function addNormalUser($username, $email, $password, $phoneNumber)
+    {
+        return parent::addUser($username, $email, $password, $phoneNumber, 'user');
+    }
+    
 
 }
 ?>

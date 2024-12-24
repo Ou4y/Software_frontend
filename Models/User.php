@@ -71,7 +71,21 @@ class User
         $users = $result->fetchAll(PDO::FETCH_ASSOC);
         return $users;
     }
-    
+
+
+
+    public function addUser($username, $email, $password, $phoneNumber, $userType)
+{
+    try {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, phone_number, user_type) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$username, $email, $hashedPassword, $phoneNumber, $userType]);
+        return true;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
     
 
 
