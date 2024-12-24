@@ -38,12 +38,49 @@ class manageuser
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-        }
-    }
+                }
+                catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                }
+            } 
+
+
+
+            public function addadmin()
+            {
+                $username = htmlspecialchars($_POST['username']);
+                $email = htmlspecialchars($_POST['email']);
+                $password = htmlspecialchars($_POST['password']);
+                $phoneNumber = htmlspecialchars($_POST['phone_number']);
+        
+                if ($this->owner->addadmin($username, $email, $password, $phoneNumber)) {
+                    $_SESSION['success_message'] = "Account created successfully!";
+                    header("Location: ../public/createAdmin.php");
+                    exit(); // Always include an exit after header redirection
+                } else {
+                    $_SESSION['error_message'] = "Error: Unable to create account.";
+                    header("Location: ../public/createAdmin.php");
+                    exit(); // Always include an exit after header redirection
+                }
+
+            }
+
+            
+
+            
+   
+
+
 
     public function getAllUsers()
     {
         return $this->user->getAllUsers();
+    }
+
+    public function getadmin()
+    {
+        return $this->user->getadmin();
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -51,4 +88,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $manageUser->deleteUser();
     exit; 
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['name']) &&
+    isset($_POST['email']) &&
+    isset($_POST['password']) &&
+    isset($_POST['phone_number'])) {
+    $manageUser = new ManageUser();
+    $manageUser->addAdmin();
+    exit;
+}
+
     ?>

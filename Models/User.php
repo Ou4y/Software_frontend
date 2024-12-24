@@ -13,6 +13,8 @@ class User
         $this->conn = $dbConnection;
     }
 
+    
+
     public function signUp($username, $email, $password, $phoneNumber)
     {
         try {
@@ -62,6 +64,13 @@ class User
         $users = $result->fetchAll(PDO::FETCH_ASSOC);
         return $users;
     }
+    public function getadmin() {
+        $sql = "SELECT id, username, email, phone_number FROM users where user_type='admin'";
+        $result = $this->conn->query($sql);
+        $users = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
+    }
+    
 }
 
 

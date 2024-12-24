@@ -1,7 +1,24 @@
 <?php 
-include_once '../includes/db_connection.php';
-$sql = "SELECT ID, Username, Email, Phone FROM admin"; 
-$result = mysqli_query($conn, $sql);
+require_once('../../Controllers/usercontroller.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['Submit'])) {
+      $manageuser = new manageuser();
+      
+      $result = $manageuser->addadmin(); 
+
+      if ($result) {
+          echo json_encode(['success' => true, 'message' => 'Admin added successfully.']);
+      } else {
+          echo json_encode(['success' => false, 'message' => 'Failed to add admin.']);
+      }
+      exit; 
+  }
+}
+
+$manageuser = new manageuser();
+
+$users = $manageuser->getadmin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,8 +31,8 @@ $result = mysqli_query($conn, $sql);
   <link rel="stylesheet" href="../Assets/css/addedit.css">
   <link rel="stylesheet" href="../Assets/css/navbar.css">
   <title>Add Admin</title>
+  
   <style>
-   <style>
 .table-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -225,19 +242,19 @@ td {
   </div>
   <div class="main-container">
     <div class="form-container">
-      <form id="addUserForm" action="" method="post">
-        <label for="name">Username:</label>
-        <input type="text" id="name" name="Username" placeholder="Enter username" required>
+      <form id="addUserForm"  method="POST">
+      <label for="name">Username:</label>
+    <input type="text" id="username" name="username" placeholder="Enter username" required>
 
-        <label for="email">E-mail:</label>
-        <input type="email" id="email" name="Email" placeholder="Enter e-mail" required>
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" placeholder="Enter e-mail" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="Password" placeholder="Enter password" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Enter password" required>
 
-        <label for="phone">Phone Number:</label>
-        <input type="number" id="phone" name="Phone" placeholder="Enter Phone Number" required>      
-        <button type="submit" name="Submit">Add Admin</button>
+    <label for="phone">Phone Number:</label>
+    <input type="number" id="phone_number" name="phone_number" placeholder="Enter Phone Number" required>     
+        <button type="submit" >Add Admin</button>
       </form>
     </div>
     
@@ -257,14 +274,14 @@ td {
           </thead>
           <tbody id="orderList">
             <?php 
-            if ($result && mysqli_num_rows($result) > 0) {
-              while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr data-id='" . htmlspecialchars($row['ID']) . "'>";
-                echo "<td>" . htmlspecialchars($row['Username']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['Email']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['Phone']) . "</td>";
+            if (!empty($users)) {
+              foreach ($users as $user) {
+                echo "<tr data-id='" . htmlspecialchars($user['id']) . "'>";
+                echo "<td>" . htmlspecialchars($user['username']) . "</td>";
+                echo "<td>" . htmlspecialchars($user['email']) . "</td>";
+                echo "<td>" . htmlspecialchars($user['phone_number']) . "</td>";
                 echo "<td>
-                        <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($row['ID']) . "')\">
+                        <button class='delete-btn' onclick=\"confirmDelete('" . htmlspecialchars($user['id']) . "')\">
                           <i class='bx bxs-trash'></i> Delete
                         </button>
                       </td>";
@@ -282,24 +299,52 @@ td {
 </main>
 
 <script>
-  function confirmDelete(adminID) {
-    if (confirm("Are you sure you want to delete this user?")) {
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "deleteAdmin.php", true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            const row = document.querySelector(`tr[data-id='${adminID}']`);
-            if (row) {
-              row.remove();
+function confirmAddAdmin() {
+    if (confirm("Are you sure you want to add this admin?")) {
+        document.getElementById("addUserForm").submit();
+    }
+}
+
+
+
+
+
+
+
+ 
+  function confirmDelete(userId) {
+    if (!userId) {
+        alert("Invalid user ID.");
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete this admin?")) {
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id=${encodeURIComponent(userId)}`
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Error: ${response.status} - ${text}`);
+                });
             }
-          } else {
-            alert("Error deleting user. Please try again.");
-          }
-        }
-      };
-      xhr.send("ID=" + encodeURIComponent(adminID));
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert("admin deleted successfully.");
+                const userRow = document.querySelector(`tr[data-id='${userId}']`);
+                if (userRow) userRow.remove();
+            } else {
+                alert(data.message || "Failed to delete admin.");
+            }
+        })
+        .catch(error => {
+            alert("An error occurred: " + error.message);
+            console.error("Error:", error);
+        });
     }
   }
 </script>
@@ -307,18 +352,5 @@ td {
 </body>
 </html>
 
-<?php
-if($_SERVER["REQUEST_METHOD"]=="POST"){ 
-	$Username = htmlspecialchars($_POST["Username"]);
-	$Email = htmlspecialchars($_POST["Email"]);
-	$Password = htmlspecialchars($_POST["Password"]);
-	$Phone = htmlspecialchars($_POST["Phone"]);
 
-  $hashedPassword2=password_hash($Password,PASSWORD_DEFAULT);
-   
-  $sql = "INSERT INTO admin (Username, Email, Password, Phone) VALUES ('$Username', '$Email', '$hashedPassword2', '$Phone')";
-	$result = mysqli_query($conn, $sql);
-	if($result) {
-	}
-} 
-?>
+
