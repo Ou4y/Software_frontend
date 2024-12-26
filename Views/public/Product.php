@@ -21,17 +21,18 @@ $att = $productController->getAttributesByID($_GET['id']);
         <div class="product-grid">
             <div class="image-gallery">
                 <div class="main-image">
-                    <img src="../Assets/images/Product1.png?height=400&width=400" alt="Premium Winter Jacket - Main View" id="mainImage">
+                <img src="../../Assets/uploads/<?= htmlspecialchars($productController->getImageByID($product['id'])['attribute_value']) ?>" alt="Product Image" onclick="changeImage(this.src)">
                 </div>
                 <div class="thumbnail-grid">
                     <div class="thumbnail active">
-                        <img src="../Assets/images/Product1.png?height=400&width=400" alt="Product View 1" onclick="changeImage(this.src)">
+                        
+                    <img src="../../Assets/uploads/<?= htmlspecialchars($productController->getImageByID($product['id'])['attribute_value']) ?>" alt="Product Image" onclick="changeImage(this.src)">
                     </div>
                     <div class="thumbnail">
-                        <img src="../Assets/images/Product1.png?height=400&width=400" alt="Product View 2" onclick="changeImage(this.src)">
+                    <img src="../../Assets/uploads/<?= htmlspecialchars($productController->getImageByID($product['id'])['attribute_value']) ?>" alt="Product Image" onclick="changeImage(this.src)">
                     </div>
                     <div class="thumbnail">
-                        <img src="../Assets/images/profilePic.png?height=400&width=400" alt="Product View 3" onclick="changeImage(this.src)">
+                    <img src="../../Assets/uploads/<?= htmlspecialchars($productController->getImageByID($product['id'])['attribute_value']) ?>" alt="Product Image" onclick="changeImage(this.src)">
                     </div>
                 </div>
             </div>
