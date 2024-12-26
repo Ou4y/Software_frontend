@@ -51,7 +51,6 @@ class ProductController
             'size_m' => $sizeM,
             'size_l' => $sizeL,
             'category' => $category,
-            'type' => $type,
             'discount' => $discount,
             'image1' => $image1,
             'image2' => $image2,
