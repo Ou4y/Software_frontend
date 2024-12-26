@@ -60,5 +60,11 @@ class CategoryProductController {
 
         return $products;
     }
+
+
+    public function getProductById($productId) {
+        return $this->categoryProductModel->getProductsByID($productId);
+
+    }
 }
 ?>

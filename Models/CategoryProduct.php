@@ -50,6 +50,10 @@ class CategoryProduct extends Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
         
     }
+
+    public function getProductsByID($productId) {
+        return parent::getProductsByID($productId);
+    }
 }
 
 ?>
