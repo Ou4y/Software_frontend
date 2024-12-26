@@ -27,6 +27,17 @@ class CategoryProduct extends Product {
         return $this->getProductsByType('UNISEX');
     }
 
+
+
+    public function getRandomProducts($limit = 3) {
+        $stmt = $this->conn->prepare("SELECT * FROM products ORDER BY RAND() LIMIT :limit");
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
+
     public function getSaleProducts() {
         $stmt = $this->conn->prepare("SELECT * FROM products WHERE discount > 0");
         $stmt->execute();

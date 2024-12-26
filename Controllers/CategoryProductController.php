@@ -35,6 +35,10 @@ class CategoryProductController {
         return $this->categoryProductModel->getUnisexProducts();
     }
 
+    public function getRandomProducts($limit = 3) {
+        return $this->categoryProductModel->getRandomProducts($limit);
+    }
+
 
     // Fetch and display sale products
     public function getSaleProducts() {
@@ -44,7 +48,7 @@ class CategoryProductController {
     // Fetch and display latest products
     public function getLatestProducts() {
         return $this->categoryProductModel->getLatestProducts();
-        foreach ($products as &$product) {
+         foreach ($products as &$product) {
             $imageQuery = $this->categoryProductModel->conn->prepare(
                 "SELECT value FROM product_attributes WHERE attribute_name = 'image1' AND product_id = :product_id LIMIT 1"
             );

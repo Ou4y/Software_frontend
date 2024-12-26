@@ -1,3 +1,12 @@
+<?php
+require_once('../../Controllers/CategoryProductController.php');
+
+// Example of getting random products in a view
+$productController = new CategoryProductController();
+$products = $productController->getRandomProducts(3); // Corrected object usage
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -335,64 +344,45 @@ body {
 
 
 <div class="image-links">
-        <a href="../public/products.php" class="unique-hover-card"><h1>Men</h1></a>
-        <a href="../public/products.php" class="unique-hover-card"><h1>Women</h1></a>
-        <a href="../public/products.php" class="unique-hover-card"><h1>Sports Wear</h1></a>
-        <a href="../public/products.php" class="unique-hover-card"><h1>Unisex</h1></a>
+    <a href="../public/products.php?type=MEN" class="unique-hover-card"><h1>Men</h1></a>
+    <a href="../public/products.php?type=WOMEN" class="unique-hover-card"><h1>Women</h1></a>
+    <a href="../public/products.php?type=SPORTWEAR" class="unique-hover-card"><h1>Sports Wear</h1></a>
+    <a href="../public/products.php?type=UNISEX" class="unique-hover-card"><h1>Unisex</h1></a>
+</div>
 
+<hr>
+
+<h1 id="title">Random Products:</h1>
+
+<section class="products-section container">
+    <div class="products-grid">
+        <?php if (!empty($products)): ?>
+          <?php foreach ($products as $product): ?>
+              <article class="product-card">
+                  <div class="product-image">
+                      <!-- <img src="/Software_frontend/Assets/uploads/<?php echo "../Assets/uploads/" . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>"> -->
+                      <img src="/sweproj/Assets/uploads/<?= htmlspecialchars($product['picture1']) ?>" alt="Product Image 1">
+                      <div class="product-overlay">
+                          <a href="Product.php?id=<?php echo $product['id']; ?>" class="btn btn-view">View Product</a>
+                      </div>
+                  </div>
+                  <div class="product-details">
+                      <h3 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h3>
+                      <p class="product-price">
+                          $<?php echo htmlspecialchars($product['price']); ?>
+                          <?php if (!empty($product['discount'])): ?>
+                              <span class="original-price">$<?php echo htmlspecialchars($product['price'] + $product['discount']); ?></span>
+                          <?php endif; ?>
+                      </p>
+                  </div>
+              </article>
+          <?php endforeach; ?>
+      <?php else: ?>
+          <p>No products available at the moment.</p>
+      <?php endif; ?>
+        ?>
     </div>
-
-    <hr>
-
-    <h1 id="title">BEST SELLER</h1>
-
-
-
-
-    <section class="products-section container">
-            <div class="products-grid">
-
-               
-
-         <article class="product-card">
-         <div class="product-image">
-         <img src="../Assets/images/Product1.png?height=400&width=400" alt="Winter Jacket">
-        <div class="product-overlay">
-            <a href="Product.php" class="btn btn-view">View Product</a>
-        </div>
-        </div>
-        <div class="product-details">
-        <h3 class="product-title">Winter Jacket</h3>
-        <p class="product-price">
-            $299 <span class="original-price">$399</span>
-        </p>
-    </div>
-</article>
-
-<article class="product-card">
-         <div class="product-image">
-         <img src="../Assets/images/Product1.png?height=400&width=400" alt="Winter Jacket">
-        <div class="product-overlay">
-            <a href="Product.php" class="btn btn-view">View Product</a>
-        </div>
-        </div>
-        <div class="product-details">
-        <h3 class="product-title">Winter Jacket</h3>
-        <p class="product-price">
-            $299 <span class="original-price">$399</span>
-        </p>
-    </div>
-</article>
-
-
-
-            </div>
-        </section>
-
-
-
-
-
+</section>
 
 <?php include('../includes/Footer.php'); ?>
 </body>

@@ -3,7 +3,7 @@ require_once('../../Controllers/CategoryProductController.php');
 
 // Example of getting men's products in a view
 $productController = new CategoryProductController();
-$menProducts = $productController->getLatestProducts();
+$latest = $productController->getLatestProducts();
 ?>
 
 <!DOCTYPE html>
@@ -38,11 +38,12 @@ $menProducts = $productController->getLatestProducts();
         <h2 class="section-title">Latest Products:</h2>
     </div>
     <div class="products-grid">
-        <?php if (!empty($menProducts)): ?>
-            <?php foreach ($menProducts as $product): ?>
+        <?php if (!empty($latest)): ?>
+            <?php foreach ($latest as $product): ?>
                 <article class="product-card">
                     <div class="product-image">
-                        <img src="/Software_frontend/Assets/uploads/<?php echo "../Assets/uploads/" . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>">
+                        <!-- <img src="/Software_frontend/Assets/uploads/<?php echo "../Assets/uploads/" . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>"> -->
+                        <img src="/sweproj/Assets/uploads/<?= htmlspecialchars($product['picture1']) ?>" alt="Product Image 1">
                         <div class="product-overlay">
                             <a href="Product.php?id=<?php echo $product['id']; ?>" class="btn btn-view">View Product</a>
                         </div>
