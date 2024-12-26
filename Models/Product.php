@@ -11,11 +11,8 @@ class Product {
     }
 
     // Add a new product with attributes
-    public function addProduct(
-        $title,
-        $price,
-        $attributes = []
-    ) {
+    public function addProduct($title, $price, $attributes = [])
+    {
         try {
             $this->conn->beginTransaction();
 
@@ -29,7 +26,9 @@ class Product {
             // Insert attributes into the `product_attributes` table
             $attributeStmt = $this->conn->prepare("INSERT INTO product_attributes (product_id, attribute_name, attribute_value) VALUES (?, ?, ?)");
             foreach ($attributes as $name => $value) {
-                $attributeStmt->execute([$productId, $name, $value]);
+                if (!empty($value)) { // Skip null or empty values
+                    $attributeStmt->execute([$productId, $name, $value]);
+                }
             }
 
             $this->conn->commit();
@@ -90,12 +89,12 @@ class Product {
         try {
             $this->conn->beginTransaction();
 
-            // Delete attributes
+            // Delete attributes from product_attributes table
             $stmt = $this->conn->prepare("DELETE FROM product_attributes WHERE product_id = :product_id");
             $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
             $stmt->execute();
 
-            // Delete product
+            // Delete product from products table
             $stmt = $this->conn->prepare("DELETE FROM products WHERE id = :product_id");
             $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
             $stmt->execute();

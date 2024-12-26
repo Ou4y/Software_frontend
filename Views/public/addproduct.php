@@ -1,8 +1,34 @@
 <?php 
 require_once('../../Controllers/ProductController.php');
 // session_start();
+$controller = new ProductController();
+$controller->handleRequest();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'addProductForm') {
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $color = $_POST['color'];
+    $size_s = intval($_POST['size_s']);
+    $size_m = intval($_POST['size_m']);
+    $size_l = intval($_POST['size_l']);
+    $price = floatval($_POST['price']);
+    $category = $_POST['category'];
+    $gender = $_POST['gender'];
+    $discount = intval($_POST['disnumber']);
+    $photo = $_FILES['photo'];
 
+    // Call the ProductController to handle product creation
+    
+    $result = $controller->addProduct($title, $description, $color, $size_s, $size_m, $size_l, $price, $category, $gender, $discount, $photo);
 
+    // Redirect or display a message based on the result
+    if ($result) {
+        header('Location: ManageProducts.php?success=1'); // Redirect to the products page with a success message
+        exit;
+    } else {
+        $error = "Failed to add product. Please try again.";
+    }
+}
+echo var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +66,9 @@ require_once('../../Controllers/ProductController.php');
   <div class="head-title">
     <div class="left">
       <h1>Add Product</h1>
+      <?php if (isset($error)) : ?>
+          <p class="error-message"><?= htmlspecialchars($error) ?></p>
+      <?php endif; ?>
     </div>
   </div>
   
@@ -56,35 +85,36 @@ require_once('../../Controllers/ProductController.php');
     <input type="text" id="color" name="color" placeholder="Enter product color" required>
 
     <label for="sizes">Available Sizes:</label>
-<div id="sizes">
-    <label for="size-s">S:</label>
-    <input type="number" id="size-s" name="size_s" placeholder="Enter quantity for S" min="0" required>
-    
-    <label for="size-m">M:</label>
-    <input type="number" id="size-m" name="size_m" placeholder="Enter quantity for M" min="0" required>
-    
-    <label for="size-l">L:</label>
-    <input type="number" id="size-l" name="size_l" placeholder="Enter quantity for L" min="0" required>
-</div>
+    <div id="sizes">
+        <label for="size-s">S:</label>
+        <input type="number" id="size-s" name="size_s" placeholder="Enter quantity for S" min="0" required>
+        
+        <label for="size-m">M:</label>
+        <input type="number" id="size-m" name="size_m" placeholder="Enter quantity for M" min="0" required>
+        
+        <label for="size-l">L:</label>
+        <input type="number" id="size-l" name="size_l" placeholder="Enter quantity for L" min="0" required>
+    </div>
+
     <label for="price">Price:</label>
     <input type="number" id="price" name="price" placeholder="Enter product price" required>
 
     <label for="category">Category:</label>
-<select id="category" name="category" required>
-    <option value="" disabled selected>Select category</option>
-    <option value="Shirts">Shirts</option>
-    <option value="Pants">Pants</option>
-    <option value="Jackets">Jackets</option>
-</select>
+    <select id="category" name="category" required>
+        <option value="" disabled selected>Select category</option>
+        <option value="Shirts">Shirts</option>
+        <option value="Pants">Pants</option>
+        <option value="Jackets">Jackets</option>
+    </select>
 
-<label for="gender">Product For:</label>
-<select id="gender" name="gender" required>
-    <option value="" disabled selected>Select Type</option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-    <option value="Unisex">Unisex</option>
-    <option value="SportsWear">SportsWear</option>
-</select>
+    <label for="gender">Product For:</label>
+    <select id="gender" name="gender" required>
+        <option value="" disabled selected>Select Type</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Unisex">Unisex</option>
+        <option value="SportsWear">SportsWear</option>
+    </select>
 
     <label for="disnumber">Discount:</label>
     <input type="number" id="disnumber" name="disnumber" placeholder="Enter discount percentage" required>
@@ -98,7 +128,7 @@ require_once('../../Controllers/ProductController.php');
     <div class="button-container">
         <button type="submit">Add Product</button>
     </div>
-</form>
+  </form>
 
 </main>
 <script src="../Assets/js/admin.js"></script>

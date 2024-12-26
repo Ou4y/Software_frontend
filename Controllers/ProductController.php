@@ -26,70 +26,69 @@ class ProductController
         }
     }
 
-    private function addProduct()
+    public function addProduct()
     {
-        // Sanitize input data
-        $title = htmlspecialchars(trim($_POST['title']));
-        $price = htmlspecialchars(trim($_POST['price']));
+        $title = trim($_POST['title']);
+        $description = trim($_POST['description']);
+        $color = trim($_POST['color']);
+        $sizeS = intval($_POST['size_s']);
+        $sizeM = intval($_POST['size_m']);
+        $sizeL = intval($_POST['size_l']);
+        $price = floatval($_POST['price']);
+        $category = trim($_POST['category']);
+        $gender = trim($_POST['gender']);
+        $discount = intval($_POST['disnumber']);
+
+        $uploadedFiles = $this->uploadFiles();
+        $image1 = $uploadedFiles[0] ?? null;
+        $image2 = $uploadedFiles[1] ?? null;
+        $image3 = $uploadedFiles[2] ?? null;
+
         $attributes = [
-            'description' => htmlspecialchars(trim($_POST['description'])),
-            'available_colors' => htmlspecialchars(trim($_POST['color'])),
-            'Quantity_S' => htmlspecialchars(trim($_POST['size_s'])),
-            'Quantity_M' => htmlspecialchars(trim($_POST['size_m'])),
-            'Quantity_L' => htmlspecialchars(trim($_POST['size_l'])),
-            'category' => htmlspecialchars(trim($_POST['category'])),
-            'gender' => htmlspecialchars(trim($_POST['gender'])),
-            'discount' => htmlspecialchars(trim($_POST['disnumber'])),
+            'description' => $description,
+            'color' => $color,
+            'size_s' => $sizeS,
+            'size_m' => $sizeM,
+            'size_l' => $sizeL,
+            'category' => $category,
+            'gender' => $gender,
+            'discount' => $discount,
+            'image1' => $image1,
+            'image2' => $image2,
+            'image3' => $image3,
         ];
 
-        // Handle file uploads for pictures
-        $images = $this->uploadFiles();
-        if (!empty($images)) {
-            $attributes['picture1'] = $images[0] ?? null;
-            $attributes['picture2'] = $images[1] ?? null;
-            $attributes['picture3'] = $images[2] ?? null;
-        }
+        $success = $this->productModel->addProduct($title, $price, $attributes);
 
-        // Pass the data to the model to add the product and attributes
-        if ($this->productModel->addProduct($title, $price, $attributes)) {
-            $_SESSION['success_message'] = "Product added successfully!";
-            header('Location: ../public/admin.php');
-            exit();
+        if ($success) {
+            header('Location: ../public/ManageProducts.php?success=1');
         } else {
-            $_SESSION['error_message'] = "Error: Unable to add product.";
-            header('Location: ../public/admin.php');
-            exit();
+            header('Location: ../public/addProduct.php?error=1');
         }
+        exit();
     }
+
 
     private function uploadFiles()
     {
         $uploadedFiles = [];
-        $maxFiles = 3; // Limit to three pictures
+        $maxFiles = 3;
 
         if (!empty($_FILES['photo']['tmp_name'])) {
             foreach ($_FILES['photo']['tmp_name'] as $index => $tmpName) {
                 if (!empty($tmpName) && count($uploadedFiles) < $maxFiles) {
-                    $fileName = htmlspecialchars(basename($_FILES['photo']['name'][$index]));
+                    $fileName = basename($_FILES['photo']['name'][$index]);
                     $targetPath = __DIR__ . '/../Assets/uploads/' . $fileName;
 
-                    // Ensure the uploads directory exists
                     if (!is_dir(__DIR__ . '/../Assets/uploads/')) {
                         mkdir(__DIR__ . '/../Assets/uploads/', 0777, true);
                     }
 
                     if (move_uploaded_file($tmpName, $targetPath)) {
                         $uploadedFiles[] = $fileName;
-                    } else {
-                        error_log("File upload failed for $fileName");
                     }
                 }
             }
-        }
-
-        // Pad the array to ensure exactly three elements (use NULL for empty slots)
-        while (count($uploadedFiles) < $maxFiles) {
-            $uploadedFiles[] = null;
         }
 
         return $uploadedFiles;

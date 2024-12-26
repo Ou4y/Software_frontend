@@ -1,9 +1,7 @@
 <?php 
 require_once('../../Controllers/ProductController.php');
-// session_start();
 $controller = new ProductController();
 $products = $controller->getAllProducts();
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,12 +49,8 @@ $products = $controller->getAllProducts();
                 <thead>
                   <tr>
                     <th>Title</th>
-                    <th>Description</th>
-                    <th>Color</th>
-                    <th>Total Quantity</th>
                     <th>Price</th>
-                    <th>Category</th>
-                    <th>Type</th>
+                    <th>Attributes</th>
                     <th>Options</th>
                   </tr>
                 </thead>
@@ -65,12 +59,14 @@ $products = $controller->getAllProducts();
                     <?php foreach ($products as $product): ?>
                       <tr data-id="<?= htmlspecialchars($product['id']) ?>">
                         <td><?= htmlspecialchars($product['title']) ?></td>
-                        <td><?= htmlspecialchars($product['description']) ?></td>
-                        <td><?= htmlspecialchars($product['available_colors']) ?></td>
-                        <td><?= htmlspecialchars($product['Quantity_S'] + $product['Quantity_M'] + $product['Quantity_L']) ?></td>
                         <td><?= htmlspecialchars($product['price']) ?></td>
-                        <td><?= htmlspecialchars($product['category']) ?></td>
-                        <td><?= htmlspecialchars($product['type']) ?></td>
+                        <td>
+                          <ul>
+                            <?php foreach ($product['attributes'] as $name => $value): ?>
+                              <li><strong><?= htmlspecialchars($name) ?>:</strong> <?= htmlspecialchars($value) ?></li>
+                            <?php endforeach; ?>
+                          </ul>
+                        </td>
                         <td>
                           <button class="edit-btn" onclick="window.location.href='editProduct.php?id=<?= $product['id'] ?>'">
                             <i class='bx bxs-pencil'></i> Edit
@@ -83,7 +79,7 @@ $products = $controller->getAllProducts();
                     <?php endforeach; ?>
                   <?php else: ?>
                     <tr>
-                      <td colspan="7">No products found.</td>
+                      <td colspan="4">No products found.</td>
                     </tr>
                   <?php endif; ?>
                 </tbody>
@@ -96,38 +92,36 @@ $products = $controller->getAllProducts();
   </section>
   <script src="../Assets/js/admin.js"></script>
   <script>
-   function confirmDelete(productid) {
-  if (!productid) {
-    alert("Invalid product ID.");
-    return;
-  }
-
-  if (confirm("Are you sure you want to delete this product?")) {
-    fetch(window.location.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `id=${encodeURIComponent(productid)}&deleteProduct=true`  // Add deleteProduct flag
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert("Product deleted successfully.");
-        const row = document.querySelector(`tr[data-id='${productid}']`);
-        if (row) row.remove();
-      } else {
-        alert(data.message || "Failed to delete product.");
+    function confirmDelete(productId) {
+      if (!productId) {
+        alert("Invalid product ID.");
+        return;
       }
-    })
-    .catch(error => {
-      alert("An error occurred: " + error.message);
-      console.error("Error:", error);
-    });
-  }
-}
 
-
+      if (confirm("Are you sure you want to delete this product?")) {
+        fetch(window.location.href, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `id=${encodeURIComponent(productId)}&deleteProduct=true`
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("Product deleted successfully.");
+            const row = document.querySelector(`tr[data-id='${productId}']`);
+            if (row) row.remove();
+          } else {
+            alert(data.message || "Failed to delete product.");
+          }
+        })
+        .catch(error => {
+          alert("An error occurred: " + error.message);
+          console.error("Error:", error);
+        });
+      }
+    }
   </script>
 </body>
 </html>
