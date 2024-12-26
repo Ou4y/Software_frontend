@@ -65,7 +65,9 @@ $att = $productController->getAttributesByID($_GET['id']);
         </div>
     </div>
 </div>
-
+</div>
+</div>
+</div>
 
 <?php include('../includes/Footer.php'); ?>
 
