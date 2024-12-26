@@ -1,7 +1,7 @@
 <?php 
 require_once('../../Controllers/ProductController.php');
 // session_start();
-
+$controller = new ProductController();
 $products = $controller->getAllProducts();
 
 ?>
