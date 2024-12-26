@@ -106,5 +106,13 @@ class Product {
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+
+    public function getProductsByType($type) {
+        $stmt = $this->conn->prepare("SELECT * FROM products WHERE type = :type");
+        $stmt->bindParam(':type', $type);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 ?>

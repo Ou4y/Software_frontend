@@ -3,7 +3,7 @@ require_once('../../Controllers/CategoryProductController.php');
 
 // Example of getting men's products in a view
 $productController = new CategoryProductController();
-$menProducts = $productController->getWomenProducts();
+$menProducts = $productController->getLatestProducts();
 ?>
 
 <!DOCTYPE html>
@@ -34,35 +34,37 @@ $menProducts = $productController->getWomenProducts();
     </section>
 
     <section class="products-section container">
-        <div class="section-header">
-            <h2 class="section-title">Best Sellers</h2>
-        </div>
-        <div class="products-grid">
-            <?php if (!empty($menProducts)): ?>
-                <?php foreach ($menProducts as $product): ?>
-                    <article class="product-card">
-                        <div class="product-image">
-                            <img src="../Assets/uploads/<?php echo htmlspecialchars($product['image1'] ?? 'default.png'); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>">
-                            <div class="product-overlay">
-                                <a href="Product.php?id=<?php echo $product['id']; ?>" class="btn btn-view">View Product</a>
-                            </div>
+    <div class="section-header">
+        <h2 class="section-title">Latest Products:</h2>
+    </div>
+    <div class="products-grid">
+        <?php if (!empty($menProducts)): ?>
+            <?php foreach ($menProducts as $product): ?>
+                <article class="product-card">
+                    <div class="product-image">
+                        <img src="/Software_frontend/Assets/uploads/<?php echo "../Assets/uploads/" . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>">
+                        <div class="product-overlay">
+                            <a href="Product.php?id=<?php echo $product['id']; ?>" class="btn btn-view">View Product</a>
                         </div>
-                        <div class="product-details">
-                            <h3 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h3>
-                            <p class="product-price">
-                                $<?php echo htmlspecialchars($product['price']); ?>
-                                <?php if (!empty($product['discount'])): ?>
-                                    <span class="original-price">$<?php echo htmlspecialchars($product['price'] + $product['discount']); ?></span>
-                                <?php endif; ?>
-                            </p>
-                        </div>
-                    </article>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No products available at the moment.</p>
-            <?php endif; ?>
-        </div>
-    </section>
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h3>
+                        <p class="product-price">
+                            $<?php echo htmlspecialchars($product['price']); ?>
+                            <?php if (!empty($product['discount'])): ?>
+                                <span class="original-price">$<?php echo htmlspecialchars($product['price'] + $product['discount']); ?></span>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No products available at the moment.</p>
+        <?php endif; ?>
+    </div>
+</section>
+
+
 
     <section class="features">
         <div class="container">
