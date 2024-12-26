@@ -108,12 +108,12 @@ echo var_dump($_POST);
     </select>
 
     <label for="gender">Product For:</label>
-    <select id="gender" name="gender" required>
+    <select id="type" name="type" required>
         <option value="" disabled selected>Select Type</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Unisex">Unisex</option>
-        <option value="SportsWear">SportsWear</option>
+        <option value="MEN">MEN</option>
+        <option value="WOMEN">WOMEN</option>
+        <option value="UNISEX">UNISEX</option>
+        <option value="SPORTSWEAR">SPORTSWEAR</option>
     </select>
 
     <label for="disnumber">Discount:</label>

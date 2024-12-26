@@ -11,14 +11,14 @@ class Product {
     }
 
     // Add a new product with attributes
-    public function addProduct($title, $price, $attributes = [])
+    public function addProduct($title, $price,$type, $attributes = [])
     {
         try {
             $this->conn->beginTransaction();
 
             // Insert basic product details into the `products` table
-            $stmt = $this->conn->prepare("INSERT INTO products (title, price) VALUES (?, ?)");
-            $stmt->execute([$title, $price]);
+            $stmt = $this->conn->prepare("INSERT INTO products (title, price,type) VALUES (?, ?,?)");
+            $stmt->execute([$title, $price,$type]);
 
             // Get the newly inserted product ID
             $productId = $this->conn->lastInsertId();

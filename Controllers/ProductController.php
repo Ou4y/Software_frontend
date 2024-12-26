@@ -36,7 +36,7 @@ class ProductController
         $sizeL = intval($_POST['size_l']);
         $price = floatval($_POST['price']);
         $category = trim($_POST['category']);
-        $gender = trim($_POST['gender']);
+        $type = trim($_POST['type']);
         $discount = intval($_POST['disnumber']);
 
         $uploadedFiles = $this->uploadFiles();
@@ -51,14 +51,14 @@ class ProductController
             'size_m' => $sizeM,
             'size_l' => $sizeL,
             'category' => $category,
-            'gender' => $gender,
+            'type' => $type,
             'discount' => $discount,
             'image1' => $image1,
             'image2' => $image2,
             'image3' => $image3,
         ];
 
-        $success = $this->productModel->addProduct($title, $price, $attributes);
+        $success = $this->productModel->addProduct($title, $price,$type, $attributes);
 
         if ($success) {
             header('Location: ../public/ManageProducts.php?success=1');
