@@ -72,7 +72,25 @@ class User
         return $users;
     }
 
+    public function getUserById($userId)
+{
+    try {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if ($user) {
+            return $user;
+        }
+        return null;
+    } catch (PDOException $e) {
+        error_log("Error in getUserById: " . $e->getMessage());
+        return null;
+    }
+}
+
+    
 
     public function addUser($username, $email, $password, $phoneNumber, $userType)
 {

@@ -48,7 +48,7 @@ class manageuser
 
     public function addadmin()
 {
-    error_log("addAdmin called."); // Log entry for debugging
+    error_log("addAdmin called."); 
 
     try {
         // Check if the request is POST and all required data is provided
@@ -86,6 +86,7 @@ public function addNormalUser()
     try {
         // Check if the request is POST and all required data is provided
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone_number'])) {
+            $userId = htmlspecialchars($_POST['id']); // Sanitize the input
             $username = htmlspecialchars($_POST['username']);
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
@@ -94,8 +95,8 @@ public function addNormalUser()
             // Add the normal user via the Owners model
             if ($this->owner->addNormalUser($username, $email, $password, $phoneNumber)) {
                 // Redirect with success message
-                $_SESSION['success_message'] = "User added successfully.";
-                header("Location: ../public/addUser.php"); // Correct redirect path for adding normal users
+                $_SESSION['success_message'] = "User edited successfully.";
+                header("Location: ../public/ManageUsers.php"); // Correct redirect path for adding normal users
                 exit;
             } else {
                 throw new Exception("Failed to add user.");
@@ -106,17 +107,42 @@ public function addNormalUser()
     } catch (Exception $e) {
         // Redirect with error message
         $_SESSION['error_message'] = $e->getMessage();
-        header("Location: ../public/errorPage.php"); // Replace with a proper error handling page
+        header("Location: ../public/AdminDashboard.php"); // Replace with a proper error handling page
         exit;
     }
 }
 
+public function edituser(){
+    error_log("edit user called."); // Log entry for debugging
 
+    try {
+        // Check if the request is POST and all required data is provided
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'],$_POST['username'], $_POST['email'], $_POST['phone_number'])) {
+            $userId = htmlspecialchars($_POST['id']); // Sanitize the input
+            $username = htmlspecialchars($_POST['username']);
+            $email = htmlspecialchars($_POST['email']);
+            $phoneNumber = htmlspecialchars($_POST['phone_number']);
+            error_log("Input data: userId=$userId, username=$username, email=$email, phoneNumber=$phoneNumber");
 
+            // Add the normal user via the Owners model
+            if ($this->owner->edituser($userId,$username, $email, $phoneNumber)) {
+                echo json_encode(['success' => true, 'message' => 'User updated successfully.']);
+                header("Location: ../public/ManageUsers.php"); // Correct redirect path for adding normal users
+                return;
+            } else {
+                throw new Exception("Failed to add user.");
+            }
+        } else {
+            throw new Exception("Invalid input data.");
+        }
+    } catch (Exception $e) {
+        // Redirect with error message
+        $_SESSION['error_message'] = $e->getMessage();
+        header("Location: ../public/editUser.php"); // Replace with a proper error handling page
+        exit;
+    } 
 
-
-
-
+}
     public function getAllUsers()
     {
         return $this->user->getAllUsers();
@@ -126,6 +152,12 @@ public function addNormalUser()
     {
         return $this->user->getadmin();
     }
+
+    public function getUserDetails($userId)
+{
+    return $this->user->getUserById($userId);
+}
+
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -162,7 +194,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
-    } else {
+           
+    } elseif ($action === 'edituser' &&
+    isset($_POST['id'], $_POST['username'], $_POST['email'], $_POST['phone_number'])) {
+        try {
+            error_log("Routing to editUser for ID: " . $_POST['id']);
+            $manageuser->edituser();
+        } catch (Exception $e) {
+            error_log("Error in editUser: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+}
+
+    
+    else {
         http_response_code(400);
         $errorMessage = 'Invalid request. ';
         $errorMessage .= $action === null ? 'Missing action parameter. ' : '';
