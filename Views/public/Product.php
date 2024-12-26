@@ -2,6 +2,7 @@
 require_once('../../Controllers/CategoryProductController.php');
 $productController = new CategoryProductController();
 $product = $productController->getProductById($_GET['id']);
+$att = $productController->getAttributesByID($_GET['id']);
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +40,7 @@ $product = $productController->getProductById($_GET['id']);
                 <span class="category-badge"> <?php echo htmlspecialchars($product['type']); ?>  Collection</span>
                 <h1 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h1>
                 <span class="product-price"><?php echo htmlspecialchars($product['price']); ?></span>
-                <p class="product-description"><?php echo htmlspecialchars($product['description']); ?></p>
+                <p class="product-description"><?php echo htmlspecialchars($att['attribute_value']); ?></p>
 
                 <div>
                     <h3 class="section-title">Available Colors</h3>
@@ -65,6 +66,9 @@ $product = $productController->getProductById($_GET['id']);
     </div>
 </div>
 
+
+<?php include('../includes/Footer.php'); ?>
+
 <script>
 // Image Gallery
 function changeImage(src) {
@@ -77,13 +81,7 @@ function changeImage(src) {
     });
 }
 
-// Color Selection
-document.querySelectorAll('.color-option').forEach(color => {
-    color.addEventListener('click', () => {
-        document.querySelectorAll('.color-option').forEach(c => c.classList.remove('active'));
-        color.classList.add('active');
-    });
-});
+
 
 // Size Selection
 document.querySelectorAll('.size-option').forEach(size => {
@@ -94,7 +92,7 @@ document.querySelectorAll('.size-option').forEach(size => {
 });
 </script>
 
-<?php include('../includes/Footer.php'); ?>
+
 
 </body>
 </html>

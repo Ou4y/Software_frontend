@@ -92,7 +92,7 @@ class Product {
         }
     }
 
-    
+
     public function getProductsByType($type) {
         $stmt = $this->conn->prepare("SELECT * FROM products WHERE type = :type");
         $stmt->bindParam(':type', $type);
@@ -108,5 +108,24 @@ class Product {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    
+    public function getAttributesByID($productId) {
+        $stmt = $this->conn->prepare("SELECT * FROM product_attributes WHERE product_id = :product_id AND attribute_name = 'description'");
+        $stmt->bindParam(':product_id', $productId);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getImageByID($productId) {
+        $stmt = $this->conn->prepare("SELECT * FROM product_attributes WHERE product_id = :product_id AND attribute_name = 'image1'");
+        $stmt->bindParam(':product_id', $productId);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+
 }
 ?>

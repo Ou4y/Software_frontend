@@ -64,7 +64,15 @@ class CategoryProductController {
 
     public function getProductById($productId) {
         return $this->categoryProductModel->getProductsByID($productId);
+    }
 
+    public function getAttributesByID($productId) {
+        return $this->categoryProductModel->getAttributesByID($productId);
+    }
+
+
+    public function getImageByID($productId) {
+        return $this->categoryProductModel->getImageByID($productId);
     }
 }
 ?>

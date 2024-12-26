@@ -54,6 +54,15 @@ class CategoryProduct extends Product {
     public function getProductsByID($productId) {
         return parent::getProductsByID($productId);
     }
+
+    public function getAttributesByID($productId) {
+        return parent::getAttributesByID($productId);
+    }
+
+
+    public function getImageByID($productId) {
+        return parent::getImageByID($productId);
+    }
 }
 
 ?>

@@ -1,9 +1,9 @@
 <?php
 require_once('../../Controllers/CategoryProductController.php');
-
-// Example of getting men's products in a view
 $productController = new CategoryProductController();
 $latest = $productController->getLatestProducts();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +43,7 @@ $latest = $productController->getLatestProducts();
                 <article class="product-card">
                     <div class="product-image">
 
-                    <img src="../../Assets/uploads/<?= htmlspecialchars($product['image']) ?>"  onerror="this.src='../Assets/default_image.jpg';" alt="Product Image">
+                    <img src="../../Assets/uploads/<?= htmlspecialchars($productController->getImageByID($product['id'])['attribute_value']) ?>" onerror="this.src='../Assets/default_image.jpg';" alt="Product Image">
                         <div class="product-overlay">
                             <a href="Product.php?id=<?php echo $product['id']; ?>" class="btn btn-view">View Product</a>
                         </div>

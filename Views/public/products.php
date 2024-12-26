@@ -390,7 +390,7 @@ body {
               <article class="product-card">
                   <div class="product-image">
                       <!-- <img src="/Software_frontend/Assets/uploads/<?php echo "../Assets/uploads/" . htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['title']); ?>"> -->
-                      <img src="/sweproj/Assets/uploads/<?= htmlspecialchars($product['picture1']) ?>" alt="Product Image 1">
+                      <img src="../../Assets/uploads/<?= htmlspecialchars($productController->getImageByID($product['id'])['attribute_value']) ?>" onerror="this.src='../Assets/default_image.jpg';" alt="Product Image">
                       <div class="product-overlay">
                           <a href="Product.php?id=<?php echo $product['id']; ?>" class="btn btn-view">View Product</a>
                       </div>
