@@ -1,6 +1,46 @@
 <?php
 session_start();
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get form data
+    $firstName = $_POST['first_name'] ?? '';
+    $lastName = $_POST['last_name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $zipCode = $_POST['zip_code'] ?? '';
+    $cartItems = json_decode($_POST['cart_items'], true);
+    $paymentType = $_POST['payment_type'] ?? '';
+    $totalAmount = $_POST['total_amount'] ?? 0;
+
+    // Validate form data
+    if (empty($firstName) || empty($lastName) || empty($email) || empty($address) || empty($city) || empty($zipCode)) {
+        echo json_encode(['success' => false, 'message' => 'Please fill in all required fields.']);
+        exit;
+    }
+
+    // Example: Process the order (this can be saving data to the database, etc.)
+    // For this example, let's assume we save it to the database.
+
+    // Save order logic (e.g., insert into orders table, etc.)
+    // Example code (you should replace this with your actual database logic):
+    $orderSuccess = true; // Assume the order was placed successfully
+    // Handle cart items and process payment here
+
+    // Respond back with success or error message
+    if ($orderSuccess) {
+        echo json_encode(['success' => true, 'message' => 'Order placed successfully!']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to place the order.']);
+    }
+}
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -191,10 +231,18 @@ session_start();
 
         // Handle form submission
        // Handle form submission
-document.querySelector('#checkout-form').addEventListener('submit', function (e) {
+       document.querySelector('#checkout-form').addEventListener('submit', function(e) {
     e.preventDefault(); // Prevent default form submission
 
-    // Get the cart items from local storage
+    // Get form values
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const zipCode = document.getElementById('zipCode').value;
+
+    // Get the cart items from localStorage
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Get the checkout details
@@ -212,8 +260,14 @@ document.querySelector('#checkout-form').addEventListener('submit', function (e)
         return;
     }
 
-    // Create the data to send
+    // Create the data to send to PHP
     const formData = new FormData();
+    formData.append('first_name', firstName);
+    formData.append('last_name', lastName);
+    formData.append('email', email);
+    formData.append('address', address);
+    formData.append('city', city);
+    formData.append('zip_code', zipCode);
     formData.append('cart_items', JSON.stringify(cartItems));
     formData.append('payment_type', paymentType);
     formData.append('total_amount', totalAmount);
@@ -223,7 +277,7 @@ document.querySelector('#checkout-form').addEventListener('submit', function (e)
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())  // Make sure your backend returns JSON
+    .then(response => response.json())  // Expecting JSON response
     .then(result => {
         if (result.success) {
             alert("Order placed successfully!");
