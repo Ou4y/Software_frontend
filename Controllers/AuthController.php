@@ -59,7 +59,7 @@ class AuthController
             if ($user['user_type'] === 'admin') {
                 header("Location: ../public/admin.php");
             } else {
-                header("Location: ../public/Browse.php");
+                header("Location: ../public/index.php");
             }
             exit(); // Always include an exit after header redirection
         } else {

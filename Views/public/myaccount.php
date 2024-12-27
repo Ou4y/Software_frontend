@@ -273,7 +273,7 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
             <header class="ma-header">
                 <div class="ma-header-left">
                     <h1 class="ma-title">My Account</h1>
-                    <p class="ma-subtitle">Welcome back, John</p>
+                    <p class="ma-subtitle">Welcome back, </p>
                 </div>
                 <button class="ma-logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
