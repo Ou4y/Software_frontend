@@ -51,11 +51,10 @@ class AuthController
     {
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
-        //$isAdmin = isset($_POST['type']) ? 'Yes' : 'No';
-
+        
         $user = $this->userModel->signIn($email, $password);
         if ($user) {
-            $_SESSION['user'] = $user;
+            $_SESSION['user'] = $user;  // Store user data in session
             // Redirect to the appropriate dashboard based on user type
             if ($user['user_type'] === 'admin') {
                 header("Location: ../public/admin.php");
@@ -69,6 +68,7 @@ class AuthController
             exit(); // Always include an exit after header redirection
         }
     }
+    
 
 }
 

@@ -60,13 +60,10 @@
                         <h2>Payment Method</h2>
                         <div class="payment-methods">
                             <div class="payment-method selected">
-                                <i class="fas fa-credit-card"></i>
-                                Credit Card
+                                <i class="fas fa-home"></i>
+                                Cash on Delivery
                             </div>
-                            <div class="payment-method">
-                                <i class="fab fa-paypal"></i>
-                                PayPal
-                            </div>
+
                         </div>
                     </div>
 

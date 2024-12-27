@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 require_once('../../Controllers/CategoryProductController.php');
 
 // Ensure $type is set properly

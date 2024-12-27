@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once('../../Controllers/CategoryProductController.php');
 
 // Example of getting random products in a view
