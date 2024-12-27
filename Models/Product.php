@@ -112,11 +112,14 @@ class Product {
 
     
     public function getAttributesByID($productId) {
-        $stmt = $this->conn->prepare("SELECT * FROM product_attributes WHERE product_id = :product_id AND attribute_name = 'description'");
+        $stmt = $this->conn->prepare("SELECT attribute_name, attribute_value FROM product_attributes WHERE product_id = :product_id");
         $stmt->bindParam(':product_id', $productId);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+
+
 
     public function getImageByID($productId) {
         $stmt = $this->conn->prepare("SELECT * FROM product_attributes WHERE product_id = :product_id AND attribute_name = 'image1'");

@@ -379,7 +379,6 @@ body {
       <?php else: ?>
           <p>No products available at the moment.</p>
       <?php endif; ?>
-        ?>
     </div>
 </section>
 
