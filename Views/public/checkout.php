@@ -17,40 +17,8 @@
         
         <div class="cart-checkout-grid">
             <div class="cart-section">
-                <div class="cart-items">
-                    <div class="cart-item">
-                        <img src="../Assets/images/Product1.png?height=400&width=400" alt="Winter Jacket" class="item-image">
-                        <div class="item-details">
-                            <h3>Premium Winter Jacket</h3>
-                            <p class="item-meta">Size: M | Color: Black</p>
-                        </div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn">-</button>
-                            <input type="number" value="1" min="1" class="quantity-input">
-                            <button class="quantity-btn">+</button>
-                        </div>
-                        <span class="item-price">$299</span>
-                        <button class="remove-item">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-
-                    <div class="cart-item">
-                        <img src="../Assets/images/Product1.png?height=400&width=80" alt="Casual Sneakers" class="item-image">
-                        <div class="item-details">
-                            <h3>Casual Sneakers</h3>
-                            <p class="item-meta">Size: 42 | Color: White</p>
-                        </div>
-                        <div class="quantity-controls">
-                            <button class="quantity-btn">-</button>
-                            <input type="number" value="1" min="1" class="quantity-input">
-                            <button class="quantity-btn">+</button>
-                        </div>
-                        <span class="item-price">$159</span>
-                        <button class="remove-item">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+                <div class="cart-items" id="cart-items">
+                    <!-- Cart items will be dynamically loaded here -->
                 </div>
             </div>
 
@@ -105,7 +73,7 @@
                     <div class="order-summary">
                         <div class="summary-row">
                             <span>Subtotal</span>
-                            <span>$458.00</span>
+                            <span id="subtotal">$0.00</span>
                         </div>
                         <div class="summary-row">
                             <span>Shipping</span>
@@ -113,11 +81,11 @@
                         </div>
                         <div class="summary-row">
                             <span>Tax</span>
-                            <span>$45.80</span>
+                            <span id="tax">$0.00</span>
                         </div>
                         <div class="summary-row summary-total">
                             <span>Total</span>
-                            <span>$503.80</span>
+                            <span id="total">$0.00</span>
                         </div>
                         <button type="submit" class="checkout-btn">Place Order</button>
                     </div>
@@ -127,76 +95,109 @@
     </div>
 
     <script>
-        // Quantity Controls
-        document.querySelectorAll('.quantity-controls').forEach(control => {
-            const input = control.querySelector('.quantity-input');
-            const [decreaseBtn, increaseBtn] = control.querySelectorAll('.quantity-btn');
-
-            decreaseBtn.addEventListener('click', () => {
-                const currentValue = parseInt(input.value);
-                if (currentValue > 1) {
-                    input.value = currentValue - 1;
-                    updateTotals();
-                }
-            });
-
-            increaseBtn.addEventListener('click', () => {
-                input.value = parseInt(input.value) + 1;
-                updateTotals();
-            });
-
-            input.addEventListener('change', updateTotals);
-        });
-
-        // Remove Item
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', () => {
-                const cartItem = button.closest('.cart-item');
-                cartItem.remove();
-                updateTotals();
-            });
-        });
-
-        // Payment Method Selection
-        document.querySelectorAll('.payment-method').forEach(method => {
-            method.addEventListener('click', () => {
-                document.querySelectorAll('.payment-method').forEach(m => {
-                    m.classList.remove('selected');
-                });
-                method.classList.add('selected');
-            });
-        });
-
-        // Form Submission
-        document.getElementById('checkout-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Add your order processing logic here
-            alert('Order placed successfully!');
-        });
-
-        // Update Totals
+        // Helper function to update cart totals
         function updateTotals() {
-            let subtotal = 0;
-            document.querySelectorAll('.cart-item').forEach(item => {
-                const price = parseFloat(item.querySelector('.item-price').textContent.replace('$', ''));
-                const quantity = parseInt(item.querySelector('.quantity-input').value);
-                subtotal += price * quantity;
-            });
+    let subtotal = 0;
+    document.querySelectorAll('.cart-item').forEach(item => {
+        const price = parseFloat(item.querySelector('.item-price').textContent.replace('$', ''));
+        const quantity = parseInt(item.querySelector('.quantity-input').value);
+        subtotal += price * quantity;
+    });
 
-            const tax = subtotal * 0.1; // 10% tax
-            const total = subtotal + tax;
+    const tax = subtotal * 0.1; // 10% tax
+    const total = subtotal + tax;
 
-            // Update summary
-            const summaryRows = document.querySelectorAll('.summary-row');
-            summaryRows[0].querySelector('span:last-child').textContent = `$${subtotal.toFixed(2)}`;
-            summaryRows[2].querySelector('span:last-child').textContent = `$${tax.toFixed(2)}`;
-            document.querySelector('.summary-total span:last-child').textContent = `$${total.toFixed(2)}`;
+    // Update summary
+    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+    document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+}
+
+// Load cart items from local storage
+function loadCartItems() {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartContainer = document.getElementById('cart-items');
+    cartContainer.innerHTML = ''; // Clear the container
+
+    cartItems.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('cart-item');
+        itemElement.innerHTML = `
+            <img src="${item.productImage}" alt="${item.productImage}" class="item-image">
+            <div class="item-details">
+                <h3>${item.productTitle}</h3>
+                <p class="item-meta">Size: ${item.size} | Color: ${item.color}</p>
+            </div>
+            <div class="quantity-controls">
+                <button class="quantity-btn">-</button>
+                <input type="number" class="quantity-input" value="${item.quantity}" min="1">
+                <button class="quantity-btn">+</button>
+            </div>
+            <span class="item-price">$${item.price}</span>
+            <button class="remove-item" data-item-id="${item.productId}">
+                <i class="fas fa-times">  Remove</i>
+            </button>
+        `;
+        cartContainer.appendChild(itemElement);
+
+        // Attach event listener to the remove button
+        itemElement.querySelector('.remove-item').addEventListener('click', function (e) {
+            const itemId = e.target.closest('.remove-item').getAttribute('data-item-id');
+            removeItemFromCart(itemId);
+        });
+    });
+
+    updateTotals();
+}
+
+// Remove item from cart and local storage
+function removeItemFromCart(itemId) {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    cartItems = cartItems.filter(item => item.productId !== itemId);
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    loadCartItems(); // Reload the cart items
+}
+
+// Quantity Controls
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('quantity-btn')) {
+        const itemElement = e.target.closest('.cart-item');
+        const input = itemElement.querySelector('.quantity-input');
+        const itemId = itemElement.querySelector('.remove-item').getAttribute('data-item-id');
+
+        if (e.target.textContent === '-') {
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        } else {
+            input.value = parseInt(input.value) + 1;
         }
+
+        // Update local storage with new quantity
+        updateCartItemQuantity(itemId, input.value);
+        updateTotals();
+    }
+});
+
+// Update item quantity in local storage
+function updateCartItemQuantity(itemId, quantity) {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    cartItems = cartItems.map(item => {
+        if (item.productId === itemId) {
+            item.quantity = quantity;
+        }
+        return item;
+    });
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+}
+
+// Initialize cart items
+loadCartItems();
+
+    
     </script>
 
-
 <?php include('../includes/Footer.php'); ?>
-
 
 </body>
 </html>

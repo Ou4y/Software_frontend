@@ -473,6 +473,18 @@ $size_l = $attributes['size_l'] ?? '0';
 <div class="pd-stock-status" id="stockStatus"></div>
 
 <script>
+    // Helper function to get cart from localStorage
+    function getCartFromLocalStorage() {
+        const cart = localStorage.getItem('cart');
+        return cart ? JSON.parse(cart) : [];
+    }
+
+    // Helper function to save cart to localStorage
+    function saveCartToLocalStorage(cart) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Function to handle image change
     function pdChangeImage(src) {
         document.getElementById('pdMainImage').src = src;
         document.querySelectorAll('.pd-thumb').forEach(thumb => {
@@ -483,6 +495,7 @@ $size_l = $attributes['size_l'] ?? '0';
         });
     }
 
+    // Handle color selection
     document.querySelectorAll('.pd-color-item').forEach(color => {
         color.addEventListener('click', () => {
             document.querySelectorAll('.pd-color-item').forEach(c => c.classList.remove('pd-active'));
@@ -490,18 +503,19 @@ $size_l = $attributes['size_l'] ?? '0';
         });
     });
 
+    // Handle size selection
     document.querySelectorAll('.pd-size-item').forEach(size => {
-    size.addEventListener('click', () => {
-        document.querySelectorAll('.pd-size-item').forEach(s => s.classList.remove('pd-active'));
-        size.classList.add('pd-active');
+        size.addEventListener('click', () => {
+            document.querySelectorAll('.pd-size-item').forEach(s => s.classList.remove('pd-active'));
+            size.classList.add('pd-active');
 
-        const stock = parseInt(size.dataset.stock);
-        const stockStatus = document.getElementById('stockStatus');
-        const addToCartBtn = document.querySelector('.pd-add-cart-btn');
+            const stock = parseInt(size.dataset.stock);
+            const stockStatus = document.getElementById('stockStatus');
+            const addToCartBtn = document.querySelector('.pd-add-cart-btn');
 
-        if (stock > 0) {
-            stockStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${stock} Available In Stock`;
-            stockStatus.style.color = '#22c55e'; // Green color for in stock
+            if (stock > 0) {
+                stockStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${stock} Available In Stock`;
+                stockStatus.style.color = '#22c55e'; // Green color for in stock
                 addToCartBtn.disabled = false; // Enable button if in stock
             } else {
                 stockStatus.innerHTML = '<i class="fas fa-times-circle"></i> Out of Stock';
@@ -509,10 +523,9 @@ $size_l = $attributes['size_l'] ?? '0';
                 addToCartBtn.disabled = true; // Disable button if out of stock
             }
         });
-        }
-    );
+    });
 
-
+    // Update quantity (increment/decrement)
     function pdUpdateQuantity(change) {
         const input = document.getElementById('pdQuantity');
         const currentValue = parseInt(input.value);
@@ -523,19 +536,45 @@ $size_l = $attributes['size_l'] ?? '0';
         }
     }
 
+    // Add item to the cart
     function pdAddToCart() {
         const btn = document.querySelector('.pd-add-cart-btn');
-        const popup = document.getElementById('pdNotification');
         const quantity = document.getElementById('pdQuantity').value;
         const selectedSize = document.querySelector('.pd-size-item.pd-active').textContent;
         const selectedColor = document.querySelector('.pd-color-item.pd-active').getAttribute('title');
-        
+        const productId = '<?= $_GET["id"] ?>'; // Get the product ID from the URL
+        const productTitle = '<?= htmlspecialchars($product['title']); ?>'; 
+        const productPrice = '<?= htmlspecialchars($product['price']); ?>';
+        const productImage = document.getElementById('pdMainImage').src;
+
         btn.classList.add('pd-adding');
         
+        // Wait for the button animation to finish before updating the cart
         setTimeout(() => {
             btn.classList.remove('pd-adding');
             btn.classList.add('pd-added');
             
+            // Retrieve the current cart from localStorage
+            const cart = getCartFromLocalStorage();
+            
+            // Add the new item to the cart
+            const newItem = {
+                productId: productId,
+                productTitle: productTitle,
+                price: productPrice,
+                quantity: parseInt(quantity),
+                size: selectedSize,
+                color: selectedColor,
+                productImage: productImage
+            };
+            
+            cart.push(newItem);
+            
+            // Save the updated cart to localStorage
+            saveCartToLocalStorage(cart);
+            
+            // Show the cart notification popup
+            const popup = document.getElementById('pdNotification');
             popup.classList.add('pd-show');
             
             setTimeout(() => {
@@ -547,7 +586,9 @@ $size_l = $attributes['size_l'] ?? '0';
         console.log(`Added to cart: ${quantity} items, Size: ${selectedSize}, Color: ${selectedColor}`);
     }
 
+    // Ensure the quantity can't be less than 1
     document.getElementById('pdQuantity').addEventListener('change', function() {
         if (this.value < 1) this.value = 1;
     });
 </script>
+
