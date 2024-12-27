@@ -491,17 +491,17 @@ $size_l = $attributes['size_l'] ?? '0';
     });
 
     document.querySelectorAll('.pd-size-item').forEach(size => {
-        size.addEventListener('click', () => {
-            document.querySelectorAll('.pd-size-item').forEach(s => s.classList.remove('pd-active'));
-            size.classList.add('pd-active');
+    size.addEventListener('click', () => {
+        document.querySelectorAll('.pd-size-item').forEach(s => s.classList.remove('pd-active'));
+        size.classList.add('pd-active');
 
-            const stock = parseInt(size.dataset.stock);
-            const stockStatus = document.getElementById('stockStatus');
-            const addToCartBtn = document.querySelector('.pd-add-cart-btn');
+        const stock = parseInt(size.dataset.stock);
+        const stockStatus = document.getElementById('stockStatus');
+        const addToCartBtn = document.querySelector('.pd-add-cart-btn');
 
-            if (stock > 0) {
-                stockStatus.innerHTML = '<i class="fas fa-check-circle"></i> In Stock';
-                stockStatus.style.color = '#22c55e'; // Green color for in stock
+        if (stock > 0) {
+            stockStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${stock} Available In Stock`;
+            stockStatus.style.color = '#22c55e'; // Green color for in stock
                 addToCartBtn.disabled = false; // Enable button if in stock
             } else {
                 stockStatus.innerHTML = '<i class="fas fa-times-circle"></i> Out of Stock';
@@ -509,7 +509,9 @@ $size_l = $attributes['size_l'] ?? '0';
                 addToCartBtn.disabled = true; // Disable button if out of stock
             }
         });
-    });
+        }
+    );
+
 
     function pdUpdateQuantity(change) {
         const input = document.getElementById('pdQuantity');
