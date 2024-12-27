@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     $discount = intval($_POST['disnumber']);
     $photo = $_FILES['photo'];
 
-    // Call the ProductController to handle product creation
     
     $result = $controller->addProduct($title, $description, $color, $size_s, $size_m, $size_l, $price, $category, $gender, $discount, $photo);
 
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         $error = "Failed to add product. Please try again.";
     }
 }
-echo var_dump($_POST);
+
 ?>
 
 <!DOCTYPE html>
