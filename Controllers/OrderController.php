@@ -1,54 +1,72 @@
-<?php 
-require_once('../../Models/ConfirmOrder.php');
+<?php
 session_start();
 
-class OrderController
-{
-    private $orderModel;
-    private $db;
+// Include the database connection and model files
+require_once(__DIR__ . '/../Models/ConfirmOrder.php');
+require_once(__DIR__ . '/../DataBase.php');
 
-    public function __construct($db)
-    {
-        $this->db = $db;
-        $this->orderModel = new ConfirmOrder($this->db);
-    }
+// Enable detailed error reporting for debugging purposes
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    public function handleCheckout()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POST['form_type'] === 'checkoutForm') {
-            // Get form data
-            $userId = $_SESSION['user_id']; // Assuming the user is logged in and their ID is stored in session
-            $paymentType = $_POST['payment_type']; // Payment method
-            $totalAmount = floatval($_POST['total_amount']); // Total order amount from the frontend
+// Initialize the database connection
+$dbConnection = (new Database())->getConnection();
 
-            // Create the order
-            $result = $this->orderModel->createOrder($userId, $paymentType, $totalAmount);
+// Create a new instance of the model with the database connection
+$orderModel = new ConfirmOrderModel($dbConnection);
 
-            if ($result) {
-                $orderId = $this->db->insert_id; // Get the last inserted order ID
-
-                // Process each cart item
-                $cartItems = json_decode($_POST['cart_items'], true); // Assuming cart items are sent as a JSON array
-
-                foreach ($cartItems as $item) {
-                    // Add order items to the database
-                    $this->orderModel->addOrderItem($orderId, $item['product_id'], $item['quantity'], $item['price']);
-                }
-
-                // Redirect or return a success message
-                header('Location: thank_you.php?order_id=' . $orderId);
-                exit;
-            } else {
-                // Handle the error if the order was not placed
-                $error = "Failed to place the order. Please try again.";
-                echo $error; // You can display an error message here
-            }
-        }
-    }
+// Check if the user is logged in
+$userId = $_SESSION['user']['id'] ?? null;
+if (!$userId) {
+    header('Location: ../Views/public/LoginSignup.php');
+    exit;
 }
 
-// Instantiate and call the handleCheckout method
-$controller = new OrderController($db); // Assume $db is your database connection
-$controller->handleCheckout();
+// Handle the POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $firstName = $_POST['first_name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $zipCode = $_POST['zip_code'] ?? '';
+    $cartItems = json_decode($_POST['cart_items'], true);
+    $totalAmount = $_POST['total_amount'] ?? 0;
 
+    // Validate input
+    if (empty($firstName) || empty($email) || empty($address) || empty($city) || empty($zipCode) || empty($cartItems)) {
+        echo json_encode(['success' => false, 'message' => 'Please fill in all required fields.']);
+        exit;
+    }
+
+    // Process the order
+    $orderDate = date('Y-m-d H:i:s');
+    $name = $firstName . ' ' . ($_POST['last_name'] ?? '');
+
+    // Begin transaction to ensure consistency
+    $orderModel->beginTransaction();
+
+    try {
+        // Create the order
+        $orderId = $orderModel->createOrder($userId, $name, $email, $address, $city, $zipCode, $orderDate, $totalAmount);
+        
+        // Create order items
+        foreach ($cartItems as $item) {
+            $orderModel->createOrderItem($orderId, $item['productId'], $item['quantity'], $item['price']);
+        }
+
+        // Commit the transaction
+        $orderModel->commitTransaction();
+        header('Location: ../Views/public/Confirmation.php');
+    } catch (Exception $e) {
+        // Rollback transaction in case of an error
+        $orderModel->rollbackTransaction();
+        
+        // Log the error message for debugging
+        error_log("Order placement failed: " . $e->getMessage());
+        
+        // Return a detailed error message to the user
+        echo json_encode(['success' => false, 'message' => 'Failed to place the order.', 'error' => $e->getMessage()]);
+    }
+}
 ?>
