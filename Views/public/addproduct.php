@@ -13,11 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     $price = floatval($_POST['price']);
     $category = $_POST['category'];
     $gender = $_POST['gender'];
-    $discount = intval($_POST['disnumber']);
     $photo = $_FILES['photo'];
 
     
-    $result = $controller->addProduct($title, $description, $color, $size_s, $size_m, $size_l, $price, $category, $gender, $discount, $photo);
+    $result = $controller->addProduct($title, $description, $color, $size_s, $size_m, $size_l, $price, $category, $gender, $photo);
 
     // Redirect or display a message based on the result
     if ($result) {
@@ -56,10 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     </ul>
 </section>
 <section id="content">
-<nav>
-<i class='bx bx-menu menu-icon'></i>
-<button class="logout-btn"><i class='bx bx-log-out'></i>Logout</button>
-</nav>
+    <nav>
+      <i class='bx bx-menu menu-icon'></i>
+      <a  href='logout.php' class="logout-btn"><i class='bx bx-log-out'></i>Logout</a>
+    </nav>
 
 <main>
   <div class="head-title">
@@ -115,8 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
         <option value="SPORTSWEAR">SPORTSWEAR</option>
     </select>
 
-    <label for="disnumber">Discount:</label>
-    <input type="number" id="disnumber" name="disnumber" placeholder="Enter discount percentage" required>
 
     <label for="photo">Upload Photo:</label>
     <div class="custom-file-upload">

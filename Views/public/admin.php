@@ -32,7 +32,7 @@ $data = $controller->getDashboardData(); // Get the dashboard data (total users 
   <section id="content">
     <nav>
       <i class='bx bx-menu menu-icon'></i>
-      <button class="logout-btn"><i class='bx bx-log-out'></i>Logout</button>
+      <a  href='logout.php' class="logout-btn"><i class='bx bx-log-out'></i>Logout</a>
     </nav>
 
     <main>
@@ -61,8 +61,8 @@ $data = $controller->getDashboardData(); // Get the dashboard data (total users 
         <li>
           <i class='bx bx-dollar'></i>
           <span class="text">
-            <h3>200000</h3>
-            <p>Total profit</p>
+            <h3><?php echo $data['totalOrders'];?></h3>
+            <p>Total Orders</p>
           </span>
         </li>
       </ul>
@@ -70,7 +70,7 @@ $data = $controller->getDashboardData(); // Get the dashboard data (total users 
       <div class="table-data">
         <div class="order">
           <div class="head">
-            <h3>Ongoing Orders </h3>
+            <h3>Orders:</h3>
             <box-icon name='search'></box-icon>
           </div>
           <table>
@@ -78,30 +78,33 @@ $data = $controller->getDashboardData(); // Get the dashboard data (total users 
               <tr>
                 <th>Username</th>
                 <th>E-mail</th>
-                <th>Phone Number</th>
-                <th>Delivery Date</th>
+                <th>Total Amount</th>
+                <th>Order Date</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody id="orderList">
+            <tbody id="orderList">
+              
+    <?php
+    // Display the orders dynamically
+    if ($data['orders']) {
+        foreach ($data['orders'] as $order) {
+            echo "<tr>
+                    <td>{$order['username']}</td>
+                    <td>{$order['email']}</td>
+                    <td>{$order['total_amount']}</td>
+                    <td>{$order['order_date']}</td>
+                    <td>{$order['status']}</td>
+                  </tr>";
+        }
+    } else {
+        echo "<tr><td colspan='4'>No orders found</td></tr>";
+    }
+    ?>
+</tbody>
 
-            <!-- should be replaced with the actual data from the database -->
 
-            
-              <!-- Example dynamic data
-              <?php
-              // Fetch ongoing orders from the database if applicable
-              // Example of fetching data dynamically (make sure you implement this part)
-              $orders = []; // Replace this with actual orders from the database
-              foreach ($orders as $order) {
-                  echo "<tr>
-                        <td>{$order['username']}</td>
-                        <td>{$order['email']}</td>
-                        <td>{$order['phone']}</td>
-                        <td>{$order['delivery_date']}</td>
-                    </tr>";
-              }
-              ?> -->
-            </tbody>
           </table>
         </div>
       </div>

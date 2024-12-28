@@ -1,5 +1,4 @@
 <?php
-
 require_once(__DIR__ . '/../Models/AdminDashboard.php');
 require_once(__DIR__ . '/../DataBase.php');
 
@@ -16,11 +15,16 @@ class AdminController {
     public function getDashboardData() {
         $totalUsers = $this->AdminControllermodel->getTotalUsers(); 
         $totalProducts = $this->AdminControllermodel->getTotalProducts(); 
+        $totalOrders = $this->AdminControllermodel->getTotalOrders();
+        $orders = $this->AdminControllermodel->getOrders(); // Get orders data
 
         return [
             'totalUsers' => $totalUsers,
-            'totalProducts' => $totalProducts
+            'totalProducts' => $totalProducts,
+            'totalOrders' => $totalOrders,
+            'orders' => $orders, // Add orders to the data
         ];
     }
+    
 }
 ?>

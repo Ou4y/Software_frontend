@@ -37,7 +37,7 @@ class ProductController
         $price = floatval($_POST['price']);
         $category = trim($_POST['category']);
         $type = trim($_POST['type']);
-        $discount = intval($_POST['disnumber']);
+     
 
         $uploadedFiles = $this->uploadFiles();
         $image1 = $uploadedFiles[0] ?? null;
@@ -51,7 +51,7 @@ class ProductController
             'size_m' => $sizeM,
             'size_l' => $sizeL,
             'category' => $category,
-            'discount' => $discount,
+  
             'image1' => $image1,
             'image2' => $image2,
             'image3' => $image3,

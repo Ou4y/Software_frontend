@@ -21,7 +21,6 @@
                     <li><a href="../public/index.php" class="nav-link">Home</a></li>
                     <li><a href="../public/Browse.php" class="nav-link">Browse</a></li>
                     <li><a href="../public/Size.php" class="nav-link">Size Chart</a></li>
-                    <li><a href="../public/Size.php" class="nav-link sale">Sale</a></li>
                 </ul>
             </nav>
             

@@ -53,7 +53,7 @@ if (isset($_POST['deleteUser'])) {
   <section id="content">
     <nav>
       <i class='bx bx-menu menu-icon'></i>
-      <button class="logout-btn"><i class='bx bx-log-out'></i>Logout</button>
+      <a  href='logout.php' class="logout-btn"><i class='bx bx-log-out'></i>Logout</a>
     </nav>
 
     <main>
