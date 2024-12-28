@@ -1,11 +1,11 @@
 <?php
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class ConfirmOrderModel {
     private $db;
 
-    public function __construct($dbConnection) {
-        $this->db = $dbConnection;
+    public function __construct() {
+        $this->db = Database::getInstance()->getConnection();
     }
 
     // Start a transaction

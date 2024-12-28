@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../Models/Product.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class ProductController
 {
@@ -9,7 +9,7 @@ class ProductController
     public function __construct()
     {
         // Create a database connection
-        $dbConnection = (new Database())->getConnection();
+        $dbConnection = Database::getInstance()->getConnection();
 
         // Initialize the Product model
         $this->productModel = new Product($dbConnection);

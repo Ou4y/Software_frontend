@@ -1,16 +1,15 @@
 <?php
-require_once(__DIR__ . '/../DataBase.php');
-$db = new Database();
-$conn = $db->getConnection();
+require_once (__DIR__ . '/../Models/DataBase.php');
 
-$user = new User($conn);
+
+$user = new User();
 class User
 {
     private $conn;
 
-    public function __construct($dbConnection)
+    public function __construct()
     {
-        $this->conn = $dbConnection;
+        $this->conn = Database::getInstance()->getConnection();
     }
 
     public function signUp($username, $email, $password, $phoneNumber)
@@ -42,6 +41,7 @@ class User
     }
     public function deleteUser($userId)
 {
+    error_log("Parent deleteUser called with userId: " . var_export($userId, true));
     if (!isset($userId) || !is_numeric($userId)) {
         throw new Exception("Invalid user ID provided."); 
     }
@@ -52,6 +52,7 @@ class User
         $stmt->execute();
         return true; 
     } catch (PDOException $e) {
+        error_log("Error in deleteUser: " . $e->getMessage());
         throw new Exception("Database error: " . $e->getMessage()); 
     }
 }

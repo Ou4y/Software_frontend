@@ -1,14 +1,16 @@
 <?php
 require_once(__DIR__ . '/../Models/Product.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class CategoryProduct extends Product {
     private $conn;
 
-    public function __construct($dbConnection)
+    public function __construct()
     {
-        parent::__construct($dbConnection);  // Call the parent class constructor to initialize the $conn
-        $this->conn = $dbConnection;
+        $this->conn = Database::getInstance()->getConnection();
+
+        // Call the parent class constructor and pass the Singleton connection
+        parent::__construct($this->conn);
     }
 
     public function getMenProducts() {

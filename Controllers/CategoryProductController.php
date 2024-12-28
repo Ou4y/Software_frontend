@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../Models/CategoryProduct.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class CategoryProductController {
     private $categoryProductModel;
@@ -8,7 +8,7 @@ class CategoryProductController {
     public function __construct()
     {
         // Create a database connection
-        $dbConnection = (new Database())->getConnection();
+        $dbConnection = Database::getInstance()->getConnection();
 
         // Initialize the CategoryProduct model
         $this->categoryProductModel = new CategoryProduct($dbConnection);

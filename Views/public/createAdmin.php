@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $manageuser = new manageuser();
 $users = $manageuser->getadmin();
-if (isset($_POST['deleteUser'])) {
+if (isset($_POST['deleteUser']) && is_object($users)) {
   $users->deleteUser($_POST['id']); // Delete a user
 }
 ?>

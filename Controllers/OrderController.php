@@ -3,7 +3,7 @@ session_start();
 
 // Include the database connection and model files
 require_once(__DIR__ . '/../Models/ConfirmOrder.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 // Enable detailed error reporting for debugging purposes
 ini_set('display_errors', 1);
@@ -11,7 +11,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Initialize the database connection
-$dbConnection = (new Database())->getConnection();
+$dbConnection = Database::getInstance()->getConnection();
 
 // Create a new instance of the model with the database connection
 $orderModel = new ConfirmOrderModel($dbConnection);

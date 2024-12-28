@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../Models/User.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class AuthController
 {
@@ -8,8 +8,7 @@ class AuthController
 
     public function __construct()
     {
-        // Create a database connection
-        $dbConnection = (new Database())->getConnection();
+        $dbConnection = Database::getInstance()->getConnection();
 
         // Now pass the connection to the User class constructor
         $this->userModel = new User($dbConnection);

@@ -1,13 +1,13 @@
 <?php
 require_once(__DIR__ . '/../Models/AdminDashboard.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class AdminController {
     private $AdminControllermodel;
 
     public function __construct()
     {
-        $dbConnection = (new Database())->getConnection();
+        $dbConnection = Database::getInstance()->getConnection();
         $this->AdminControllermodel = new AdminDashboard($dbConnection); 
     }
 

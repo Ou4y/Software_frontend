@@ -296,24 +296,23 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
                 </a>
             </div>
 
-            <!-- Profile Section -->
             <section class="ma-section">
                 <div class="ma-section-header">
                     <h2 class="ma-section-title">Profile Information</h2>
-                    <button class="ma-btn ma-btn-outline">Edit</button>
+                    <button class="ma-btn ma-btn-outline">save</button>
                 </div>
                 <div class="ma-form-grid">
                     <div class="ma-form-group">
                         <label class="ma-form-label">Name</label>
-                        <input type="text" class="ma-form-input" value="John Doe" disabled>
+                        <input type="text" class="ma-form-input" id="username" name="username" required>
                     </div>
                     <div class="ma-form-group">
                         <label class="ma-form-label">Email</label>
-                        <input type="email" class="ma-form-input" value="john.doe@example.com" disabled>
+                        <input type="email" class="ma-form-input" id="email" name="email" required>
                     </div>
                     <div class="ma-form-group">
                         <label class="ma-form-label">Phone</label>
-                        <input type="tel" class="ma-form-input" value="+1 (555) 123-4567" disabled>
+                        <input type="tel" class="ma-form-input"  id="phone_number" name="phone_number" required>
                     </div>
                 </div>
             </section>
@@ -348,19 +347,6 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
                 document.querySelectorAll('.ma-tab').forEach(t => t.classList.remove('ma-active'));
                 tab.classList.add('ma-active');
             });
-        });
-
-        // Edit Profile
-        document.querySelector('.ma-btn-outline').addEventListener('click', function() {
-            const inputs = document.querySelectorAll('.ma-form-input');
-            const isEditing = this.textContent === 'Edit';
-            
-            inputs.forEach(input => input.disabled = !isEditing);
-            this.textContent = isEditing ? 'Save' : 'Edit';
-            
-            if (!isEditing) {
-                alert('Profile updated successfully!');
-            }
         });
 
         // Logout

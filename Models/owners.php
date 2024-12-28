@@ -1,30 +1,23 @@
 <?php
 require_once(__DIR__ . '/../Models/User.php');
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
-$db = new Database();
-$conn = $db->getConnection();
-$owner = new owners($conn);
+
 
 class owners extends User
 {
     private $conn;
 
-    public function __construct($dbConnection)
+    public function __construct()
     {
-        $this->conn = $dbConnection;
+        $this->conn = Database::getInstance()->getConnection();
 
-        parent::__construct($dbConnection);
+        // Call the parent constructor with the connection
+        parent::__construct($this->conn);
     
     }
     public function deleteUser($userId) {
-        try {
-            error_log("deleteUser called in owners with ID: $userId"); 
-            return parent::deleteUser($userId); 
-        } catch (Exception $e) {
-            error_log("Error in owners deleteUser: " . $e->getMessage());
-            throw $e;
-        }
+        return parent::deleteUser($userId);
     }
 
     public function addAdmin($username, $email, $password, $phoneNumber)

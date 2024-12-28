@@ -1,11 +1,11 @@
 <?php
-require_once(__DIR__ . '/../DataBase.php');
+require_once (__DIR__ . '/../Models/DataBase.php');
 
 class Product {
     private $conn;
 
-    public function __construct($dbConnection) {
-        $this->conn = $dbConnection;
+    public function __construct() {
+        $this->conn = Database::getInstance()->getConnection();
     }
 
     public function addProduct($title, $price, $type, $attributes = []) {
