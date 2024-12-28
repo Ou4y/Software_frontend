@@ -2,19 +2,22 @@
 require_once(__DIR__ . '/../Models/User.php');
 require_once (__DIR__ . '/../Models/DataBase.php');
 require_once(__DIR__ . '/../Models/owners.php');
+require_once(__DIR__ . '/../Models/UserFactory.php');
 
 class manageuser
 {
-    private $owner;
-    private $user;
+    private Owners $owner;
+    private User  $user;
+    private PDO  $dbConnection;
 
     public function __construct()
     {
         // Create a database connection
-        $dbConnection = Database::getInstance()->getConnection();
+        $this->dbConnection = Database::getInstance()->getConnection();
 
-        $this->owner = new Owners($dbConnection);
-        $this->user = new User($dbConnection); 
+        // Create user objects using the Factory
+        $this->owner = UserFactory::create('owners');
+        $this->user = UserFactory::create('user');
     }
 
     public function deleteUser()
@@ -52,7 +55,7 @@ class manageuser
             $phoneNumber = htmlspecialchars($_POST['phone_number']);
 
             // Add the admin via the Owners model
-            if ($this->owner->addadmin($username, $email, $password, $phoneNumber)) {
+            if ($this->owner->addAdmin($username, $email, $password, $phoneNumber)) {
                 // Redirect with success message
                 $_SESSION['success_message'] = "Admin added successfully.";
                 header("Location: ../public/createAdmin.php"); // Replace with your actual redirect page

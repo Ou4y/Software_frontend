@@ -12,7 +12,6 @@ class owners extends User
     {
         $this->conn = Database::getInstance()->getConnection();
 
-        // Call the parent constructor with the connection
         parent::__construct($this->conn);
     
     }
