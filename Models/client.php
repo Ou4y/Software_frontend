@@ -31,7 +31,7 @@
             $stmt->bindParam(':phone_number', $phoneNumber, PDO::PARAM_STR);
 
             error_log("SQL Query: " . $stmt->queryString);
-            error_log("Parameters: userId=$userId, username=$username, email=$email, phoneNumber=$phoneNumber");
+            error_log("Parameters: userId=$userId, username=$username, email=$email, phone_number=$phoneNumber");
 
             $stmt->execute();
 
