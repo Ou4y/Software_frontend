@@ -7,7 +7,6 @@ $email = '';
 $phoneNumber = '';
 $userId = null;
 
-// Check if the ID is passed via GET (for form loading)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['ID'])) {
     $userId = intval($_GET['ID']); // Sanitize the ID
     $manageuser = new manageuser();

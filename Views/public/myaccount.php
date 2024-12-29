@@ -1,23 +1,34 @@
 <?php
+require_once('../../Controllers/usercontroller.php');
+
+// Start session and check if user is logged in
 session_start();
 if (!isset($_SESSION['user'])) {
     header("Location: LoginSignup.php");
     exit();
 }
 
-// Assuming session data contains user information
-$user = $_SESSION['user']; // The user ID or username
+$userId = $_SESSION['user']['id'];
+$manageuser = new manageuser();
+$currentUser = $manageuser->getUserDetails($userId);
+$userOrders = $manageuser->getUserOrders($userId);
 
-// Fetch additional session data if available
-$userName = isset($_SESSION['userName']) ? $_SESSION['userName'] : '';
-$userEmail = isset($_SESSION['userEmail']) ? $_SESSION['userEmail'] : '';
-$userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST['action'] === 'editClient') {
+    $username = htmlspecialchars($_POST['username']);
+    $email = htmlspecialchars($_POST['email']);
+    $phoneNumber = htmlspecialchars($_POST['phone_number']);
 
-// You can now use these variables like $userName, $userEmail, etc.
+    if ($manageuser->editclient($userId, $username, $email, $phoneNumber)) {
+        $_SESSION['success_message'] = "Profile updated successfully!";
+        header("Location: myaccount.php");
+        exit();
+    } else {
+        $_SESSION['error_message'] = "Failed to update profile.";
+    }
+}
 ?>
 
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,7 +55,7 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
         }
 
         .ma-wrapper {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.5;
             color: var(--ma-text);
             background-color: #f8f9fa;
@@ -96,70 +107,6 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
             opacity: 0.9;
         }
 
-        /* Tabs */
-        .ma-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--ma-border);
-            padding-bottom: 0.5rem;
-        }
-
-        .ma-tab {
-            padding: 0.75rem 1.5rem;
-            color: var(--ma-text);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .ma-tab:hover {
-            background: #f8f9fa;
-        }
-
-        .ma-tab.ma-active {
-            color: var(--ma-primary);
-            font-weight: 500;
-            position: relative;
-        }
-
-        .ma-tab.ma-active::after {
-            content: '';
-            position: absolute;
-            bottom: -0.6rem;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--ma-primary);
-        }
-
-        /* Content Sections */
-        .ma-section {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px var(--ma-shadow);
-            margin-bottom: 1.5rem;
-        }
-
-        .ma-section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--ma-border);
-        }
-
-        .ma-section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        /* Form */
         .ma-form-grid {
             display: grid;
             gap: 1.5rem;
@@ -188,42 +135,6 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
             border-color: var(--ma-primary);
         }
 
-        /* Orders */
-        .ma-order-list {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .ma-order-item {
-            border: 1px solid var(--ma-border);
-            border-radius: 4px;
-            padding: 1rem;
-        }
-
-        .ma-order-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .ma-order-number {
-            font-weight: 600;
-        }
-
-        .ma-order-date {
-            color: var(--ma-muted);
-        }
-
-        .ma-order-status {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            background: #dcfce7;
-            color: #166534;
-        }
-
         .ma-btn {
             padding: 0.75rem 1.5rem;
             border: none;
@@ -245,117 +156,106 @@ $userPhone = isset($_SESSION['userPhone']) ? $_SESSION['userPhone'] : '';
             color: var(--ma-primary);
         }
 
-        @media (max-width: 768px) {
-            .ma-header {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
+        .ma-order-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 20px;
+        }
 
-            .ma-tabs {
-                overflow-x: auto;
-                white-space: nowrap;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 0.5rem;
-            }
+        .ma-order-item {
+            border: 1px solid var(--ma-border);
+            border-radius: 4px;
+            padding: 1rem;
+            background-color: #fff;
+            box-shadow: 0 2px 4px var(--ma-shadow);
+        }
 
-            .ma-tab {
-                padding: 0.75rem 1rem;
-            }
+        .ma-order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .ma-order-number {
+            font-weight: 600;
+        }
+
+        .ma-order-info p {
+            margin: 0.5rem 0;
+        }
+
+        .ma-section-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    
-<?php include('../includes/header.php'); ?>
+    <?php include('../includes/header.php'); ?>
     <div class="ma-wrapper">
         <div class="ma-container">
             <header class="ma-header">
                 <div class="ma-header-left">
                     <h1 class="ma-title">My Account</h1>
-                    <p class="ma-subtitle">Welcome back, </p>
+                    <p class="ma-subtitle">Welcome back, <?php echo htmlspecialchars($currentUser['username']); ?>!</p>
                 </div>
-                <button class="ma-logout-btn">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
-                </button>
+                <button class="ma-logout-btn" onclick="logout()">Logout</button>
             </header>
 
-            <div class="ma-tabs">
-                <a href="#profile" class="ma-tab ma-active">
-                    <i class="fas fa-user"></i>
-                    Profile
-                </a>
-                <a href="#orders" class="ma-tab">
-                    <i class="fas fa-shopping-bag"></i>
-                    Orders
-                </a>
-                <a href="#settings" class="ma-tab">
-                    <i class="fas fa-cog"></i>
-                    Settings
-                </a>
-            </div>
-
-            <section class="ma-section">
-                <div class="ma-section-header">
-                    <h2 class="ma-section-title">Profile Information</h2>
-                    <button class="ma-btn ma-btn-outline">save</button>
-                </div>
+            <!-- Profile Form -->
+            <form method="POST" action="myaccount.php">
+                <input type="hidden" name="action" value="editClient">
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($currentUser['id']); ?>">
                 <div class="ma-form-grid">
                     <div class="ma-form-group">
                         <label class="ma-form-label">Name</label>
-                        <input type="text" class="ma-form-input" id="username" name="username" required>
+                        <input type="text" class="ma-form-input" name="username" value="<?php echo htmlspecialchars($currentUser['username']); ?>" required>
                     </div>
                     <div class="ma-form-group">
                         <label class="ma-form-label">Email</label>
-                        <input type="email" class="ma-form-input" id="email" name="email" required>
+                        <input type="email" class="ma-form-input" name="email" value="<?php echo htmlspecialchars($currentUser['email']); ?>" required>
                     </div>
                     <div class="ma-form-group">
                         <label class="ma-form-label">Phone</label>
-                        <input type="tel" class="ma-form-input"  id="phone_number" name="phone_number" required>
+                        <input type="text" class="ma-form-input" name="phone_number" value="<?php echo htmlspecialchars($currentUser['phone_number']); ?>" required>
                     </div>
                 </div>
-            </section>
+                <button type="submit" class="ma-btn ma-btn-outline">Save Changes</button>
+            </form>
 
-            <!-- Recent Orders -->
+            <!-- Orders Section -->
             <section class="ma-section">
-                <div class="ma-section-header">
-                    <h2 class="ma-section-title">Recent Orders</h2>
-                </div>
-                <div class="ma-order-list">
-                    <div class="ma-order-item">
-                        <div class="ma-order-header">
-                            <span class="ma-order-number">#ORD-2024-001</span>
-                            <span class="ma-order-date">Jan 15, 2024</span>
-                        </div>
-                        <div class="ma-order-info">
-                            <p>Premium Winter Jacket</p>
-                            <p>Total: $299.00</p>
-                        </div>
-                        <span class="ma-order-status">Delivered</span>
+                <h2 class="ma-section-title">My Orders</h2>
+                <?php if (!empty($userOrders)) : ?>
+                    <div class="ma-order-list">
+                        <?php foreach ($userOrders as $order) : ?>
+                            <div class="ma-order-item">
+                                <div class="ma-order-header">
+                                    <span class="ma-order-number">Order #<?php echo htmlspecialchars($order['id']); ?></span>
+                                    <span class="ma-order-date"><?php echo htmlspecialchars($order['order_date']); ?></span>
+                                </div>
+                                <div class="ma-order-info">
+                                    <p>Total Amount: $<?php echo htmlspecialchars($order['total_amount']); ?></p>
+                                    <p>Status: <?php echo htmlspecialchars($order['status']); ?></p>
+                                    <p>Address: <?php echo htmlspecialchars($order['Address']); ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                </div>
+                <?php else : ?>
+                    <p>No orders found.</p>
+                <?php endif; ?>
             </section>
         </div>
     </div>
-    <?php include('../includes/Footer.php'); ?>
     <script>
-        // Tab Navigation
-        document.querySelectorAll('.ma-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelectorAll('.ma-tab').forEach(t => t.classList.remove('ma-active'));
-                tab.classList.add('ma-active');
-            });
-        });
-
-        // Logout
-        document.querySelector('.ma-logout-btn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to logout?')) {
-                alert('Logged out successfully!');
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
                 window.location.href = '../public/logout.php';
-                }
-        });
+            }
+        }
     </script>
 </body>
 </html>

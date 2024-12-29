@@ -9,6 +9,8 @@ class manageuser
     private Owners $owner;
     private User  $user;
     private PDO  $dbConnection;
+    private client $client;
+
 
     public function __construct()
     {
@@ -18,6 +20,7 @@ class manageuser
         // Create user objects using the Factory
         $this->owner = UserFactory::create('owners');
         $this->user = UserFactory::create('user');
+        $this->client = UserFactory::create('client');
     }
 
     public function deleteUser()
@@ -137,8 +140,42 @@ public function edituser(){
         header("Location: ../public/editUser.php"); // Replace with a proper error handling page
         exit;
     } 
+    
 
 }
+
+public function editclient()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['username'], $_POST['email'], $_POST['phone_number'])) {
+        $userId = htmlspecialchars($_POST['id']);
+        $username = htmlspecialchars($_POST['username']);
+        $email = htmlspecialchars($_POST['email']);
+        $phoneNumber = htmlspecialchars($_POST['phone_number']);
+
+        // Call the client's editclient method and handle the result
+        if ($this->client->editclient($userId, $username, $email, $phoneNumber)) {
+            $_SESSION['success_message'] = "Profile updated successfully!";
+            header("Location: myaccount.php");
+            exit;
+        } else {
+            $_SESSION['error_message'] = "Failed to update profile.";
+            header("Location: myaccount.php");
+            exit;
+        }
+    } else {
+        http_response_code(400);
+        $_SESSION['error_message'] = "Invalid request.";
+        header("Location: myaccount.php");
+        exit;
+    }
+}
+
+public function getUserOrders($userId)
+{
+    return $this->client->getOrdersByClient($userId);
+}
+
+
     public function getAllUsers()
     {
         return $this->user->getAllUsers();
@@ -202,7 +239,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
 }
-
+elseif ($action === 'editClient' &&
+    isset($_POST['id'], $_POST['username'], $_POST['email'], $_POST['phone_number'])) {
+        try {
+            error_log("Routing to editclient for ID: " . $_POST['id']);
+            $manageuser->editclient();
+        } catch (Exception $e) {
+            error_log("Error in editclient: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+}
     
     else {
         http_response_code(400);
