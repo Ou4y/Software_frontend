@@ -1,22 +1,39 @@
 <?php 
+session_start(); // Start the session
+
 require_once('../../Controllers/usercontroller.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (isset($_POST['Submit'])) {
-      $manageuser = new manageuser();
-      
-      $result = $manageuser->addadmin(); 
+$message = '';
+$messageType = '';
 
-      if ($result) {
-          echo json_encode(['success' => true, 'message' => 'Admin added successfully.']);
-      } else {
-          echo json_encode(['success' => false, 'message' => 'Failed to add admin.']);
-      }
-      exit; 
-  }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['Submit'])) {
+        $manageuser = new manageuser();
+        
+        $result = $manageuser->addadmin(); 
+
+        if ($result) {
+            $_SESSION['success_message'] = 'Admin added successfully.'; // Set success message
+        } else {
+            $_SESSION['error_message'] = 'Failed to add admin.'; // Set error message
+        }
+        // Redirect to the same page to avoid form resubmission
+        header('Location: ' . $_SERVER['PHP_SELF']); 
+        exit; 
+    }
 }
 
+// Check for session messages
+if (isset($_SESSION['error_message'])) {
+    $message = $_SESSION['error_message'];
+    $messageType = 'error';
+    unset($_SESSION['error_message']); // Clear the message after displaying it
+}
 
+if (isset($_SESSION['success_message'])) {
+    $successMessage = $_SESSION['success_message']; // Store success message separately
+    unset($_SESSION['success_message']); // Clear the message after displaying it
+}
 $manageuser = new manageuser();
 $users = $manageuser->getadmin();
 if (isset($_POST['deleteUser']) && is_object($users)) {
@@ -36,6 +53,43 @@ if (isset($_POST['deleteUser']) && is_object($users)) {
   <title>Add Admin</title>
   
   <style>
+    .modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+  padding-top: 60px; 
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; 
+  padding: 15px; 
+  border: 1px solid #888;
+  width: 40%; 
+  max-width: 400px; 
+  border-radius: 8px; 
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 .table-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -261,6 +315,13 @@ td {
         <button type="submit" >Add Admin</button>
       </form>
     </div>
+    <!-- Modal -->
+    <div id="messageModal" class="modal">
+          <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
+          </div>
+        </div>
     
     <div class="table-container">
       <div class="admin-table">
@@ -270,6 +331,7 @@ td {
         <table>
           <thead>
             <tr>
+              <th>ID</th>
               <th>Username</th>
               <th>E-mail</th>
               <th>Phone</th>
@@ -354,6 +416,39 @@ function confirmDelete(userId) {
 }
 
 </script>
+<script>
+      // Function to show the modal
+      function showModal(message) {
+        const modal = document.getElementById("messageModal");
+        const modalMessage = document.getElementById("modalMessage");
+        
+        modalMessage.textContent = message;
+        modal.style.display = "block";
+      }
+
+      // Close the modal when the user clicks on <span> (x)
+      document.getElementById("closeModal").onclick = function() {
+        document.getElementById("messageModal").style.display = "none";
+      }
+
+      // Close the modal when the user clicks anywhere outside of the modal
+      window.onclick = function(event) {
+        const modal = document.getElementById("messageModal");
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      // Show the modal if there's an error message
+      <?php if (isset($message) && !empty($message)): ?>
+        showModal("<?php echo addslashes($message); ?>");
+      <?php endif; ?>
+
+      // Show the modal if there's a success message
+      <?php if (isset($successMessage) && !empty($successMessage)): ?>
+        showModal("<?php echo addslashes($successMessage); ?>");
+      <?php endif; ?>
+    </script>
 <script src="../Assets/js/admin.js"></script>
 </body>
 </html>

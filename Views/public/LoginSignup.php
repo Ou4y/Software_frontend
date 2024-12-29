@@ -10,6 +10,28 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../Assets/css/LoginSignup.css">
     <title>Login Page</title>
+    <style>
+        /* Basic styles for the alert */
+        .alert {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .alert.error {
+            background-color: #f44336; /* Red for error */
+            color: white;
+        }
+        .alert.success {
+            background-color: #4CAF50; /* Green for success */
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,6 +40,7 @@ require_once('../../Controllers/AuthController.php');
 
 include('../includes/header.php'); 
 ?>
+
 <div class="auth-wrapper">
     <div class="auth-container" id="auth-container">
         <!-- Sign Up Form -->
@@ -65,7 +88,7 @@ include('../includes/header.php');
                     <button class="hidden" id="login">Sign In</button>
                 </div>
                 <div class="auth-panel auth-panel-right">
-                    <h1>Hello, Friend!</h1>
+                    <h 1>Hello, Friend!</h1>
                     <p>Register with your personal details to use all of the site features</p>
                     <button class="hidden" id="register">Sign Up</button>
                 </div>
@@ -74,25 +97,48 @@ include('../includes/header.php');
     </div>
 </div>
 
-
 <?php include('../includes/Footer.php'); ?>
 
 <script>
-   const container = document.querySelector('.auth-container');
-const registerBtn = document.getElementById('register');
-const loginBtn = document.getElementById('login');
+    const container = document.querySelector('.auth-container');
+    const registerBtn = document.getElementById('register');
+    const loginBtn = document.getElementById('login');
 
-registerBtn.addEventListener('click', () => {
-    container.classList.add("active");
-});
+    registerBtn.addEventListener('click', () => {
+        container.classList.add("active");
+    });
 
-loginBtn.addEventListener('click', () => {
-    container.classList.remove("active");
-});
+    loginBtn.addEventListener('click', () => {
+        container.classList.remove("active");
+    });
 
+    // Function to show alert
+    function showAlert(message, type) {
+        const alertBox = document.createElement('div');
+        alertBox.className = 'alert ' + type; // Add type for success or error
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+        alertBox.style.display = 'block';
+
+        // Automatically hide the alert after 3 seconds
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+            document.body.removeChild(alertBox);
+        }, 3000);
+    }
+
+    // Check for error messages in PHP session
+    <?php if (isset($_SESSION['error_message'])): ?>
+        showAlert("<?php echo $_SESSION['error_message']; ?>", 'error');
+        <?php unset($_SESSION['error_message']); // Clear the message after displaying ?>
+    <?php endif; ?>
+
+    // Check for success messages in PHP session
+    <?php if (isset($_SESSION['success_message'])): ?>
+        showAlert("<?php echo $_SESSION['success_message']; ?>", 'success');
+        <?php unset($_SESSION['success_message']); // Clear the message after displaying ?>
+    <?php endif; ?>
 </script>
-
-
 
 </body>
 </html>

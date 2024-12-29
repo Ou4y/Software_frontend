@@ -41,11 +41,7 @@ class manageuser
 }
 
 
-
-
-
-
-    public function addadmin()
+public function addadmin()
 {
     error_log("addAdmin called."); 
 
@@ -56,6 +52,52 @@ class manageuser
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
             $phoneNumber = htmlspecialchars($_POST['phone_number']);
+
+           // Check if the username already exists
+           if ($this->owner->usernameExists($username)) {
+            // Check if the existing username is of a different type
+            $existingUserType = $this->owner->getUserTypeByUsername($username);
+            if ($existingUserType === 'admin') {
+                $_SESSION['error_message'] = "Username already exists for an admin. Please choose a different username.";
+                header("Location: ../public/createAdmin.php"); // Redirect back to the add admin form
+                exit;
+            }
+        }
+
+            // Check if the email is valid
+            if (!$this->owner->isValidEmail($email)) {
+                $_SESSION['error_message'] = "Invalid email format. Please enter a valid email.";
+                header("Location: ../public/createAdmin.php"); // Redirect back to the add admin form
+                exit;
+            }
+
+            // Check if the email already exists
+            if ($this->owner->emailExists($email)) {
+                $_SESSION['error_message'] = "Email already exists. Please choose a different email.";
+                header("Location: ../public/createAdmin.php"); // Redirect back to the add admin form
+                exit;
+            }
+
+            // Check if the phone number is valid
+            if (!$this->owner->isValidPhoneNumber($phoneNumber)) {
+                $_SESSION['error_message'] = "Phone number must be exactly 12 digits.";
+                header("Location: ../public/createAdmin.php"); // Redirect back to the add admin form
+                exit;
+            }
+
+            // Check if the phone number already exists
+            if ($this->owner->phoneNumberExists($phoneNumber)) {
+                $_SESSION['error_message'] = "Phone number already exists. Please choose a different phone number.";
+                header("Location: ../public/createAdmin.php"); // Redirect back to the add admin form
+                exit;
+            }
+
+            // Check if the password is valid
+            if (!$this->owner->isValidPassword($password)) {
+                $_SESSION['error_message'] = "Password must be at least 8 characters long and contain at least one number.";
+                header("Location: ../public/createAdmin.php"); // Redirect back to the add admin form
+                exit;
+            }
 
             // Add the admin via the Owners model
             if ($this->owner->addAdmin($username, $email, $password, $phoneNumber)) {
@@ -72,41 +114,90 @@ class manageuser
     } catch (Exception $e) {
         // Redirect with error message
         $_SESSION['error_message'] = $e->getMessage();
-        header("Location: /your-redirect-page"); // Replace with your actual redirect page
+        header("Location: ../public/createAdmin.php"); // Replace with your actual redirect page
         exit;
     }
 }
 
-
-public function addNormalUser()
+public function addNormalUser ()
 {
-    error_log("addNormalUser called."); // Log entry for debugging
+    error_log("addNormalUser  called."); // Log entry for debugging
 
     try {
         // Check if the request is POST and all required data is provided
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone_number'])) {
-            $userId = htmlspecialchars($_POST['id']); // Sanitize the input
             $username = htmlspecialchars($_POST['username']);
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
             $phoneNumber = htmlspecialchars($_POST['phone_number']);
 
+           // Check if the username already exists
+           if ($this->owner->usernameExists($username)) {
+            // Check if the existing username is of a different type
+            $existingUserType = $this->owner->getUserTypeByUsername($username);
+            if ($existingUserType === 'user') {
+                $_SESSION['error_message'] = "Username already exists for a user. Please choose a different username.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
+            }
+        }
+
+            // Check if the email is valid
+            if (!$this->owner->isValidEmail($email)) {
+                $_SESSION['error_message'] = "Invalid email format. Please enter a valid email.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
+            }
+
+            // Check if the email already exists
+            if ($this->owner->emailExists($email)) {
+                $_SESSION['error_message'] = "Email already exists. Please choose a different email.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
+            }
+
+            // Check if the phone number is valid
+            if (!$this->owner->isValidPhoneNumber($phoneNumber)) {
+                $_SESSION['error_message'] = "Phone number must be exactly 12 digits.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
+            }
+
+            // Check if the phone number already exists
+            if ($this->owner->phoneNumberExists($phoneNumber)) {
+                $_SESSION['error_message'] = "Phone number already exists. Please choose a different phone number.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
+            }
+
+            // Check if the password is valid
+            if (!$this->owner->isValidPassword($password)) {
+                $_SESSION['error_message'] = "Password must be at least 8 characters long and contain at least one number.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
+            }
+
             // Add the normal user via the Owners model
-            if ($this->owner->addNormalUser($username, $email, $password, $phoneNumber)) {
+            if ($this->owner->addNormalUser ($username, $email, $password, $phoneNumber)) {
                 // Redirect with success message
-                $_SESSION['success_message'] = "User edited successfully.";
+                $_SESSION['success_message'] = "User  added successfully.";
                 header("Location: ../public/ManageUsers.php"); // Correct redirect path for adding normal users
                 exit;
             } else {
-                throw new Exception("Failed to add user.");
+                $_SESSION['error_message'] = "Failed to add user.";
+                header("Location: ../public/adduser.php"); // Redirect back to the add user form
+                exit;
             }
         } else {
-            throw new Exception("Invalid input data.");
+            $_SESSION['error_message'] = "Invalid input data.";
+            header("Location: ../public/adduser.php"); // Redirect back to the add user form
+            exit;
         }
     } catch (Exception $e) {
-        // Redirect with error message
-        $_SESSION['error_message'] = $e->getMessage();
-        header("Location: ../public/AdminDashboard.php"); // Replace with a proper error handling page
+        // Log the exception and redirect with a generic error message
+        error_log("Error in addNormal:User  " . $e->getMessage());
+        $_SESSION['error_message'] = "An unexpected error occurred. Please try again.";
+        header("Location: ../public/adduser.php"); // Redirect back to the add user form
         exit;
     }
 }
