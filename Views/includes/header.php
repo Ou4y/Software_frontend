@@ -26,7 +26,7 @@
             
             <a href="../public/checkout.php" class="cart-icon">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count">2</span>
+                <span class="cart-count"></span>
             </a>
             
 

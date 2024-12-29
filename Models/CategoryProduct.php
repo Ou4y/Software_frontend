@@ -40,12 +40,6 @@ class CategoryProduct extends Product {
 
     
 
-    public function getSaleProducts() {
-        $stmt = $this->conn->prepare("SELECT * FROM products WHERE discount > 0");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getLatestProducts() {
         $stmt = $this->conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 3");
         $stmt->execute();
