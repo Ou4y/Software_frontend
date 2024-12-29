@@ -12,7 +12,7 @@
             parent::__construct($this->conn);
 
         }
-        public function editclient($userId, $username, $email, $phoneNumber)
+        public function editclient($userId, $username, $email, $phone_number)
     {
         try {
             if (!isset($userId) || !is_numeric($userId)) {
@@ -28,10 +28,10 @@
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':phone_number', $phoneNumber, PDO::PARAM_STR);
+            $stmt->bindParam(':phone_number', $phone_number, PDO::PARAM_STR);
 
             error_log("SQL Query: " . $stmt->queryString);
-            error_log("Parameters: userId=$userId, username=$username, email=$email, phone_number=$phoneNumber");
+            error_log("Parameters: userId=$userId, username=$username, email=$email, phone_number=$phone_number");
 
             $stmt->execute();
 
