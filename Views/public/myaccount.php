@@ -220,11 +220,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' &&  $_POST['action'] === 'editClient')
                     <div class="ma-form-group">
                         <label class="ma-form-label">Phone</label>
                         <input type="text" class="ma-form-input" name="phone_number" value="<?php echo htmlspecialchars($currentUser['phone_number']); ?>" required>
+                        <br>
                     </div>
                 </div>
                 <button type="submit" class="ma-btn ma-btn-outline">Save Changes</button>
             </form>
-
+            <br>
             <!-- Orders Section -->
             <section class="ma-section">
                 <h2 class="ma-section-title">My Orders</h2>
