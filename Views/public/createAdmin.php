@@ -1,5 +1,9 @@
 <?php 
 session_start(); // Start the session
+if (!isset($_SESSION['user'])) {
+    header("Location: LoginSignup.php");
+    exit();
+}
 
 require_once('../../Controllers/usercontroller.php');
 

@@ -1,4 +1,9 @@
 <?php 
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: LoginSignup.php");
+    exit();
+}
 require_once('../../Controllers/ProductController.php');
 $controller = new ProductController();
 $products = $controller->getAllProducts();
