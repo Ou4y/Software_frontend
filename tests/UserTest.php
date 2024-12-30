@@ -91,7 +91,7 @@ class UserTest extends TestCase
 
     public function testGetUserByIdSuccess()
     {
-        $userId = 1; // Assuming user with ID 1 exists
+        $userId = 2; // Assuming user with ID 1 exists
 
         $result = $this->user->getUserById($userId);
 

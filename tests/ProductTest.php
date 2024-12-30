@@ -18,7 +18,7 @@ class ProductTest extends TestCase {
         $type = "Test Type";
         $attributes = [
             'color' => 'red',
-            'size' => 'M',
+            'size_m' => '20',
         ];
 
         $productId = $this->product->addProduct($title, $price, $type, $attributes);
