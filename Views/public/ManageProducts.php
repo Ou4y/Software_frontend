@@ -61,7 +61,7 @@ $products = $controller->getAllProducts();
                     </ul>
                   </div>
                   <div class="product-images">
-                    <?php if (!empty($product['images'])): ?>6
+                    <?php if (!empty($product['images'])): ?>
                       <?php foreach ($product['images'] as $image): ?>
                         <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($product['title']) ?>" class="product-image">
                       <?php endforeach; ?>
