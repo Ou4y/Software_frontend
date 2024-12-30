@@ -61,16 +61,13 @@ $products = $controller->getAllProducts();
                     </ul>
                   </div>
                   <div class="product-images">
-                    <?php if (!empty($product['images'])): ?>
+                    <?php if (!empty($product['images'])): ?>6
                       <?php foreach ($product['images'] as $image): ?>
                         <img src="<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($product['title']) ?>" class="product-image">
                       <?php endforeach; ?>
                     <?php endif; ?>
                   </div>
                   <div class="options">
-                    <button class="edit-btn" onclick="window.location.href='editProduct.php?id=<?= $product['id'] ?>'">
-                      <i class='bx bxs-pencil'></i> Edit
-                    </button>
                     <button class="delete-btn" onclick="confirmDelete(<?= $product['id'] ?>)">
                       <i class='bx bxs-trash'></i> Delete
                     </button>
