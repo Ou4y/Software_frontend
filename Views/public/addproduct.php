@@ -13,8 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_type']) && $_POS
     $description = $_POST['description'];
     $color = $_POST['color'];
     $size_s = intval($_POST['size_s']);
-    $size_m = intval($_POST['size_m']);
-    $size_l = intval($_POST['size_l']);
     $price = floatval($_POST['price']);
     $category = $_POST['category'];
     $gender = $_POST['gender'];
